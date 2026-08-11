@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Conexões Empreendedoras | Monitoramento</title>
+<title>Conexao Empreendedora | Monitoramento</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Open+Sans:wght@400;600;700&display=swap');
 :root{
@@ -80,6 +80,7 @@ h1,h2,h3,h4{font-family:'Montserrat',Arial,sans-serif}
 .bR{background:var(--gvb);color:var(--gv)}
 .bP{background:var(--awb);color:var(--aw)}
 .bC{background:var(--rdb);color:var(--rd)}
+.bN{background:#e9ebf0;color:#555}
 .bA{background:#e8f0f8;color:var(--az)}
 .bT{background:#e0f7fb;color:#006080}
 .bE{background:#fff8e0;color:#7A4F00}
@@ -101,6 +102,7 @@ h1,h2,h3,h4{font-family:'Montserrat',Arial,sans-serif}
 .ccard.stR{border-left:4px solid var(--gv)}
 .ccard.stP{border-left:4px solid #c9940a}
 .ccard.stC{border-left:4px solid #cc2222}
+.ccard.stN{border-left:4px solid #b7bfcc}
 .cmes{font-size:13px;font-weight:700;color:var(--az);font-family:'Montserrat',sans-serif}
 .cfase{font-size:10px;color:#999;margin:3px 0 8px}
 .clink{font-size:11px;color:var(--azs);font-weight:700;margin-top:8px;display:block;text-decoration:none}
@@ -119,6 +121,7 @@ h1,h2,h3,h4{font-family:'Montserrat',Arial,sans-serif}
 
 /* GRIDS */
 .g4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.g5{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
 .g3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
 .g2{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
 
@@ -137,6 +140,7 @@ h1,h2,h3,h4{font-family:'Montserrat',Arial,sans-serif}
 .pcard.stR{border-left:4px solid var(--gv)}
 .pcard.stP{border-left:4px solid #c9940a}
 .pcard.stC{border-left:4px solid #cc2222}
+.pcard.stN{border-left:4px solid #b7bfcc}
 .pcard-mes{font-size:13px;font-weight:700;color:var(--az);font-family:'Montserrat',sans-serif}
 .pcard-fase{font-size:10px;color:#999}
 .pcard-terr{font-size:11px;color:var(--azs);font-weight:700;font-family:'Montserrat',sans-serif}
@@ -154,8 +158,8 @@ h1,h2,h3,h4{font-family:'Montserrat',Arial,sans-serif}
 .ftxt{color:rgba(255,255,255,.45);font-size:11px}
 .fbadge{background:var(--am);color:var(--az);font-size:11px;font-weight:700;padding:5px 14px;border-radius:20px;font-family:'Montserrat',sans-serif}
 
-@media(max-width:900px){.g4,.g3{grid-template-columns:repeat(2,1fr)}.g2{grid-template-columns:1fr}.hnav{display:none}}
-@media(max-width:480px){.g4,.g3,.g2{grid-template-columns:1fr}}
+@media(max-width:900px){.g4,.g3,.g5{grid-template-columns:repeat(2,1fr)}.g2{grid-template-columns:1fr}.hnav{display:none}}
+@media(max-width:480px){.g4,.g3,.g2,.g5{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -207,7 +211,7 @@ h1,h2,h3,h4{font-family:'Montserrat',Arial,sans-serif}
     <!-- DASHBOARD -->
     <div class="vw on" id="vw-dashboard">
       <div class="st">Visao Geral do Projeto</div>
-      <div class="g4" id="kpi-row" style="margin-bottom:20px"></div>
+      <div class="g5" id="kpi-row" style="margin-bottom:20px"></div>
 
       <div class="st">Indice Global de Execucao</div>
       <div class="card" style="padding:22px 26px;margin-bottom:20px">
@@ -372,20 +376,44 @@ function competenciaPassou_(comp) {
   return fimDoMes < HOJE;
 }
 
+// Traduz o Status bruto que o Agente.gs escreve na planilha
+// (Completo / Insuficiente / Pendente / Alerta: Duplicidade / Erro:
+// ...) para um rotulo visual fixo, usado tanto no badge quanto na
+// classe de cor do cartao.
 function statusVisual(row) {
   var st = (row['Status'] || '').trim();
-  if (st === 'Executado') return 'Realizado';
-  if (st.indexOf('Erro') === 0) return 'Critico';
-  if (competenciaPassou_(row['Competencia'])) return 'Critico';
+  if (st === 'Completo') return 'Completo';
+  if (st === 'Insuficiente') return 'Insuficiente';
+  if (st.indexOf('Alerta') === 0) return 'Alerta';
+  if (st.indexOf('Erro') === 0) return 'Erro';
+  if (st === 'Pendente' && competenciaPassou_(row['Competencia'])) return 'Critico';
   return 'Pendente';
 }
 
+// Classe do badge (cor do texto/fundo).
 function bcl(st) {
-  if (!st) return 'bP';
-  var s = st.toLowerCase();
-  if (s === 'realizado' || s === 'executado') return 'bR';
-  if (s === 'critico') return 'bC';
-  return 'bP';
+  switch (st) {
+    case 'Completo': return 'bR';
+    case 'Insuficiente': return 'bP';
+    case 'Alerta': return 'bC';
+    case 'Erro': return 'bC';
+    case 'Critico': return 'bC';
+    default: return 'bN';
+  }
+}
+
+// Classe da barra lateral colorida do cartao (ccard/pcard). Usa um
+// mapa explicito em vez de charAt(0), porque "Completo" e "Critico"
+// comecam com a mesma letra e colidiriam.
+function statusClasse(st) {
+  switch (st) {
+    case 'Completo': return 'stR';
+    case 'Insuficiente': return 'stP';
+    case 'Alerta': return 'stC';
+    case 'Erro': return 'stC';
+    case 'Critico': return 'stC';
+    default: return 'stN';
+  }
 }
 
 function scl(n) {
@@ -395,9 +423,13 @@ function scl(n) {
   return 'scrit';
 }
 
+// So conta como "executado" de verdade quando o agente classificou
+// como Completo (>=15 fotos unicas, lista de presenca presente, sem
+// duplicidade). Insuficiente e Pendente NAO contam - pasta com
+// pouca coisa dentro nao e a mesma coisa que turma executada.
 function pctExecucao(rows) {
   if (!rows.length) return 0;
-  var exec = rows.filter(function (r) { return (r['Status'] || '') === 'Executado'; }).length;
+  var exec = rows.filter(function (r) { return (r['Status'] || '').trim() === 'Completo'; }).length;
   return Math.round((exec / rows.length) * 100);
 }
 
@@ -432,14 +464,16 @@ function kpi(n, l) {
 
 function renderDash() {
   var rows = ATIV();
-  var exec = rows.filter(function (r) { return (r['Status'] || '') === 'Executado'; }).length;
-  var crit = rows.filter(function (r) { return statusVisual(r) === 'Critico'; }).length;
+  var completos = rows.filter(function (r) { return (r['Status'] || '').trim() === 'Completo'; }).length;
+  var insuficientes = rows.filter(function (r) { return statusVisual(r) === 'Insuficiente'; }).length;
+  var criticos = rows.filter(function (r) { var sv = statusVisual(r); return sv === 'Alerta' || sv === 'Erro' || sv === 'Critico'; }).length;
 
   document.getElementById('kpi-row').innerHTML =
     kpi(TERR.length, 'Territorios Ativos') +
     kpi(rows.length, 'Turmas Previstas') +
-    kpi(exec + ' / ' + rows.length, 'Turmas Executadas') +
-    kpi(crit, 'Turmas Criticas');
+    kpi(completos + ' / ' + rows.length, 'Turmas Completas') +
+    kpi(insuficientes, 'Insuficientes') +
+    kpi(criticos, 'Criticas / Alertas');
 
   var sg = pctGlobal();
   document.getElementById('sc-txt').textContent = sg + '%';
@@ -451,7 +485,7 @@ function renderDash() {
   TERR.forEach(function (t, i) {
     var sc = pctTerritorio(t);
     var terrRows = rows.filter(function (r) { return r['Territorio'] === t; });
-    var cr = terrRows.filter(function (r) { return statusVisual(r) === 'Critico'; }).length;
+    var cr = terrRows.filter(function (r) { var sv = statusVisual(r); return sv === 'Alerta' || sv === 'Erro' || sv === 'Critico'; }).length;
     th += '<div class="tcard" onclick="goV(\'territorios\');setTimeout(function(){abrirTerr(' + i + ')},120)">';
     th += '<div class="tnome">' + t + '</div>';
     th += '<div class="tsc">' + sc + '%</div>';
@@ -462,7 +496,12 @@ function renderDash() {
   });
   document.getElementById('dash-terr').innerHTML = th;
 
-  var crows = rows.filter(function (r) { return statusVisual(r) === 'Critico'; });
+  // Alertas: turmas com Alerta de duplicidade, Erro tecnico, ou
+  // Pendente/Insuficiente cuja competencia ja passou (viraram Critico).
+  var crows = rows.filter(function (r) {
+    var sv = statusVisual(r);
+    return sv === 'Alerta' || sv === 'Erro' || sv === 'Critico';
+  });
   var ah = '';
   var diasRestantes = diasAteFimConvenio();
   if (diasRestantes >= 0 && diasRestantes <= 30) {
@@ -473,13 +512,15 @@ function renderDash() {
     ah += '<div class="card" style="color:#666;font-size:13px">Nenhuma turma critica no momento.</div>';
   } else {
     ah += '<div class="card" style="padding:0;overflow:auto"><table class="tbl">';
-    ah += '<tr><th>Territorio</th><th>Curso</th><th>Turma</th><th>Competencia</th><th>Situacao</th></tr>';
+    ah += '<tr><th>Territorio</th><th>Curso</th><th>Turma</th><th>Competencia</th><th>Situacao</th><th>Observacoes do Agente</th></tr>';
     crows.slice(0, 30).forEach(function (r) {
+      var sv = statusVisual(r);
       ah += '<tr><td><strong>' + (r['Territorio'] || '-') + '</strong></td>';
       ah += '<td>' + (r['Curso'] || '-') + '</td>';
       ah += '<td>' + (r['Turma'] || '-') + '</td>';
       ah += '<td><span class="badge bC">' + (r['Competencia'] || '-') + '</span></td>';
-      ah += '<td style="font-size:11px;color:#888">' + ((r['Link da Pasta Drive']) ? 'Sem evidencia registrada na pasta' : 'Sem pasta vinculada ainda') + '</td></tr>';
+      ah += '<td><span class="badge ' + bcl(sv) + '">' + sv + '</span></td>';
+      ah += '<td style="font-size:11px;color:#888;max-width:280px">' + (r['Observacoes do Agente'] || '-') + '</td></tr>';
     });
     ah += '</table></div>';
     if (crows.length > 30) {
@@ -508,12 +549,12 @@ function renderListaTerritorios() {
   TERR.forEach(function (t, i) {
     var sc = pctTerritorio(t);
     var terrRows = ATIV().filter(function (r) { return r['Territorio'] === t; });
-    var exec = terrRows.filter(function (r) { return (r['Status'] || '') === 'Executado'; }).length;
-    var cr = terrRows.filter(function (r) { return statusVisual(r) === 'Critico'; }).length;
+    var exec = terrRows.filter(function (r) { return (r['Status'] || '').trim() === 'Completo'; }).length;
+    var cr = terrRows.filter(function (r) { var sv = statusVisual(r); return sv === 'Alerta' || sv === 'Erro' || sv === 'Critico'; }).length;
     h += '<div class="tcard" onclick="abrirTerr(' + i + ')">';
     h += '<div class="tnome">' + t + '</div>';
     h += '<div class="tsc">' + sc + '%</div>';
-    h += '<div class="tmeta">' + exec + ' de ' + terrRows.length + ' turmas executadas</div>';
+    h += '<div class="tmeta">' + exec + ' de ' + terrRows.length + ' turmas completas</div>';
     h += '<div style="margin:10px 0"><div class="sbw" style="height:8px"><div class="sb ' + scl(sc) + '" style="width:' + sc + '%"></div></div></div>';
     if (cr > 0) h += '<span class="badge bC" style="margin-bottom:4px;display:inline-block">' + cr + ' critica(s)</span>';
     h += '<div class="tlink">Ver cursos e turmas -&gt;</div>';
@@ -526,7 +567,7 @@ function renderDetalheTerritorio(idx) {
   var nome = TERR[idx];
   var tR = ATIV().filter(function (r) { return r['Territorio'] === nome; });
   var sc = pctTerritorio(nome);
-  var exec = tR.filter(function (r) { return (r['Status'] || '') === 'Executado'; }).length;
+  var exec = tR.filter(function (r) { return (r['Status'] || '').trim() === 'Completo'; }).length;
   var h = '';
 
   h += '<div class="card" style="background:var(--az);padding:22px 26px;margin-bottom:20px">';
@@ -536,7 +577,7 @@ function renderDetalheTerritorio(idx) {
   h += '<div style="font-size:40px;font-weight:700;color:var(--br);font-family:Montserrat,sans-serif">' + sc + '%</div>';
   h += '<div style="flex:1;min-width:160px">';
   h += '<div class="sbw" style="height:14px"><div class="sb ' + scl(sc) + '" style="width:' + sc + '%"></div></div>';
-  h += '<div style="color:rgba(255,255,255,.5);font-size:11px;margin-top:4px">' + exec + ' de ' + tR.length + ' turmas executadas</div>';
+  h += '<div style="color:rgba(255,255,255,.5);font-size:11px;margin-top:4px">' + exec + ' de ' + tR.length + ' turmas completas</div>';
   h += '</div></div></div>';
 
   var porCurso = {};
@@ -555,11 +596,13 @@ function renderDetalheTerritorio(idx) {
     turmas.forEach(function (r) {
       var st = statusVisual(r);
       var lk = r['Link da Pasta Drive'] || '';
-      h += '<div class="ccard st' + st.charAt(0) + '">';
+      var obs = r['Observacoes do Agente'] || '';
+      h += '<div class="ccard ' + statusClasse(st) + '">';
       h += '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">';
       h += '<div class="cmes">' + (r['Turma'] || '-') + '</div>';
       h += '<span class="badge ' + bcl(st) + '">' + st + '</span></div>';
       h += '<div class="cfase">Competencia: ' + (r['Competencia'] || '-') + ' | Meta: ' + (r['Meta Vinculada'] || '-') + '</div>';
+      if (obs) h += '<div style="font-size:10px;color:#888;margin:4px 0">' + obs + '</div>';
       if (lk) h += '<a class="clink" href="' + lk + '" target="_blank">Abrir pasta no Drive</a>';
       else h += '<div style="font-size:11px;color:#ccc;margin-top:6px">Sem link registrado</div>';
       h += '</div>';
@@ -573,11 +616,11 @@ function renderDetalheTerritorio(idx) {
 function renderCursos() {
   var rows = ATIV();
   var h = '<div class="card" style="padding:0;overflow:auto"><table class="tbl">';
-  h += '<tr><th>Curso</th><th>Turmas Previstas</th><th>Executadas</th><th>Progresso</th><th>Territorios</th></tr>';
+  h += '<tr><th>Curso</th><th>Turmas Previstas</th><th>Completas</th><th>Progresso</th><th>Territorios</th></tr>';
   CURSOS.forEach(function (c) {
     var cRows = rows.filter(function (r) { return r['Curso'] === c; });
     if (!cRows.length) return;
-    var exec = cRows.filter(function (r) { return (r['Status'] || '') === 'Executado'; }).length;
+    var exec = cRows.filter(function (r) { return (r['Status'] || '').trim() === 'Completo'; }).length;
     var pc = pctCurso(c);
     var terrs = Array.from(new Set(cRows.map(function (r) { return r['Territorio']; }))).join(', ');
     h += '<tr><td><strong>' + c + '</strong></td>';
@@ -614,9 +657,11 @@ var filtroPastasAtual = 'Todos';
 function renderPastas(filtro) {
   filtroPastasAtual = filtro || filtroPastasAtual;
   var fb = '<button class="fbtn' + (filtroPastasAtual === 'Todos' ? ' on' : '') + '" onclick="renderPastas(\'Todos\')">Todos</button>';
-  fb += '<button class="fbtn' + (filtroPastasAtual === 'Critico' ? ' on' : '') + '" onclick="renderPastas(\'Critico\')">Somente Criticas</button>';
+  fb += '<button class="fbtn' + (filtroPastasAtual === 'Completo' ? ' on' : '') + '" onclick="renderPastas(\'Completo\')">Somente Completas</button>';
+  fb += '<button class="fbtn' + (filtroPastasAtual === 'Insuficiente' ? ' on' : '') + '" onclick="renderPastas(\'Insuficiente\')">Somente Insuficientes</button>';
   fb += '<button class="fbtn' + (filtroPastasAtual === 'Pendente' ? ' on' : '') + '" onclick="renderPastas(\'Pendente\')">Somente Pendentes</button>';
-  fb += '<button class="fbtn' + (filtroPastasAtual === 'Realizado' ? ' on' : '') + '" onclick="renderPastas(\'Realizado\')">Somente Executadas</button>';
+  fb += '<button class="fbtn' + (filtroPastasAtual === 'Alerta' ? ' on' : '') + '" onclick="renderPastas(\'Alerta\')">Alertas de Duplicidade</button>';
+  fb += '<button class="fbtn' + (filtroPastasAtual === 'Critico' ? ' on' : '') + '" onclick="renderPastas(\'Critico\')">Vencidas (Criticas)</button>';
   document.getElementById('flt-pastas').innerHTML = fb;
 
   var rows = ATIV();
@@ -632,13 +677,15 @@ function renderPastas(filtro) {
     terrFiltradas.forEach(function (r) {
       var st = statusVisual(r);
       var lk = r['Link da Pasta Drive'] || '';
-      html += '<div class="pcard st' + st.charAt(0) + '">';
+      var obs = r['Observacoes do Agente'] || '';
+      html += '<div class="pcard ' + statusClasse(st) + '"' + (obs ? ' title="' + obs.replace(/"/g, '&quot;') + '"' : '') + '>';
       html += '<div style="display:flex;align-items:center;justify-content:space-between;gap:4px">';
       html += '<div class="pcard-mes">' + (r['Turma'] || '-') + '</div>';
       html += '<span class="badge ' + bcl(st) + '" style="font-size:9px;padding:2px 7px">' + st + '</span>';
       html += '</div>';
       html += '<div class="pcard-terr">' + (r['Curso'] || '-') + '</div>';
       html += '<div class="pcard-fase">Competencia: ' + (r['Competencia'] || '-') + '</div>';
+      if (obs) html += '<div style="font-size:9px;color:#999;line-height:1.3">' + (obs.length > 90 ? obs.substring(0, 90) + '...' : obs) + '</div>';
       if (lk) {
         html += '<a class="pcard-btn" href="' + lk + '" target="_blank">ABRIR PASTA</a>';
       } else {
