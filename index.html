@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Conexao Empreendedora | Instituto BR Arte</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Open+Sans:wght@400;600;700&display=swap');
+:root{
+  --az:#092040;--azs:#00B7D7;--am:#ECC203;--cz:#EFF1F3;--aze:#021738;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Open Sans',Arial,sans-serif;background:var(--cz);color:var(--az);min-height:100vh}
+h1,h2,h3{font-family:'Montserrat',Arial,sans-serif}
+
+/* TELA DE SENHA */
+#pwd{position:fixed;inset:0;background:var(--az);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;z-index:99}
+.pbox{background:#fff;border-radius:16px;padding:40px 32px;max-width:360px;width:90%;text-align:center;display:flex;flex-direction:column;gap:14px}
+.plogo-chip img{max-height:64px;object-fit:contain}
+.psub2{font-size:13px;color:#666}
+.phint{font-size:11px;color:#999}
+.pin{padding:12px 14px;border-radius:8px;border:1.5px solid #ddd;font-size:14px}
+.pbtn{background:var(--azs);color:#fff;border:none;border-radius:8px;padding:12px;font-weight:700;font-family:'Montserrat',sans-serif;cursor:pointer}
+.perr{color:#c0392b;font-size:12px;min-height:14px}
+.pfoot-logo{height:28px;object-fit:contain;filter:brightness(0) invert(1);opacity:.7}
+
+/* LOADING */
+#ld{position:fixed;inset:0;background:var(--cz);display:none;align-items:center;justify-content:center;flex-direction:column;gap:14px;z-index:98}
+.spin{width:36px;height:36px;border:4px solid #ddd;border-top-color:var(--azs);border-radius:50%;animation:sp 1s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+.ltxt{font-size:13px;color:#666}
+
+/* APP */
+#app{display:none}
+.hdr{background:var(--az);padding:18px 24px}
+.hdri{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px}
+.hlogo{height:40px;object-fit:contain}
+.htit{color:#fff;font-size:18px;font-weight:700}
+.hsub{color:rgba(255,255,255,.6);font-size:11px}
+.hnav{display:flex;gap:6px}
+.nbtn{background:transparent;border:1.5px solid rgba(255,255,255,.2);color:rgba(255,255,255,.75);padding:8px 14px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer}
+.nbtn.on{background:var(--am);color:var(--az);border-color:var(--am)}
+
+.wrap{max-width:1200px;margin:0 auto;padding:28px 16px}
+.st{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;margin:22px 0 14px;padding-left:10px;border-left:4px solid var(--azs)}
+.vw{display:none}.vw.on{display:block}
+
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.kcard{background:#fff;border-radius:12px;padding:18px;border:1.5px solid #e3e3ec}
+.kval{font-size:26px;font-weight:700;color:var(--az)}
+.klabel{font-size:11px;color:#888;text-transform:uppercase;letter-spacing:.5px}
+
+/* LISTAS (territorios / metas / pastas) */
+.card{background:#fff;border-radius:12px;padding:16px 18px;border:1.5px solid #e3e3ec;margin-bottom:10px}
+.card-tit{font-family:'Montserrat',sans-serif;font-weight:700;font-size:14px;color:var(--az);margin-bottom:4px}
+.card-sub{font-size:12px;color:#777}
+.barra-bg{background:#e9ebf0;border-radius:6px;height:8px;margin-top:8px;overflow:hidden}
+.barra-fg{background:var(--azs);height:100%}
+.badge{display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;text-transform:uppercase;letter-spacing:.5px}
+.badge-executado{background:#D9F2E3;color:#0B6B3A}
+.badge-pendente{background:#FDF3D0;color:#8A6D00}
+
+@media(max-width:900px){.g4{grid-template-columns:repeat(2,1fr)}.hnav{display:none}}
+@media(max-width:480px){.g4{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<div id="pwd">
+  <div class="pbox">
+    <div class="plogo-chip"><img src="assets/logo-conexao-empreendedora.png" alt="Conexao Empreendedora"></div>
+    <div class="psub2">Conexao Empreendedora - Sistema de Monitoramento Operacional</div>
+    <div class="phint">Acesso restrito - Coordenacao Instituto BR Arte / UFRRJ</div>
+    <input class="pin" type="password" id="pf" placeholder="Senha de acesso"
+           onkeydown="if(event.key==='Enter')chkPwd()">
+    <button class="pbtn" onclick="chkPwd()">ACESSAR SISTEMA</button>
+    <div class="perr" id="perr"></div>
+  </div>
+  <img class="pfoot-logo" src="assets/logo-instituto-br-arte.png" alt="Instituto BR Arte">
+</div>
+
+<div id="ld">
+  <div class="spin"></div>
+  <div class="ltxt">Carregando dados do projeto...</div>
+</div>
+
+<div id="app">
+  <header class="hdr">
+    <div class="hdri">
+      <div style="display:flex;align-items:center;gap:16px">
+        <img class="hlogo" src="assets/logo-conexao-empreendedora.png" alt="Conexao Empreendedora">
+        <div>
+          <div class="htit">CONEXAO EMPREENDEDORA</div>
+          <div class="hsub">Instituto BR Arte / UFRRJ - Sistema de Monitoramento Operacional</div>
+        </div>
+      </div>
+      <nav class="hnav">
+        <button class="nbtn on" onclick="goV('dashboard')">Dashboard</button>
+        <button class="nbtn" onclick="goV('territorios')">Territorios</button>
+        <button class="nbtn" onclick="goV('metas')">Metas</button>
+        <button class="nbtn" onclick="goV('pastas')">Pastas Drive</button>
+      </nav>
+    </div>
+  </header>
+
+  <div class="wrap">
+    <div class="vw on" id="vw-dashboard">
+      <div class="st">Visao Geral do Projeto</div>
+      <div class="g4" id="kpi-row"></div>
+
+      <div class="st">Execucao por Territorio</div>
+      <div id="resumo-territorios"></div>
+
+      <div class="st">Execucao por Curso</div>
+      <div id="resumo-cursos"></div>
+    </div>
+
+    <div class="vw" id="vw-territorios">
+      <div class="st">Territorios</div>
+      <div id="lista-territorios"></div>
+    </div>
+
+    <div class="vw" id="vw-metas">
+      <div class="st">Metas</div>
+      <div id="lista-metas"></div>
+    </div>
+
+    <div class="vw" id="vw-pastas">
+      <div class="st">Turmas e Pastas no Drive</div>
+      <div id="lista-pastas"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+// URL do Web App do Apps Script deste projeto (Code.gs), ja
+// publicada com ?action=api
+var API_URL = 'https://script.google.com/macros/s/AKfycbw1ApXYewPhOt1PZ1Ob5o7PNsz8Nmb1TeuQezL5u_1r8YILkfTRuZlsm_ve1PukOHMC/exec';
+var SENHA_ACESSO = 'Brarte@2026';
+
+var DADOS = null;
+
+function chkPwd() {
+  var v = document.getElementById('pf').value;
+  if (v === SENHA_ACESSO) {
+    document.getElementById('pwd').style.display = 'none';
+    carregarDados();
+  } else {
+    document.getElementById('perr').innerText = 'Senha incorreta.';
+  }
+}
+
+function carregarDados() {
+  document.getElementById('ld').style.display = 'flex';
+  fetch(API_URL + '?action=api')
+    .then(function (r) { return r.json(); })
+    .then(function (data) {
+      DADOS = data;
+      document.getElementById('ld').style.display = 'none';
+      document.getElementById('app').style.display = 'block';
+      renderizarDashboard();
+      renderizarTerritorios();
+      renderizarMetas();
+      renderizarPastas();
+    })
+    .catch(function (err) {
+      document.getElementById('ld').style.display = 'none';
+      alert('Erro ao carregar dados: ' + err.message);
+    });
+}
+
+function renderizarDashboard() {
+  var atividades = DADOS.atividades || [];
+  var total = atividades.length;
+  var executadas = atividades.filter(function (a) { return a.Status === 'Executado'; }).length;
+  var pct = total ? Math.round((executadas / total) * 100) : 0;
+
+  document.getElementById('kpi-row').innerHTML =
+    kpi(total, 'Turmas Previstas') +
+    kpi(executadas, 'Executadas') +
+    kpi((total - executadas), 'Pendentes') +
+    kpi(pct + '%', 'Execucao Geral');
+
+  document.getElementById('resumo-territorios').innerHTML = montarResumoPor_('Territorio', atividades);
+  document.getElementById('resumo-cursos').innerHTML = montarResumoPor_('Curso', atividades);
+}
+
+function montarResumoPor_(campo, atividades) {
+  var grupos = {};
+  atividades.forEach(function (a) {
+    var chave = a[campo] || 'Nao informado';
+    if (!grupos[chave]) grupos[chave] = { total: 0, executadas: 0 };
+    grupos[chave].total++;
+    if (a.Status === 'Executado') grupos[chave].executadas++;
+  });
+
+  return Object.keys(grupos).sort().map(function (chave) {
+    var g = grupos[chave];
+    var pct = g.total ? Math.round((g.executadas / g.total) * 100) : 0;
+    return '<div class="card">' +
+      '<div class="card-tit">' + chave + '</div>' +
+      '<div class="card-sub">' + g.executadas + ' de ' + g.total + ' turmas executadas (' + pct + '%)</div>' +
+      '<div class="barra-bg"><div class="barra-fg" style="width:' + pct + '%"></div></div>' +
+      '</div>';
+  }).join('');
+}
+
+function kpi(valor, label) {
+  return '<div class="kcard"><div class="kval">' + valor + '</div><div class="klabel">' + label + '</div></div>';
+}
+
+function renderizarTerritorios() {
+  var atividades = DADOS.atividades || [];
+  document.getElementById('lista-territorios').innerHTML = montarResumoPor_('Territorio', atividades);
+}
+
+function renderizarMetas() {
+  var metas = DADOS.metas || [];
+  document.getElementById('lista-metas').innerHTML = metas.map(function (m) {
+    return '<div class="card">' +
+      '<div class="card-tit">' + m['Codigo Meta'] + ' - ' + m['Descricao'] + '</div>' +
+      '<div class="card-sub">Previsto: ' + (m['Quantidade Prevista'] || '-') +
+      ' | Realizado: ' + (m['Quantidade Realizada'] || '-') + '</div>' +
+      (m['Observacao'] ? '<div class="card-sub" style="margin-top:4px;font-style:italic">' + m['Observacao'] + '</div>' : '') +
+      '</div>';
+  }).join('');
+}
+
+function renderizarPastas() {
+  var atividades = DADOS.atividades || [];
+  document.getElementById('lista-pastas').innerHTML = atividades.map(function (a) {
+    var badge = a.Status === 'Executado'
+      ? '<span class="badge badge-executado">Executado</span>'
+      : '<span class="badge badge-pendente">' + (a.Status || 'Pendente') + '</span>';
+    var link = a['Link da Pasta Drive']
+      ? '<a href="' + a['Link da Pasta Drive'] + '" target="_blank">Abrir pasta</a>'
+      : 'Pasta ainda nao criada';
+    return '<div class="card">' +
+      '<div class="card-tit">' + a.Territorio + ' - ' + a.Curso + ' - ' + a.Turma + ' ' + badge + '</div>' +
+      '<div class="card-sub">Competencia: ' + (a.Competencia || '-') + ' | ' + link + '</div>' +
+      '</div>';
+  }).join('');
+}
+
+function goV(nome) {
+  document.querySelectorAll('.vw').forEach(function (v) { v.classList.remove('on'); });
+  document.getElementById('vw-' + nome).classList.add('on');
+  document.querySelectorAll('.nbtn').forEach(function (b) { b.classList.remove('on'); });
+  event.target.classList.add('on');
+}
+</script>
+</body>
+</html>
