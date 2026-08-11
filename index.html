@@ -3,73 +3,168 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Conexao Empreendedora | Instituto BR Arte</title>
+<title>Conexao Empreendedora | Monitoramento</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Open+Sans:wght@400;600;700&display=swap');
 :root{
-  --az:#092040;--azs:#00B7D7;--am:#ECC203;--cz:#EFF1F3;--aze:#021738;
+  --az:#092040;--azs:#00B7D7;--am:#ECC203;
+  --cz:#EFF1F3;--es:#021738;--br:#FFFFFF;
+  --gv:#1A6B3C;--gvb:#ebf7eb;
+  --aw:#7A4F00;--awb:#fff8e0;
+  --rd:#8B1A1A;--rdb:#fce8e8;
 }
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Open Sans',Arial,sans-serif;background:var(--cz);color:var(--az);min-height:100vh}
-h1,h2,h3{font-family:'Montserrat',Arial,sans-serif}
+body{font-family:'Open Sans',Arial,sans-serif;background:var(--cz);color:var(--es);min-height:100vh}
+h1,h2,h3,h4{font-family:'Montserrat',Arial,sans-serif}
 
-/* TELA DE SENHA */
-#pwd{position:fixed;inset:0;background:var(--az);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;z-index:99}
-.pbox{background:#fff;border-radius:16px;padding:40px 32px;max-width:360px;width:90%;text-align:center;display:flex;flex-direction:column;gap:14px}
-.plogo-chip img{max-height:64px;object-fit:contain}
-.psub2{font-size:13px;color:#666}
-.phint{font-size:11px;color:#999}
-.pin{padding:12px 14px;border-radius:8px;border:1.5px solid #ddd;font-size:14px}
-.pbtn{background:var(--azs);color:#fff;border:none;border-radius:8px;padding:12px;font-weight:700;font-family:'Montserrat',sans-serif;cursor:pointer}
-.perr{color:#c0392b;font-size:12px;min-height:14px}
-.pfoot-logo{height:28px;object-fit:contain;filter:brightness(0) invert(1);opacity:.7}
+/* SENHA */
+#pwd{position:fixed;inset:0;z-index:9999;background:var(--az);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px}
+#pwd.off{display:none}
+.pbox{background:var(--br);border-radius:16px;padding:36px 40px;max-width:420px;width:100%;text-align:center}
+.psub{color:var(--am);font-size:11px;font-weight:700;letter-spacing:2px;margin-bottom:6px;text-transform:uppercase;font-family:'Montserrat',sans-serif}
+.ptit{font-size:17px;font-weight:700;color:var(--az);margin-bottom:4px;font-family:'Montserrat',sans-serif}
+.phint{font-size:12px;color:#999;margin-bottom:20px}
+.pin{width:100%;padding:12px 16px;border:2px solid #dde4ee;border-radius:10px;font-size:15px;letter-spacing:2px;font-family:'Open Sans',sans-serif;color:var(--az);outline:none;transition:border-color .2s;margin-bottom:12px}
+.pin:focus{border-color:var(--azs)}
+.pbtn{width:100%;padding:13px;background:var(--az);color:var(--am);border:none;border-radius:10px;font-size:14px;font-weight:700;letter-spacing:1px;cursor:pointer;font-family:'Montserrat',sans-serif;transition:background .2s}
+.pbtn:hover{background:var(--azs);color:var(--br)}
+.perr{color:#cc0000;font-size:12px;margin-top:8px;min-height:18px}
+.plogo-img{height:80px;object-fit:contain;margin-bottom:16px;display:block;margin-left:auto;margin-right:auto}
+.pfoot-logo{height:30px;object-fit:contain;filter:brightness(0) invert(1);opacity:.75;margin-top:22px}
 
 /* LOADING */
-#ld{position:fixed;inset:0;background:var(--cz);display:none;align-items:center;justify-content:center;flex-direction:column;gap:14px;z-index:98}
-.spin{width:36px;height:36px;border:4px solid #ddd;border-top-color:var(--azs);border-radius:50%;animation:sp 1s linear infinite}
-@keyframes sp{to{transform:rotate(360deg)}}
-.ltxt{font-size:13px;color:#666}
+#ld{display:none;position:fixed;inset:0;z-index:500;background:var(--cz);align-items:center;justify-content:center;flex-direction:column;gap:16px}
+#ld.on{display:flex}
+.spin{width:48px;height:48px;border:4px solid var(--azs);border-top-color:var(--am);border-radius:50%;animation:giro .8s linear infinite}
+@keyframes giro{to{transform:rotate(360deg)}}
+.ltxt{font-family:'Montserrat',sans-serif;font-weight:700;color:var(--az);font-size:14px}
 
 /* APP */
 #app{display:none}
-.hdr{background:var(--az);padding:18px 24px}
-.hdri{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px}
-.hlogo{height:40px;object-fit:contain}
-.htit{color:#fff;font-size:18px;font-weight:700}
-.hsub{color:rgba(255,255,255,.6);font-size:11px}
-.hnav{display:flex;gap:6px}
-.nbtn{background:transparent;border:1.5px solid rgba(255,255,255,.2);color:rgba(255,255,255,.75);padding:8px 14px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer}
-.nbtn.on{background:var(--am);color:var(--az);border-color:var(--am)}
+#app.on{display:block}
 
-.wrap{max-width:1200px;margin:0 auto;padding:28px 16px}
-.st{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;margin:22px 0 14px;padding-left:10px;border-left:4px solid var(--azs)}
-.vw{display:none}.vw.on{display:block}
+/* HEADER */
+.hdr{background:var(--az);position:sticky;top:0;z-index:100;box-shadow:0 2px 10px rgba(0,0,0,.3)}
+.hdri{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px;padding:0 24px;gap:16px}
+.hlogo{height:38px;object-fit:contain}
+.hdiv{width:1px;height:32px;background:rgba(255,255,255,.2)}
+.htit{color:var(--am);font-size:15px;font-weight:700;letter-spacing:.5px;font-family:'Montserrat',sans-serif}
+.hsub{color:rgba(255,255,255,.5);font-size:11px;margin-top:2px}
+.hnav{display:flex;gap:4px}
+.nbtn{background:none;border:none;cursor:pointer;color:rgba(255,255,255,.6);font-size:11px;font-weight:700;letter-spacing:.5px;padding:8px 12px;border-radius:8px;text-transform:uppercase;transition:all .2s;font-family:'Montserrat',sans-serif}
+.nbtn:hover{color:var(--br);background:rgba(255,255,255,.1)}
+.nbtn.on{color:var(--am);background:rgba(236,194,3,.15)}
 
-.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
-.kcard{background:#fff;border-radius:12px;padding:18px;border:1.5px solid #e3e3ec}
-.kval{font-size:26px;font-weight:700;color:var(--az)}
-.klabel{font-size:11px;color:#888;text-transform:uppercase;letter-spacing:.5px}
+/* WRAP */
+.wrap{max-width:1200px;margin:0 auto;padding:24px 16px}
 
-/* LISTAS (territorios / metas / pastas) */
-.card{background:#fff;border-radius:12px;padding:16px 18px;border:1.5px solid #e3e3ec;margin-bottom:10px}
-.card-tit{font-family:'Montserrat',sans-serif;font-weight:700;font-size:14px;color:var(--az);margin-bottom:4px}
-.card-sub{font-size:12px;color:#777}
-.barra-bg{background:#e9ebf0;border-radius:6px;height:8px;margin-top:8px;overflow:hidden}
-.barra-fg{background:var(--azs);height:100%}
-.badge{display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;text-transform:uppercase;letter-spacing:.5px}
-.badge-executado{background:#D9F2E3;color:#0B6B3A}
-.badge-pendente{background:#FDF3D0;color:#8A6D00}
+/* VIEWS */
+.vw{display:none}
+.vw.on{display:block}
 
-@media(max-width:900px){.g4{grid-template-columns:repeat(2,1fr)}.hnav{display:none}}
-@media(max-width:480px){.g4{grid-template-columns:1fr}}
+/* SECTION TITLE */
+.st{font-size:11px;font-weight:700;color:var(--az);text-transform:uppercase;letter-spacing:1.5px;margin:22px 0 12px;padding-left:10px;border-left:4px solid var(--azs);font-family:'Montserrat',sans-serif}
+
+/* KPI */
+.kpi{background:var(--az);border-radius:12px;padding:18px;text-align:center}
+.knum{color:var(--am);font-size:26px;font-weight:700;font-family:'Montserrat',sans-serif}
+.klab{color:rgba(255,255,255,.65);font-size:11px;margin-top:4px}
+
+/* SCORE BAR */
+.sbw{background:#dde4ee;border-radius:999px;overflow:hidden}
+.sb{border-radius:999px;transition:width 1.2s ease;height:100%}
+.shi{background:var(--gv)}.smid{background:var(--azs)}.slow{background:#c9940a}.scrit{background:#cc2222}
+
+/* BADGES */
+.badge{display:inline-block;font-size:10px;font-weight:700;padding:3px 10px;border-radius:20px;text-transform:uppercase;letter-spacing:.5px;font-family:'Montserrat',sans-serif}
+.bR{background:var(--gvb);color:var(--gv)}
+.bP{background:var(--awb);color:var(--aw)}
+.bC{background:var(--rdb);color:var(--rd)}
+.bA{background:#e8f0f8;color:var(--az)}
+.bT{background:#e0f7fb;color:#006080}
+.bE{background:#fff8e0;color:#7A4F00}
+
+/* CARD */
+.card{background:var(--br);border:1.5px solid #dde4ee;border-radius:12px;padding:16px 18px}
+
+/* TERRITORY CARD */
+.tcard{background:var(--br);border:1.5px solid #dde4ee;border-radius:14px;padding:20px;cursor:pointer;transition:border-color .18s,transform .18s,box-shadow .18s}
+.tcard:hover{border-color:var(--azs);transform:translateY(-3px);box-shadow:0 6px 20px rgba(0,183,215,.15)}
+.tnome{font-size:14px;font-weight:700;color:var(--az);margin-bottom:10px;font-family:'Montserrat',sans-serif}
+.tsc{font-size:30px;font-weight:700;color:var(--azs);font-family:'Montserrat',sans-serif}
+.tmeta{font-size:11px;color:#666;margin-top:2px}
+.tlink{color:var(--azs);font-size:11px;font-weight:700;margin-top:12px;display:block;font-family:'Montserrat',sans-serif}
+
+/* CURSO/TURMA CARD */
+.ccard{background:var(--br);border:1.5px solid #dde4ee;border-radius:10px;padding:14px;transition:border-color .18s,box-shadow .18s}
+.ccard:hover{border-color:var(--azs);box-shadow:0 4px 12px rgba(0,183,215,.12)}
+.ccard.stR{border-left:4px solid var(--gv)}
+.ccard.stP{border-left:4px solid #c9940a}
+.ccard.stC{border-left:4px solid #cc2222}
+.cmes{font-size:13px;font-weight:700;color:var(--az);font-family:'Montserrat',sans-serif}
+.cfase{font-size:10px;color:#999;margin:3px 0 8px}
+.clink{font-size:11px;color:var(--azs);font-weight:700;margin-top:8px;display:block;text-decoration:none}
+
+/* TABLE */
+.tbl{width:100%;border-collapse:collapse;font-size:12px}
+.tbl th{background:var(--az);color:var(--br);padding:10px 12px;text-align:left;font-size:10px;text-transform:uppercase;letter-spacing:.5px;font-weight:700;font-family:'Montserrat',sans-serif}
+.tbl td{padding:10px 12px;border-bottom:1px solid #eee;vertical-align:middle}
+.tbl tr:hover td{background:#f8fafc}
+.tbl a{color:var(--azs);text-decoration:none;font-weight:700}
+.tbl a:hover{text-decoration:underline}
+
+/* ALERT BOX */
+.abox{background:var(--rdb);border:1px solid #f5b5b5;border-radius:10px;padding:14px 18px;margin-bottom:12px}
+.atit{font-weight:700;color:var(--rd);font-size:13px;margin-bottom:4px;font-family:'Montserrat',sans-serif}
+
+/* GRIDS */
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.g2{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+
+/* BACK */
+.back{background:none;border:2px solid var(--az);color:var(--az);font-size:11px;font-weight:700;letter-spacing:.5px;padding:8px 16px;border-radius:8px;cursor:pointer;text-transform:uppercase;transition:all .2s;margin-bottom:20px;font-family:'Montserrat',sans-serif}
+.back:hover{background:var(--az);color:var(--br)}
+
+/* FILTERS */
+.fbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.fbtn{background:var(--br);border:1.5px solid #dde4ee;color:var(--az);font-size:10px;font-weight:700;padding:6px 14px;border-radius:20px;cursor:pointer;transition:all .18s;text-transform:uppercase;letter-spacing:.5px;font-family:'Montserrat',sans-serif}
+.fbtn.on,.fbtn:hover{background:var(--az);color:var(--am);border-color:var(--az)}
+
+/* PASTA CARD (turma) */
+.pcard{background:var(--br);border:1.5px solid #dde4ee;border-radius:12px;padding:16px 18px;transition:border-color .18s,transform .18s,box-shadow .18s;display:flex;flex-direction:column;gap:8px}
+.pcard:hover{border-color:var(--azs);transform:translateY(-2px);box-shadow:0 6px 18px rgba(0,183,215,.14)}
+.pcard.stR{border-left:4px solid var(--gv)}
+.pcard.stP{border-left:4px solid #c9940a}
+.pcard.stC{border-left:4px solid #cc2222}
+.pcard-mes{font-size:13px;font-weight:700;color:var(--az);font-family:'Montserrat',sans-serif}
+.pcard-fase{font-size:10px;color:#999}
+.pcard-terr{font-size:11px;color:var(--azs);font-weight:700;font-family:'Montserrat',sans-serif}
+.pcard-btn{display:inline-block;background:var(--az);color:var(--am);font-size:10px;font-weight:700;letter-spacing:.5px;padding:7px 14px;border-radius:8px;text-decoration:none;text-align:center;font-family:'Montserrat',sans-serif;transition:background .18s;margin-top:4px}
+.pcard-btn:hover{background:var(--azs);color:var(--br)}
+.pcard-btn.vazia{background:#dde4ee;color:#999;cursor:default;pointer-events:none}
+.pterr-grupo{margin-bottom:28px}
+.pterr-nome{font-size:13px;font-weight:700;color:var(--br);background:var(--az);padding:10px 16px;border-radius:10px 10px 0 0;font-family:'Montserrat',sans-serif;letter-spacing:.3px}
+.pterr-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;background:var(--br);border:1.5px solid #dde4ee;border-top:none;border-radius:0 0 10px 10px;padding:14px}
+@media(max-width:900px){.pterr-grid{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:600px){.pterr-grid{grid-template-columns:repeat(2,1fr)}}
+
+/* FOOTER */
+.foot{background:var(--az);border-radius:12px;padding:14px 24px;display:flex;align-items:center;justify-content:space-between;margin-top:32px;flex-wrap:wrap;gap:10px}
+.ftxt{color:rgba(255,255,255,.45);font-size:11px}
+.fbadge{background:var(--am);color:var(--az);font-size:11px;font-weight:700;padding:5px 14px;border-radius:20px;font-family:'Montserrat',sans-serif}
+
+@media(max-width:900px){.g4,.g3{grid-template-columns:repeat(2,1fr)}.g2{grid-template-columns:1fr}.hnav{display:none}}
+@media(max-width:480px){.g4,.g3,.g2{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 
+<!-- SENHA -->
 <div id="pwd">
   <div class="pbox">
-    <div class="plogo-chip"><img src="assets/logo-conexao-empreendedora.png" alt="Conexao Empreendedora"></div>
-    <div class="psub2">Conexao Empreendedora - Sistema de Monitoramento Operacional</div>
+    <img class="plogo-img" src="assets/logo-conexao-empreendedora.png" alt="Conexao Empreendedora">
+    <div class="psub">Sistema de Monitoramento Operacional</div>
     <div class="phint">Acesso restrito - Coordenacao Instituto BR Arte / UFRRJ</div>
     <input class="pin" type="password" id="pf" placeholder="Senha de acesso"
            onkeydown="if(event.key==='Enter')chkPwd()">
@@ -79,16 +174,19 @@ h1,h2,h3{font-family:'Montserrat',Arial,sans-serif}
   <img class="pfoot-logo" src="assets/logo-instituto-br-arte.png" alt="Instituto BR Arte">
 </div>
 
+<!-- LOADING -->
 <div id="ld">
   <div class="spin"></div>
   <div class="ltxt">Carregando dados do projeto...</div>
 </div>
 
+<!-- APP -->
 <div id="app">
   <header class="hdr">
     <div class="hdri">
       <div style="display:flex;align-items:center;gap:16px">
         <img class="hlogo" src="assets/logo-conexao-empreendedora.png" alt="Conexao Empreendedora">
+        <div class="hdiv"></div>
         <div>
           <div class="htit">CONEXAO EMPREENDEDORA</div>
           <div class="hsub">Instituto BR Arte / UFRRJ - Sistema de Monitoramento Operacional</div>
@@ -97,6 +195,7 @@ h1,h2,h3{font-family:'Montserrat',Arial,sans-serif}
       <nav class="hnav">
         <button class="nbtn on" onclick="goV('dashboard')">Dashboard</button>
         <button class="nbtn" onclick="goV('territorios')">Territorios</button>
+        <button class="nbtn" onclick="goV('cursos')">Cursos</button>
         <button class="nbtn" onclick="goV('metas')">Metas</button>
         <button class="nbtn" onclick="goV('pastas')">Pastas Drive</button>
       </nav>
@@ -104,150 +203,467 @@ h1,h2,h3{font-family:'Montserrat',Arial,sans-serif}
   </header>
 
   <div class="wrap">
+
+    <!-- DASHBOARD -->
     <div class="vw on" id="vw-dashboard">
       <div class="st">Visao Geral do Projeto</div>
-      <div class="g4" id="kpi-row"></div>
+      <div class="g4" id="kpi-row" style="margin-bottom:20px"></div>
+
+      <div class="st">Indice Global de Execucao</div>
+      <div class="card" style="padding:22px 26px;margin-bottom:20px">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;gap:16px">
+          <div>
+            <div style="font-family:Montserrat,sans-serif;font-size:14px;font-weight:700;color:var(--az)">Conexao Empreendedora - 4 Territorios - 66 Turmas</div>
+            <div style="font-size:11px;color:#888;margin-top:3px">Percentual de turmas com evidencia registrada no Drive (regra de ouro: pasta vazia nao conta)</div>
+          </div>
+          <div id="sc-txt" style="font-family:Montserrat,sans-serif;font-size:44px;font-weight:700;color:var(--azs);white-space:nowrap">--</div>
+        </div>
+        <div class="sbw" style="height:22px"><div class="sb" id="bar-g" style="width:0%"></div></div>
+        <div style="display:flex;justify-content:space-between;margin-top:6px;font-size:10px;color:#bbb">
+          <span>0%</span><span>25%</span><span>50%</span><span>75%</span><span>100%</span>
+        </div>
+      </div>
 
       <div class="st">Execucao por Territorio</div>
-      <div id="resumo-territorios"></div>
+      <div class="g4" id="dash-terr" style="margin-bottom:20px"></div>
+
+      <div class="st">Alertas Criticos</div>
+      <div id="dash-alertas" style="margin-bottom:20px"></div>
 
       <div class="st">Execucao por Curso</div>
-      <div id="resumo-cursos"></div>
+      <div id="dash-cursos" style="margin-bottom:8px"></div>
     </div>
 
+    <!-- TERRITORIOS -->
     <div class="vw" id="vw-territorios">
-      <div class="st">Territorios</div>
-      <div id="lista-territorios"></div>
+      <div id="tlist">
+        <div class="st">Selecione um Territorio</div>
+        <div class="g4" id="lista-terr"></div>
+      </div>
+      <div id="tdetalhe" style="display:none">
+        <button class="back" onclick="voltarLista()">Voltar aos Territorios</button>
+        <div id="det-content"></div>
+      </div>
     </div>
 
+    <!-- CURSOS -->
+    <div class="vw" id="vw-cursos">
+      <div class="st">Execucao por Curso (Formacao)</div>
+      <div id="tbl-cursos"></div>
+    </div>
+
+    <!-- METAS -->
     <div class="vw" id="vw-metas">
-      <div class="st">Metas</div>
-      <div id="lista-metas"></div>
+      <div class="st">Acompanhamento de Metas</div>
+      <div id="tbl-metas"></div>
     </div>
 
+    <!-- PASTAS DRIVE -->
     <div class="vw" id="vw-pastas">
-      <div class="st">Turmas e Pastas no Drive</div>
-      <div id="lista-pastas"></div>
+      <div class="st">Pastas de Turma no Google Drive</div>
+      <div style="font-size:12px;color:#888;margin-bottom:20px">Organizado por territorio. Clique em ABRIR PASTA para acessar a pasta da turma no Drive.</div>
+      <div class="fbar" id="flt-pastas"></div>
+      <div id="pastas-content"></div>
+    </div>
+
+    <div class="foot">
+      <div class="ftxt">Conexao Empreendedora - Instituto BR Arte x UFRRJ - 20/08/2025 a 19/08/2026 - 4 territorios</div>
+      <div class="fbadge">Monitoramento Operacional</div>
     </div>
   </div>
 </div>
 
 <script>
-// URL do Web App do Apps Script deste projeto (Code.gs), ja
-// publicada com ?action=api
-var API_URL = 'https://script.google.com/macros/s/AKfycbw1ApXYewPhOt1PZ1Ob5o7PNsz8Nmb1TeuQezL5u_1r8YILkfTRuZlsm_ve1PukOHMC/exec';
-var SENHA_ACESSO = 'Brarte@2026';
+var SENHA = atob('QnJhcnRlQDIwMjY='); // Brarte@2026
 
-var DADOS = null;
+var APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw1ApXYewPhOt1PZ1Ob5o7PNsz8Nmb1TeuQezL5u_1r8YILkfTRuZlsm_ve1PukOHMC/exec';
+
+var TERR = [
+  'Nova Iguacu',
+  'Sao Joao de Meriti',
+  'Arraial do Cabo',
+  'Mangaratiba'
+];
+
+var CURSOS = [
+  'Analise de Pesquisa de Mercado',
+  'Tecnicas em Midias Sociais',
+  'Criacao de Conteudo Digital',
+  'Trancista',
+  'Penteadista',
+  'Design de Sobrancelha',
+  'Tecnicas de Barbearia',
+  'Costura Criativa',
+  'Renda de Bilro',
+  'Biojoia',
+  'Eletrica Basica para Mulheres',
+  'Seguranca de Passageiros de Embarcacao'
+];
+
+var HOJE = new Date();
+var FIM_CONVENIO = new Date(2026, 7, 19);
+
+var D = null;
 
 function chkPwd() {
   var v = document.getElementById('pf').value;
-  if (v === SENHA_ACESSO) {
-    document.getElementById('pwd').style.display = 'none';
-    carregarDados();
+  if (v === SENHA) {
+    document.getElementById('pwd').classList.add('off');
+    sessionStorage.setItem('ce_ok', '1');
+    carregarApp();
   } else {
-    document.getElementById('perr').innerText = 'Senha incorreta.';
+    document.getElementById('perr').textContent = 'Senha incorreta. Verifique com a coordenacao.';
+    document.getElementById('pf').value = '';
+    document.getElementById('pf').focus();
   }
 }
 
-function carregarDados() {
-  document.getElementById('ld').style.display = 'flex';
-  fetch(API_URL + '?action=api')
-    .then(function (r) { return r.json(); })
+function carregarApp() {
+  document.getElementById('ld').classList.add('on');
+
+  fetch(APPS_SCRIPT_URL + '?action=api')
+    .then(function (resp) {
+      if (!resp.ok) throw new Error('HTTP ' + resp.status);
+      return resp.json();
+    })
     .then(function (data) {
-      DADOS = data;
-      document.getElementById('ld').style.display = 'none';
-      document.getElementById('app').style.display = 'block';
-      renderizarDashboard();
-      renderizarTerritorios();
-      renderizarMetas();
-      renderizarPastas();
+      D = data;
+      document.getElementById('ld').classList.remove('on');
+      document.getElementById('app').classList.add('on');
+      renderAll();
     })
     .catch(function (err) {
-      document.getElementById('ld').style.display = 'none';
-      alert('Erro ao carregar dados: ' + err.message);
+      D = { config: {}, atividades: [], metas: [] };
+      document.getElementById('ld').classList.remove('on');
+      document.getElementById('app').classList.add('on');
+      renderAll();
+      console.error('Erro ao carregar dados:', err);
     });
 }
 
-function renderizarDashboard() {
-  var atividades = DADOS.atividades || [];
-  var total = atividades.length;
-  var executadas = atividades.filter(function (a) { return a.Status === 'Executado'; }).length;
-  var pct = total ? Math.round((executadas / total) * 100) : 0;
+function goV(v) {
+  document.querySelectorAll('.vw').forEach(function (e) { e.classList.remove('on'); });
+  document.querySelectorAll('.nbtn').forEach(function (e) { e.classList.remove('on'); });
+  document.getElementById('vw-' + v).classList.add('on');
+  document.querySelectorAll('.nbtn').forEach(function (e) {
+    if ((e.getAttribute('onclick') || '').indexOf("'" + v + "'") !== -1) e.classList.add('on');
+  });
+}
+
+function voltarLista() {
+  document.getElementById('tlist').style.display = 'block';
+  document.getElementById('tdetalhe').style.display = 'none';
+}
+
+function abrirTerr(idx) {
+  document.getElementById('tlist').style.display = 'none';
+  document.getElementById('tdetalhe').style.display = 'block';
+  renderDetalheTerritorio(idx);
+}
+
+function ATIV() { return (D && D.atividades) ? D.atividades : []; }
+
+function competenciaPassou_(comp) {
+  if (!comp || comp === 'A DEFINIR') return false;
+  var p = String(comp).split('-');
+  if (p.length !== 2) return false;
+  var ref = new Date(parseInt(p[0], 10), parseInt(p[1], 10) - 1, 1);
+  var fimDoMes = new Date(ref.getFullYear(), ref.getMonth() + 1, 1);
+  return fimDoMes < HOJE;
+}
+
+function statusVisual(row) {
+  var st = (row['Status'] || '').trim();
+  if (st === 'Executado') return 'Realizado';
+  if (st.indexOf('Erro') === 0) return 'Critico';
+  if (competenciaPassou_(row['Competencia'])) return 'Critico';
+  return 'Pendente';
+}
+
+function bcl(st) {
+  if (!st) return 'bP';
+  var s = st.toLowerCase();
+  if (s === 'realizado' || s === 'executado') return 'bR';
+  if (s === 'critico') return 'bC';
+  return 'bP';
+}
+
+function scl(n) {
+  if (n >= 75) return 'shi';
+  if (n >= 40) return 'smid';
+  if (n >= 10) return 'slow';
+  return 'scrit';
+}
+
+function pctExecucao(rows) {
+  if (!rows.length) return 0;
+  var exec = rows.filter(function (r) { return (r['Status'] || '') === 'Executado'; }).length;
+  return Math.round((exec / rows.length) * 100);
+}
+
+function pctTerritorio(nome) {
+  return pctExecucao(ATIV().filter(function (r) { return r['Territorio'] === nome; }));
+}
+
+function pctCurso(nome) {
+  return pctExecucao(ATIV().filter(function (r) { return r['Curso'] === nome; }));
+}
+
+function pctGlobal() {
+  return pctExecucao(ATIV());
+}
+
+function diasAteFimConvenio() {
+  var diff = FIM_CONVENIO - HOJE;
+  return Math.ceil(diff / (1000 * 60 * 60 * 24));
+}
+
+function renderAll() {
+  renderDash();
+  renderListaTerritorios();
+  renderCursos();
+  renderMetas();
+  renderPastas();
+}
+
+function kpi(n, l) {
+  return '<div class="kpi"><div class="knum">' + n + '</div><div class="klab">' + l + '</div></div>';
+}
+
+function renderDash() {
+  var rows = ATIV();
+  var exec = rows.filter(function (r) { return (r['Status'] || '') === 'Executado'; }).length;
+  var crit = rows.filter(function (r) { return statusVisual(r) === 'Critico'; }).length;
 
   document.getElementById('kpi-row').innerHTML =
-    kpi(total, 'Turmas Previstas') +
-    kpi(executadas, 'Executadas') +
-    kpi((total - executadas), 'Pendentes') +
-    kpi(pct + '%', 'Execucao Geral');
+    kpi(TERR.length, 'Territorios Ativos') +
+    kpi(rows.length, 'Turmas Previstas') +
+    kpi(exec + ' / ' + rows.length, 'Turmas Executadas') +
+    kpi(crit, 'Turmas Criticas');
 
-  document.getElementById('resumo-territorios').innerHTML = montarResumoPor_('Territorio', atividades);
-  document.getElementById('resumo-cursos').innerHTML = montarResumoPor_('Curso', atividades);
+  var sg = pctGlobal();
+  document.getElementById('sc-txt').textContent = sg + '%';
+  var bg = document.getElementById('bar-g');
+  bg.style.width = sg + '%';
+  bg.className = 'sb ' + scl(sg);
+
+  var th = '';
+  TERR.forEach(function (t, i) {
+    var sc = pctTerritorio(t);
+    var terrRows = rows.filter(function (r) { return r['Territorio'] === t; });
+    var cr = terrRows.filter(function (r) { return statusVisual(r) === 'Critico'; }).length;
+    th += '<div class="tcard" onclick="goV(\'territorios\');setTimeout(function(){abrirTerr(' + i + ')},120)">';
+    th += '<div class="tnome">' + t + '</div>';
+    th += '<div class="tsc">' + sc + '%</div>';
+    th += '<div style="margin:8px 0"><div class="sbw" style="height:8px"><div class="sb ' + scl(sc) + '" style="width:' + sc + '%"></div></div></div>';
+    if (cr > 0) th += '<span class="badge bC">' + cr + ' critica(s)</span>';
+    else th += '<span class="badge bR" style="opacity:.7">Em dia</span>';
+    th += '</div>';
+  });
+  document.getElementById('dash-terr').innerHTML = th;
+
+  var crows = rows.filter(function (r) { return statusVisual(r) === 'Critico'; });
+  var ah = '';
+  var diasRestantes = diasAteFimConvenio();
+  if (diasRestantes >= 0 && diasRestantes <= 30) {
+    ah += '<div class="abox"><div class="atit">Convenio encerra em ' + diasRestantes + ' dia(s) (19/08/2026)</div>' +
+      '<div style="font-size:12px;color:#8B1A1A">Confira as turmas criticas abaixo antes de fechar a prestacao de contas.</div></div>';
+  }
+  if (!crows.length) {
+    ah += '<div class="card" style="color:#666;font-size:13px">Nenhuma turma critica no momento.</div>';
+  } else {
+    ah += '<div class="card" style="padding:0;overflow:auto"><table class="tbl">';
+    ah += '<tr><th>Territorio</th><th>Curso</th><th>Turma</th><th>Competencia</th><th>Situacao</th></tr>';
+    crows.slice(0, 30).forEach(function (r) {
+      ah += '<tr><td><strong>' + (r['Territorio'] || '-') + '</strong></td>';
+      ah += '<td>' + (r['Curso'] || '-') + '</td>';
+      ah += '<td>' + (r['Turma'] || '-') + '</td>';
+      ah += '<td><span class="badge bC">' + (r['Competencia'] || '-') + '</span></td>';
+      ah += '<td style="font-size:11px;color:#888">' + ((r['Link da Pasta Drive']) ? 'Sem evidencia registrada na pasta' : 'Sem pasta vinculada ainda') + '</td></tr>';
+    });
+    ah += '</table></div>';
+    if (crows.length > 30) {
+      ah += '<div style="font-size:11px;color:#999;margin-top:6px">Mostrando 30 de ' + crows.length + ' turmas criticas. Veja a lista completa em Territorios ou Pastas Drive.</div>';
+    }
+  }
+  document.getElementById('dash-alertas').innerHTML = ah;
+
+  var ch = '<div class="g3">';
+  CURSOS.forEach(function (c) {
+    var pc = pctCurso(c);
+    var total = rows.filter(function (r) { return r['Curso'] === c; }).length;
+    if (!total) return;
+    ch += '<div class="card">';
+    ch += '<div style="font-size:12px;font-weight:700;color:var(--az);font-family:Montserrat,sans-serif;margin-bottom:6px">' + c + '</div>';
+    ch += '<div class="sbw" style="height:8px;margin-bottom:4px"><div class="sb ' + scl(pc) + '" style="width:' + pc + '%"></div></div>';
+    ch += '<div style="font-size:11px;color:#888">' + pc + '% (' + total + ' turma(s))</div>';
+    ch += '</div>';
+  });
+  ch += '</div>';
+  document.getElementById('dash-cursos').innerHTML = ch;
 }
 
-function montarResumoPor_(campo, atividades) {
-  var grupos = {};
-  atividades.forEach(function (a) {
-    var chave = a[campo] || 'Nao informado';
-    if (!grupos[chave]) grupos[chave] = { total: 0, executadas: 0 };
-    grupos[chave].total++;
-    if (a.Status === 'Executado') grupos[chave].executadas++;
+function renderListaTerritorios() {
+  var h = '';
+  TERR.forEach(function (t, i) {
+    var sc = pctTerritorio(t);
+    var terrRows = ATIV().filter(function (r) { return r['Territorio'] === t; });
+    var exec = terrRows.filter(function (r) { return (r['Status'] || '') === 'Executado'; }).length;
+    var cr = terrRows.filter(function (r) { return statusVisual(r) === 'Critico'; }).length;
+    h += '<div class="tcard" onclick="abrirTerr(' + i + ')">';
+    h += '<div class="tnome">' + t + '</div>';
+    h += '<div class="tsc">' + sc + '%</div>';
+    h += '<div class="tmeta">' + exec + ' de ' + terrRows.length + ' turmas executadas</div>';
+    h += '<div style="margin:10px 0"><div class="sbw" style="height:8px"><div class="sb ' + scl(sc) + '" style="width:' + sc + '%"></div></div></div>';
+    if (cr > 0) h += '<span class="badge bC" style="margin-bottom:4px;display:inline-block">' + cr + ' critica(s)</span>';
+    h += '<div class="tlink">Ver cursos e turmas -&gt;</div>';
+    h += '</div>';
+  });
+  document.getElementById('lista-terr').innerHTML = h;
+}
+
+function renderDetalheTerritorio(idx) {
+  var nome = TERR[idx];
+  var tR = ATIV().filter(function (r) { return r['Territorio'] === nome; });
+  var sc = pctTerritorio(nome);
+  var exec = tR.filter(function (r) { return (r['Status'] || '') === 'Executado'; }).length;
+  var h = '';
+
+  h += '<div class="card" style="background:var(--az);padding:22px 26px;margin-bottom:20px">';
+  h += '<div style="font-size:18px;font-weight:700;color:var(--am);font-family:Montserrat,sans-serif">' + nome + '</div>';
+  h += '<div style="font-size:12px;color:rgba(255,255,255,.6);margin-top:4px">Conexao Empreendedora - Instituto BR Arte / UFRRJ</div>';
+  h += '<div style="margin-top:14px;display:flex;align-items:center;gap:16px;flex-wrap:wrap">';
+  h += '<div style="font-size:40px;font-weight:700;color:var(--br);font-family:Montserrat,sans-serif">' + sc + '%</div>';
+  h += '<div style="flex:1;min-width:160px">';
+  h += '<div class="sbw" style="height:14px"><div class="sb ' + scl(sc) + '" style="width:' + sc + '%"></div></div>';
+  h += '<div style="color:rgba(255,255,255,.5);font-size:11px;margin-top:4px">' + exec + ' de ' + tR.length + ' turmas executadas</div>';
+  h += '</div></div></div>';
+
+  var porCurso = {};
+  tR.forEach(function (r) {
+    var c = r['Curso'] || 'Sem curso';
+    if (!porCurso[c]) porCurso[c] = [];
+    porCurso[c].push(r);
   });
 
-  return Object.keys(grupos).sort().map(function (chave) {
-    var g = grupos[chave];
-    var pct = g.total ? Math.round((g.executadas / g.total) * 100) : 0;
-    return '<div class="card">' +
-      '<div class="card-tit">' + chave + '</div>' +
-      '<div class="card-sub">' + g.executadas + ' de ' + g.total + ' turmas executadas (' + pct + '%)</div>' +
-      '<div class="barra-bg"><div class="barra-fg" style="width:' + pct + '%"></div></div>' +
-      '</div>';
-  }).join('');
+  h += '<div class="st">Turmas por Curso</div>';
+  Object.keys(porCurso).sort().forEach(function (curso) {
+    var turmas = porCurso[curso];
+    h += '<div style="margin-bottom:18px">';
+    h += '<div style="font-size:13px;font-weight:700;color:var(--az);font-family:Montserrat,sans-serif;margin-bottom:8px">' + curso + ' (' + turmas.length + ' turma(s))</div>';
+    h += '<div class="g3">';
+    turmas.forEach(function (r) {
+      var st = statusVisual(r);
+      var lk = r['Link da Pasta Drive'] || '';
+      h += '<div class="ccard st' + st.charAt(0) + '">';
+      h += '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">';
+      h += '<div class="cmes">' + (r['Turma'] || '-') + '</div>';
+      h += '<span class="badge ' + bcl(st) + '">' + st + '</span></div>';
+      h += '<div class="cfase">Competencia: ' + (r['Competencia'] || '-') + ' | Meta: ' + (r['Meta Vinculada'] || '-') + '</div>';
+      if (lk) h += '<a class="clink" href="' + lk + '" target="_blank">Abrir pasta no Drive</a>';
+      else h += '<div style="font-size:11px;color:#ccc;margin-top:6px">Sem link registrado</div>';
+      h += '</div>';
+    });
+    h += '</div></div>';
+  });
+
+  document.getElementById('det-content').innerHTML = h;
 }
 
-function kpi(valor, label) {
-  return '<div class="kcard"><div class="kval">' + valor + '</div><div class="klabel">' + label + '</div></div>';
+function renderCursos() {
+  var rows = ATIV();
+  var h = '<div class="card" style="padding:0;overflow:auto"><table class="tbl">';
+  h += '<tr><th>Curso</th><th>Turmas Previstas</th><th>Executadas</th><th>Progresso</th><th>Territorios</th></tr>';
+  CURSOS.forEach(function (c) {
+    var cRows = rows.filter(function (r) { return r['Curso'] === c; });
+    if (!cRows.length) return;
+    var exec = cRows.filter(function (r) { return (r['Status'] || '') === 'Executado'; }).length;
+    var pc = pctCurso(c);
+    var terrs = Array.from(new Set(cRows.map(function (r) { return r['Territorio']; }))).join(', ');
+    h += '<tr><td><strong>' + c + '</strong></td>';
+    h += '<td style="text-align:center">' + cRows.length + '</td>';
+    h += '<td style="text-align:center">' + exec + '</td>';
+    h += '<td style="min-width:120px"><div class="sbw" style="height:6px;margin-bottom:2px"><div class="sb ' + scl(pc) + '" style="width:' + pc + '%"></div></div><span style="font-size:10px;color:#888">' + pc + '%</span></td>';
+    h += '<td style="font-size:11px;color:#666">' + terrs + '</td></tr>';
+  });
+  h += '</table></div>';
+  document.getElementById('tbl-cursos').innerHTML = h;
 }
 
-function renderizarTerritorios() {
-  var atividades = DADOS.atividades || [];
-  document.getElementById('lista-territorios').innerHTML = montarResumoPor_('Territorio', atividades);
+function renderMetas() {
+  var metas = (D && D.metas) || [];
+  if (!metas.length) {
+    document.getElementById('tbl-metas').innerHTML = '<div class="card" style="color:#666;font-size:13px">Nenhuma meta registrada.</div>';
+    return;
+  }
+  var h = '<div class="card" style="padding:0;overflow:auto"><table class="tbl">';
+  h += '<tr><th>Codigo</th><th>Descricao</th><th>Previsto</th><th>Realizado</th><th>Observacao</th></tr>';
+  metas.forEach(function (m) {
+    h += '<tr><td><strong>' + (m['Codigo Meta'] || '-') + '</strong></td>';
+    h += '<td style="max-width:260px">' + (m['Descricao'] || '-') + '</td>';
+    h += '<td style="text-align:center">' + (m['Quantidade Prevista'] || '-') + '</td>';
+    h += '<td style="text-align:center">' + (m['Quantidade Realizada'] || '-') + '</td>';
+    h += '<td style="font-size:11px;color:#888">' + (m['Observacao'] || '-') + '</td></tr>';
+  });
+  h += '</table></div>';
+  document.getElementById('tbl-metas').innerHTML = h;
 }
 
-function renderizarMetas() {
-  var metas = DADOS.metas || [];
-  document.getElementById('lista-metas').innerHTML = metas.map(function (m) {
-    return '<div class="card">' +
-      '<div class="card-tit">' + m['Codigo Meta'] + ' - ' + m['Descricao'] + '</div>' +
-      '<div class="card-sub">Previsto: ' + (m['Quantidade Prevista'] || '-') +
-      ' | Realizado: ' + (m['Quantidade Realizada'] || '-') + '</div>' +
-      (m['Observacao'] ? '<div class="card-sub" style="margin-top:4px;font-style:italic">' + m['Observacao'] + '</div>' : '') +
-      '</div>';
-  }).join('');
+var filtroPastasAtual = 'Todos';
+
+function renderPastas(filtro) {
+  filtroPastasAtual = filtro || filtroPastasAtual;
+  var fb = '<button class="fbtn' + (filtroPastasAtual === 'Todos' ? ' on' : '') + '" onclick="renderPastas(\'Todos\')">Todos</button>';
+  fb += '<button class="fbtn' + (filtroPastasAtual === 'Critico' ? ' on' : '') + '" onclick="renderPastas(\'Critico\')">Somente Criticas</button>';
+  fb += '<button class="fbtn' + (filtroPastasAtual === 'Pendente' ? ' on' : '') + '" onclick="renderPastas(\'Pendente\')">Somente Pendentes</button>';
+  fb += '<button class="fbtn' + (filtroPastasAtual === 'Realizado' ? ' on' : '') + '" onclick="renderPastas(\'Realizado\')">Somente Executadas</button>';
+  document.getElementById('flt-pastas').innerHTML = fb;
+
+  var rows = ATIV();
+  var html = '';
+  TERR.forEach(function (terr) {
+    var terrRows = rows.filter(function (r) { return r['Territorio'] === terr; });
+    var terrFiltradas = filtroPastasAtual === 'Todos' ? terrRows : terrRows.filter(function (r) { return statusVisual(r) === filtroPastasAtual; });
+    if (!terrFiltradas.length) return;
+
+    html += '<div class="pterr-grupo">';
+    html += '<div class="pterr-nome">' + terr + ' (' + terrFiltradas.length + ' turma(s))</div>';
+    html += '<div class="pterr-grid">';
+    terrFiltradas.forEach(function (r) {
+      var st = statusVisual(r);
+      var lk = r['Link da Pasta Drive'] || '';
+      html += '<div class="pcard st' + st.charAt(0) + '">';
+      html += '<div style="display:flex;align-items:center;justify-content:space-between;gap:4px">';
+      html += '<div class="pcard-mes">' + (r['Turma'] || '-') + '</div>';
+      html += '<span class="badge ' + bcl(st) + '" style="font-size:9px;padding:2px 7px">' + st + '</span>';
+      html += '</div>';
+      html += '<div class="pcard-terr">' + (r['Curso'] || '-') + '</div>';
+      html += '<div class="pcard-fase">Competencia: ' + (r['Competencia'] || '-') + '</div>';
+      if (lk) {
+        html += '<a class="pcard-btn" href="' + lk + '" target="_blank">ABRIR PASTA</a>';
+      } else {
+        html += '<span class="pcard-btn vazia">SEM LINK</span>';
+      }
+      html += '</div>';
+    });
+    html += '</div></div>';
+  });
+
+  if (!html) html = '<div class="card" style="color:#666;font-size:13px">Nenhuma turma para este filtro.</div>';
+  document.getElementById('pastas-content').innerHTML = html;
 }
 
-function renderizarPastas() {
-  var atividades = DADOS.atividades || [];
-  document.getElementById('lista-pastas').innerHTML = atividades.map(function (a) {
-    var badge = a.Status === 'Executado'
-      ? '<span class="badge badge-executado">Executado</span>'
-      : '<span class="badge badge-pendente">' + (a.Status || 'Pendente') + '</span>';
-    var link = a['Link da Pasta Drive']
-      ? '<a href="' + a['Link da Pasta Drive'] + '" target="_blank">Abrir pasta</a>'
-      : 'Pasta ainda nao criada';
-    return '<div class="card">' +
-      '<div class="card-tit">' + a.Territorio + ' - ' + a.Curso + ' - ' + a.Turma + ' ' + badge + '</div>' +
-      '<div class="card-sub">Competencia: ' + (a.Competencia || '-') + ' | ' + link + '</div>' +
-      '</div>';
-  }).join('');
-}
-
-function goV(nome) {
-  document.querySelectorAll('.vw').forEach(function (v) { v.classList.remove('on'); });
-  document.getElementById('vw-' + nome).classList.add('on');
-  document.querySelectorAll('.nbtn').forEach(function (b) { b.classList.remove('on'); });
-  event.target.classList.add('on');
-}
+window.addEventListener('DOMContentLoaded', function () {
+  if (sessionStorage.getItem('ce_ok') === '1') {
+    document.getElementById('pwd').classList.add('off');
+    carregarApp();
+  } else {
+    setTimeout(function () {
+      var f = document.getElementById('pf');
+      if (f) f.focus();
+    }, 100);
+  }
+});
 </script>
 </body>
 </html>
