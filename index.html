@@ -187,6 +187,7 @@ h1,h2,h3,h4{font-family:'Montserrat',Arial,sans-serif}
 .atividade-evid .val{font:700 13px Montserrat;color:var(--az);margin-top:3px;overflow-wrap:anywhere}
 .atividade-evid.fotos .val{color:var(--azs)}
 .atividade-reading{background:#f8fbfc;border-left:4px solid var(--azs);border-radius:8px;padding:10px 11px;font-size:10.5px;color:#5f6975;line-height:1.5;margin-top:auto}
+.atividade-detalhes{margin-top:8px;font-size:10px;color:#697481}.atividade-detalhes summary{cursor:pointer;font:700 9.5px Montserrat;color:var(--azs)}.atividade-detalhes div{margin-top:7px;line-height:1.5;background:#f8f9fb;padding:8px;border-radius:7px}
 
 
 .evid-hero{background:var(--az);border-radius:14px;padding:18px 20px;display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:16px}
@@ -366,8 +367,10 @@ h1,h2,h3,h4{font-family:'Montserrat',Arial,sans-serif}
         <button class="fbtn on" data-evf="TODAS" onclick="setFiltroEvidencias('TODAS',this)">Todas com evidência</button>
         <button class="fbtn" data-evf="FOTOS" onclick="setFiltroEvidencias('FOTOS',this)">Com fotos</button>
         <button class="fbtn" data-evf="LISTAS" onclick="setFiltroEvidencias('LISTAS',this)">Com lista</button>
+        <button class="fbtn" data-evf="SEM_VINCULO" onclick="setFiltroEvidencias('SEM_VINCULO',this)">Sem vínculo inequívoco</button>
         <select id="ev-territorio" class="search ev-select" onchange="renderEvidenciasDrive()"><option value="">Todos os territórios</option></select>
         <select id="ev-competencia" class="search ev-select" onchange="renderEvidenciasDrive()"><option value="">Todas as competências</option></select>
+        <select id="ev-curso" class="search ev-select" onchange="renderEvidenciasDrive()"><option value="">Todos os cursos</option></select>
         <input id="ev-busca" class="search" placeholder="Buscar curso, turma, competência ou território..." oninput="renderEvidenciasDrive()">
       </div>
       <div id="drive-evidencias-content"></div>
@@ -466,7 +469,7 @@ function carregarApp() {
       renderAll();
     })
     .catch(function (err) {
-      D = { config: {}, atividades: [], metas: [] };
+      D = { config: {}, atividades: [], metas: [], evidenciasDrive: [] };
       document.getElementById('ld').classList.remove('on');
       document.getElementById('app').classList.add('on');
       renderAll();
@@ -497,6 +500,7 @@ function abrirTerr(idx) {
 }
 
 function ATIV() { return (D && D.atividades) ? D.atividades : []; }
+function EVID() { return (D && Array.isArray(D.evidenciasDrive)) ? D.evidenciasDrive : []; }
 
 function nEv(row, chave) {
   var v = row && row[chave];
@@ -738,7 +742,7 @@ function renderDash() {
     ah += '<div class="card" style="color:#666;font-size:13px">Nenhuma turma critica no momento.</div>';
   } else {
     ah += '<div class="card" style="padding:0;overflow:auto"><table class="tbl">';
-    ah += '<tr><th>Territorio</th><th>Curso</th><th>Turma</th><th>Competencia</th><th>Situacao</th><th>Observacoes do Agente</th></tr>';
+    ah += '<tr><th>Territorio</th><th>Curso</th><th>Turma</th><th>Competencia</th><th>Situacao</th><th>Leitura</th></tr>';
     crows.slice(0, 30).forEach(function (r) {
       var sv = statusVisual(r);
       ah += '<tr><td><strong>' + (r['Territorio'] || '-') + '</strong></td>';
@@ -746,7 +750,7 @@ function renderDash() {
       ah += '<td>' + (r['Turma'] || '-') + '</td>';
       ah += '<td><span class="badge bC">' + (r['Competencia'] || '-') + '</span></td>';
       ah += '<td><span class="badge ' + bcl(sv) + '">' + sv + '</span></td>';
-      ah += '<td style="font-size:11px;color:#888;max-width:280px">' + (r['Observacoes do Agente'] || '-') + '</td></tr>';
+      ah += '<td style="font-size:11px;color:#666;max-width:280px">' + esc(leituraAgenteCE(r)) + '</td></tr>';
     });
     ah += '</table></div>';
     if (crows.length > 30) {
@@ -885,6 +889,7 @@ function renderAtividades() {
     h+='<div class="atividade-evid"><div class="lab">Certificação</div><div class="val">'+simNaoCE(fl.certificacao)+'</div></div>';
     h+='</div>';
     h+='<div class="atividade-reading"><strong>Leitura do Agente</strong><br>'+esc(leituraAgenteCE(r))+'</div>';
+    if(r['Observacoes do Agente']) h+='<details class="atividade-detalhes"><summary>Ver detalhes</summary><div>'+esc(r['Observacoes do Agente'])+'</div></details>';
     h+='</div>';
   });
   h+='</div>';
@@ -899,76 +904,77 @@ function setFiltroEvidencias(f,btn){
 }
 
 function preencherFiltrosEvidencias(){
-  var t=document.getElementById('ev-territorio'), c=document.getElementById('ev-competencia');
+  var t=document.getElementById('ev-territorio'), c=document.getElementById('ev-competencia'), curso=document.getElementById('ev-curso');
+  var evs=EVID();
   if(t && t.options.length===1){
-    TERR.forEach(function(x){var o=document.createElement('option');o.value=x;o.textContent=x;t.appendChild(o);});
+    Array.from(new Set(evs.map(function(r){return r['Territorio'];}).filter(Boolean))).sort(function(a,b){return String(a).localeCompare(String(b),'pt-BR');}).forEach(function(x){var o=document.createElement('option');o.value=x;o.textContent=x;t.appendChild(o);});
   }
   if(c && c.options.length===1){
-    var comps=Array.from(new Set(ATIV().map(function(r){return r['Competencia'];}).filter(Boolean))).sort();
-    comps.forEach(function(x){var o=document.createElement('option');o.value=x;o.textContent=x;c.appendChild(o);});
+    Array.from(new Set(evs.map(function(r){return r['Competencia'];}).filter(Boolean))).sort().forEach(function(x){var o=document.createElement('option');o.value=x;o.textContent=x;c.appendChild(o);});
+  }
+  if(curso && curso.options.length===1){
+    Array.from(new Set(evs.map(function(r){return r['Curso_Normalizado'];}).filter(Boolean))).sort(function(a,b){return String(a).localeCompare(String(b),'pt-BR');}).forEach(function(x){var o=document.createElement('option');o.value=x;o.textContent=x;curso.appendChild(o);});
   }
 }
+
+function numEvDrive(r,k){var n=Number(r&&r[k]||0);return isNaN(n)?0:n;}
+function statusVinculoLabel(r){return String(r&&r['Status_Vinculo']||'PENDENTE_REVISAO');}
+function vinculoPendente(r){return statusVinculoLabel(r)!=='VINCULADO_AUTOMATICAMENTE';}
 
 function renderEvidenciasDrive(){
   preencherFiltrosEvidencias();
   var terr=(document.getElementById('ev-territorio')||{}).value||'';
   var comp=(document.getElementById('ev-competencia')||{}).value||'';
+  var curso=(document.getElementById('ev-curso')||{}).value||'';
   var busca=String((document.getElementById('ev-busca')||{}).value||'').toLowerCase();
-  var base=ATIV();
-  var comEv=base.filter(temEvidencia);
-  var totalComEv=comEv.length;
-  var totalFotos=comEv.reduce(function(s,r){return s+evidenciaPartes(r).fotos;},0);
-  var totalListas=comEv.reduce(function(s,r){return s+evidenciaPartes(r).listas;},0);
+  var base=EVID();
+  var totalFotos=base.reduce(function(s,r){return s+numEvDrive(r,'Qtd_Fotos');},0);
+  var totalListas=base.reduce(function(s,r){return s+numEvDrive(r,'Qtd_Listas');},0);
   var k=document.getElementById('drive-kpis');
-  if(k) k.innerHTML='<div class="evid-kpi"><div class="num">'+totalComEv+'</div><div class="lab">Registros com evidência</div></div><div class="evid-kpi"><div class="num">'+totalFotos+'</div><div class="lab">Fotos identificadas</div></div><div class="evid-kpi"><div class="num">'+totalListas+'</div><div class="lab">Listas identificadas</div></div>';
+  if(k) k.innerHTML='<div class="evid-kpi"><div class="num">'+base.length+'</div><div class="lab">Grupos reais de evidência</div></div><div class="evid-kpi"><div class="num">'+totalFotos+'</div><div class="lab">Fotos identificadas</div></div><div class="evid-kpi"><div class="num">'+totalListas+'</div><div class="lab">Listas identificadas</div></div>';
 
   var rows=base.filter(function(r){
-    var ev=evidenciaPartes(r);
-    var ok=ev.total>0;
-    if(FILTRO_EVIDENCIAS==='FOTOS') ok=ev.fotos>0;
-    else if(FILTRO_EVIDENCIAS==='LISTAS') ok=ev.listas>0;
+    var ok=true, fotos=numEvDrive(r,'Qtd_Fotos'), listas=numEvDrive(r,'Qtd_Listas');
+    if(FILTRO_EVIDENCIAS==='FOTOS') ok=fotos>0;
+    else if(FILTRO_EVIDENCIAS==='LISTAS') ok=listas>0;
+    else if(FILTRO_EVIDENCIAS==='SEM_VINCULO') ok=vinculoPendente(r);
     if(terr && r['Territorio']!==terr) ok=false;
     if(comp && r['Competencia']!==comp) ok=false;
-    var alvo=[r['Territorio'],r['Curso'],r['Turma'],r['Competencia']].join(' ').toLowerCase();
+    if(curso && r['Curso_Normalizado']!==curso) ok=false;
+    var alvo=[r['Territorio'],r['Curso_Normalizado'],r['Curso_Original_Drive'],r['Nucleo_Turma_Real'],r['Competencia'],r['Data_Referencia'],r['Status_Vinculo']].join(' ').toLowerCase();
     if(busca && alvo.indexOf(busca)===-1) ok=false;
     return ok;
   });
 
   var h='';
-  TERR.forEach(function(nome){
-    var tr=rows.filter(function(r){return r['Territorio']===nome;});
-    if(!tr.length) return;
+  var territorios=Array.from(new Set(rows.map(function(r){return r['Territorio']||'Território não identificado';}))).sort(function(a,b){return String(a).localeCompare(String(b),'pt-BR');});
+  territorios.forEach(function(nome){
+    var tr=rows.filter(function(r){return (r['Territorio']||'Território não identificado')===nome;});
     var p=PASTAS_TERRITORIOS_CE[nome]||{};
-    var fotosTerr=tr.reduce(function(s,r){return s+evidenciaPartes(r).fotos;},0);
-    h+='<div class="drive-terr"><div class="drive-terr-head"><div><div class="drive-terr-title">📁 '+esc(nome)+'</div><div class="drive-terr-meta">'+tr.length+' registro(s) com evidência · '+fotosTerr+' foto(s)</div></div><div class="drive-terr-actions">';
+    var fotosTerr=tr.reduce(function(s,r){return s+numEvDrive(r,'Qtd_Fotos');},0);
+    h+='<div class="drive-terr"><div class="drive-terr-head"><div><div class="drive-terr-title">📁 '+esc(nome)+'</div><div class="drive-terr-meta">'+tr.length+' grupo(s) real(is) · '+fotosTerr+' foto(s)</div></div><div class="drive-terr-actions">';
     if(p.acoes) h+='<a class="drive-root-btn" href="'+p.acoes+'" target="_blank" rel="noopener">ABRIR AÇÕES FORMATIVAS</a>';
     if(p.raiz) h+='<a class="drive-root-btn" href="'+p.raiz+'" target="_blank" rel="noopener">ABRIR TERRITÓRIO</a>';
     h+='</div></div>';
-
-    var competencias=Array.from(new Set(tr.map(function(r){return r['Competencia']||'Sem competência';})))
-      .sort(function(a,b){return String(a).localeCompare(String(b),'pt-BR');});
-    competencias.forEach(function(competencia){
-      var cr=tr.filter(function(r){return (r['Competencia']||'Sem competência')===competencia;});
-      h+='<div class="drive-comp"><div class="drive-comp-head"><div class="drive-comp-title">'+esc(competencia)+' · '+cr.length+' registro(s)</div></div><div class="drive-grid">';
-      cr.sort(function(a,b){return String(a['Curso']||'').localeCompare(String(b['Curso']||''),'pt-BR');});
+    var comps=Array.from(new Set(tr.map(function(r){return r['Competencia']||'Sem competência';}))).sort();
+    comps.forEach(function(cp){
+      var cr=tr.filter(function(r){return (r['Competencia']||'Sem competência')===cp;});
+      h+='<div class="drive-comp"><div class="drive-comp-head"><div class="drive-comp-title">'+esc(cp)+' · '+cr.length+' registro(s)</div></div><div class="drive-grid">';
+      cr.sort(function(a,b){return String(a['Curso_Normalizado']||'').localeCompare(String(b['Curso_Normalizado']||''),'pt-BR')||String(a['Data_Referencia']||'').localeCompare(String(b['Data_Referencia']||''));});
       cr.forEach(function(r){
-        var ev=evidenciaPartes(r), fl=evidenciaFlags(r), st=statusVisual(r);
-        var stSlug=String(st||'').toLowerCase().replace(/[^a-z0-9]+/g,'-');
-        h+='<div class="drive-card '+(ev.fotos>0?'photos ':'')+'st-'+stSlug+'"><div class="drive-card-top"><div class="drive-card-title">'+esc(r['Curso']||'-')+'</div><span class="badge '+bcl(st)+'">'+esc(st)+'</span></div>';
-        h+='<div class="drive-card-meta">Competência: <strong>'+esc(r['Competencia']||'-')+'</strong><br>Última verificação: '+esc(ultimaVerificacaoCE(r))+'</div>';
-        h+='<div class="drive-chips"><span class="evchip photo">📷 '+ev.fotos+' foto(s)</span>';
-        if(ev.outros>0 || ev.listas>0 || fl.relatorio || fl.certificacao) h+='<span class="evchip doc">Documento(s)</span>';
-        if(fl.presenca) h+='<span class="evchip doc">Lista de presença</span>';
-        h+='</div><div class="drive-actions">';
-        if(p.acoes) h+='<a class="drive-open" href="'+p.acoes+'" target="_blank" rel="noopener">ABRIR AÇÕES FORMATIVAS</a>';
-        else if(r['Link da Pasta Drive']) h+='<a class="drive-open" href="'+esc(r['Link da Pasta Drive'])+'" target="_blank" rel="noopener">ABRIR PASTA DA ATIVIDADE</a>';
+        var fotos=numEvDrive(r,'Qtd_Fotos'), listas=numEvDrive(r,'Qtd_Listas'), docs=numEvDrive(r,'Qtd_Documentos'), rel=numEvDrive(r,'Qtd_Relatorios'), cert=numEvDrive(r,'Qtd_Certificados');
+        var linked=!vinculoPendente(r), badge=linked?'VINCULADO À ATIVIDADE':'EVIDÊNCIA LOCALIZADA · VÍNCULO PENDENTE';
+        h+='<div class="drive-card '+(fotos>0?'photos ':'')+(linked?'st-completo':'st-pendente')+'"><div class="drive-card-top"><div class="drive-card-title">'+esc(r['Curso_Normalizado']||r['Curso_Original_Drive']||'Curso não identificado')+'</div><span class="badge '+(linked?'bR':'bT')+'">'+esc(badge)+'</span></div>';
+        h+='<div class="drive-card-meta">Núcleo/Turma: <strong>'+esc(r['Nucleo_Turma_Real']||'Não identificado')+'</strong><br>Data: '+esc(r['Data_Referencia']||'-')+' · Competência: '+esc(r['Competencia']||'-')+'</div>';
+        h+='<div class="drive-chips"><span class="evchip photo">📷 '+fotos+' foto(s)</span><span class="evchip doc">Presença: '+(listas>0?'Sim':'Não')+'</span><span class="evchip doc">Docs: '+docs+'</span>';
+        if(rel)h+='<span class="evchip doc">Relatórios: '+rel+'</span>'; if(cert)h+='<span class="evchip doc">Certificados: '+cert+'</span>'; h+='</div>';
+        h+='<div class="drive-card-meta">Fonte: '+esc(r['Fonte_Ramo']||'-')+'<br>Status do vínculo: '+esc(statusVinculoLabel(r))+'</div><div class="drive-actions">';
+        if(r['Link_Pasta_Evidencia'])h+='<a class="drive-open" href="'+esc(r['Link_Pasta_Evidencia'])+'" target="_blank" rel="noopener">ABRIR EVIDÊNCIA</a>';else h+='<div class="drive-nolink">Link da evidência não registrado</div>';
         h+='</div></div>';
-      });
-      h+='</div></div>';
-    });
-    h+='</div>';
+      }); h+='</div></div>';
+    }); h+='</div>';
   });
-  document.getElementById('drive-evidencias-content').innerHTML=h || '<div class="card" style="color:#666;font-size:13px">Nenhuma evidência encontrada para este filtro.</div>';
+  document.getElementById('drive-evidencias-content').innerHTML=h||'<div class="card" style="color:#666;font-size:13px">Nenhuma evidência real encontrada para este filtro.</div>';
 }
 
 function renderEstrutura(){
