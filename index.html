@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Conexao Empreendedora | Monitoramento</title>
+<title>Conexões Empreendedoras | Sistema de Monitoramento de Prestação de Contas — SMPC</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Open+Sans:wght@400;600;700&display=swap');
 :root{
@@ -85,6 +85,16 @@ h1,h2,h3,h4{font-family:'Montserrat',Arial,sans-serif}
 .bT{background:#e0f7fb;color:#006080}
 .bE{background:#fff8e0;color:#7A4F00}
 
+/* EVIDENCIAS */
+.evsum{display:flex;gap:5px;flex-wrap:wrap;margin:7px 0}
+.evpill{display:inline-block;font-size:9px;font-weight:700;padding:3px 7px;border-radius:12px;background:#eef4f8;color:var(--az);font-family:'Montserrat',sans-serif}
+.evlink{display:inline-block;font-size:10px;font-weight:700;text-decoration:none;margin-top:5px;margin-right:8px;color:var(--azs)}
+.rootlinks{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:18px}
+.rootbtn{display:block;background:var(--az);color:var(--am);text-decoration:none;border-radius:10px;padding:11px 12px;font-size:10px;font-weight:700;text-align:center;font-family:'Montserrat',sans-serif}
+.rootbtn:hover{background:var(--azs);color:var(--br)}
+@media(max-width:900px){.rootlinks{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:480px){.rootlinks{grid-template-columns:1fr}}
+
 /* CARD */
 .card{background:var(--br);border:1.5px solid #dde4ee;border-radius:12px;padding:16px 18px}
 
@@ -160,6 +170,77 @@ h1,h2,h3,h4{font-family:'Montserrat',Arial,sans-serif}
 
 @media(max-width:900px){.g4,.g3,.g5{grid-template-columns:repeat(2,1fr)}.g2{grid-template-columns:1fr}.hnav{display:none}}
 @media(max-width:480px){.g4,.g3,.g2,.g5{grid-template-columns:1fr}}
+
+
+/* ===== PADRÃO CONEXÕES CRIATIVAS — ATIVIDADES, EVIDÊNCIAS E ESTRUTURA ===== */
+.atividade-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.atividade-card{background:#fff;border:1.5px solid #dde4ee;border-radius:14px;padding:17px 18px;display:flex;flex-direction:column;min-height:300px;box-shadow:0 3px 12px rgba(9,32,64,.04)}
+.atividade-card:hover{border-color:var(--azs);box-shadow:0 7px 20px rgba(0,183,215,.10)}
+.atividade-card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:9px}
+.atividade-territorio{font:700 10px Montserrat;color:var(--azs);letter-spacing:.35px;line-height:1.4}
+.atividade-titulo{font:700 13px Montserrat;color:var(--az);line-height:1.45;margin-top:2px}
+.atividade-codigo{font:700 9px Montserrat;color:#6f7884;text-transform:uppercase;letter-spacing:.55px;margin-top:5px}
+.atividade-competencia{font-size:10px;color:#7a8490;margin-top:6px}
+.atividade-evid-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:14px 0 10px}
+.atividade-evid{background:#f7f9fb;border:1px solid #e7ebf0;border-radius:10px;padding:9px 10px}
+.atividade-evid .lab{font:700 8.5px Montserrat;color:#7b8490;text-transform:uppercase;letter-spacing:.4px}
+.atividade-evid .val{font:700 13px Montserrat;color:var(--az);margin-top:3px;overflow-wrap:anywhere}
+.atividade-evid.fotos .val{color:var(--azs)}
+.atividade-reading{background:#f8fbfc;border-left:4px solid var(--azs);border-radius:8px;padding:10px 11px;font-size:10.5px;color:#5f6975;line-height:1.5;margin-top:auto}
+
+
+.evid-hero{background:var(--az);border-radius:14px;padding:18px 20px;display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:16px}
+.evid-hero-title{font:700 14px Montserrat;color:var(--am);letter-spacing:.4px}
+.evid-hero-sub{font-size:10.5px;color:rgba(255,255,255,.68);margin-top:4px;line-height:1.5}
+.evid-hero-badge{font:700 9px Montserrat;color:var(--az);background:var(--am);padding:6px 9px;border-radius:999px;white-space:nowrap}
+.evid-kpis{margin-bottom:16px}
+.evid-kpi{background:#fff;border:1.5px solid #dde4ee;border-radius:12px;padding:14px 16px;display:flex;align-items:center;gap:10px}
+.evid-kpi .num{font:700 23px Montserrat;color:var(--azs)}
+.evid-kpi .lab{font:700 9px Montserrat;color:var(--az);text-transform:uppercase;line-height:1.4}
+.ev-select{max-width:230px}
+.drive-terr{background:#fff;border:1.5px solid #dde4ee;border-radius:12px;overflow:hidden;margin-bottom:14px}
+.drive-terr-head{background:var(--az);color:#fff;padding:14px 17px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.drive-terr-title{font:700 13px Montserrat}
+.drive-terr-meta{font-size:10px;color:var(--am);font-weight:700}
+.drive-terr-actions{display:flex;gap:6px;flex-wrap:wrap}
+.drive-root-btn{background:var(--am);color:var(--az);text-decoration:none;border-radius:7px;padding:6px 9px;font:700 8.8px Montserrat;text-transform:uppercase}
+.drive-root-btn.secondary{background:#e8f7fb;color:#0f6072}
+.drive-comp{padding:14px 16px;border-top:1px solid #edf0f4}
+.drive-comp:first-child{border-top:none}
+.drive-comp-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px;flex-wrap:wrap}
+.drive-comp-title{font:700 11px Montserrat;color:var(--az);border-left:3px solid var(--azs);padding-left:8px}
+.drive-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.drive-card{border:1px solid #e0e6ee;border-left:4px solid var(--azs);border-radius:11px;padding:16px 16px;background:#fff;display:flex;flex-direction:column;min-height:210px}
+.drive-card.photos{background:linear-gradient(180deg,#fffdf3 0%,#fff 100%)}
+.drive-card.st-completo{border-left-color:var(--gv)}
+.drive-card.st-insuficiente,.drive-card.st-pendente{border-left-color:var(--am)}
+.drive-card.st-alerta,.drive-card.st-erro,.drive-card.st-critico{border-left-color:#cc2222}
+.drive-card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:8px}
+.drive-card-title{font:700 12px Montserrat;color:var(--az);line-height:1.45}
+.drive-card-meta{font-size:10px;color:#737d88;line-height:1.55;margin-bottom:10px}
+.drive-chips{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:10px}
+.evchip{font:700 9px Montserrat;border-radius:999px;padding:4px 7px;background:#edf2f7;color:#53606f}
+.evchip.photo{background:#fff5bf;color:#765d00}
+.evchip.doc{background:#e0f7fb;color:#176377}
+.drive-actions{display:grid;grid-template-columns:1fr;gap:6px;margin-top:auto}
+.drive-open{display:block;text-align:center;text-decoration:none;background:var(--az);color:var(--am);border-radius:8px;padding:8px 9px;font:700 9.5px Montserrat;text-transform:uppercase;letter-spacing:.3px}
+.drive-open.secondary{background:#e8f7fb;color:#0f6072;border:1px solid #a8deea}
+.drive-nolink{font-size:9.5px;color:#8a939e;text-align:center;padding:7px;border:1px dashed #cfd6df;border-radius:8px}
+
+.folder-terr{margin-bottom:18px;background:#fff;border:1.5px solid #dde4ee;border-radius:12px;overflow:hidden}
+.folder-head{background:var(--az);color:#fff;padding:12px 16px;font:700 12px Montserrat;display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap}
+.folder-head span{color:var(--am);font-size:10px}
+.comp-wrap{padding:14px}
+.comp-title{font:700 11px Montserrat;color:var(--az);margin:10px 0 8px;padding-left:8px;border-left:3px solid var(--azs)}
+.course-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}
+.course-folder{border:1px solid #e2e7ed;border-radius:9px;padding:11px;background:#fbfcfd}
+.course-folder h4{font-size:10.5px;color:var(--az);margin-bottom:7px;line-height:1.4}
+.evline{font-size:9.5px;color:#68717d;line-height:1.55}
+.evline strong{color:var(--az)}
+
+@media(max-width:950px){.atividade-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.drive-grid{grid-template-columns:repeat(2,1fr)}.course-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:600px){.atividade-grid,.drive-grid,.course-grid{grid-template-columns:1fr}.atividade-card{min-height:auto}.evid-hero{align-items:flex-start}.evid-hero-badge{display:none}}
+
 </style>
 </head>
 <body>
@@ -168,7 +249,7 @@ h1,h2,h3,h4{font-family:'Montserrat',Arial,sans-serif}
 <div id="pwd">
   <div class="pbox">
     <img class="plogo-img" src="assets/logo-conexao-empreendedora.png" alt="Conexao Empreendedora">
-    <div class="psub">Sistema de Monitoramento Operacional</div>
+    <div class="psub">Sistema de Monitoramento de Prestação de Contas — SMPC</div>
     <div class="phint">Acesso restrito - Coordenacao Instituto BR Arte / UFRRJ</div>
     <input class="pin" type="password" id="pf" placeholder="Senha de acesso"
            onkeydown="if(event.key==='Enter')chkPwd()">
@@ -192,16 +273,17 @@ h1,h2,h3,h4{font-family:'Montserrat',Arial,sans-serif}
         <img class="hlogo" src="assets/logo-conexao-empreendedora.png" alt="Conexao Empreendedora">
         <div class="hdiv"></div>
         <div>
-          <div class="htit">CONEXAO EMPREENDEDORA</div>
-          <div class="hsub">Instituto BR Arte / UFRRJ - Sistema de Monitoramento Operacional</div>
+          <div class="htit">CONEXÕES EMPREENDEDORAS</div>
+          <div class="hsub">Instituto BR Arte / UFRRJ - Sistema de Monitoramento de Prestação de Contas — SMPC</div>
         </div>
       </div>
       <nav class="hnav">
-        <button class="nbtn on" onclick="goV('dashboard')">Dashboard</button>
-        <button class="nbtn" onclick="goV('territorios')">Territorios</button>
-        <button class="nbtn" onclick="goV('cursos')">Cursos</button>
-        <button class="nbtn" onclick="goV('metas')">Metas</button>
-        <button class="nbtn" onclick="goV('pastas')">Pastas Drive</button>
+        <button class="nbtn on" onclick="goV('dashboard',this)">Dashboard</button>
+        <button class="nbtn" onclick="goV('territorios',this)">Territórios</button>
+        <button class="nbtn" onclick="goV('atividades',this)">Atividades</button>
+        <button class="nbtn" onclick="goV('evidenciasdrive',this)">Evidências Drive</button>
+        <button class="nbtn" onclick="goV('estrutura',this)">Estrutura</button>
+        <button class="nbtn" onclick="goV('metas',this)">Metas</button>
       </nav>
     </div>
   </header>
@@ -210,15 +292,15 @@ h1,h2,h3,h4{font-family:'Montserrat',Arial,sans-serif}
 
     <!-- DASHBOARD -->
     <div class="vw on" id="vw-dashboard">
-      <div class="st">Visao Geral do Projeto</div>
+      <div class="st">Visão Geral do Projeto</div>
       <div class="g5" id="kpi-row" style="margin-bottom:20px"></div>
 
-      <div class="st">Indice Global de Execucao</div>
+      <div class="st">Índice Global de Execução</div>
       <div class="card" style="padding:22px 26px;margin-bottom:20px">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;gap:16px">
           <div>
-            <div style="font-family:Montserrat,sans-serif;font-size:14px;font-weight:700;color:var(--az)">Conexao Empreendedora - 4 Territorios - 66 Turmas</div>
-            <div style="font-size:11px;color:#888;margin-top:3px">Percentual de turmas com evidencia registrada no Drive (regra de ouro: pasta vazia nao conta)</div>
+            <div style="font-family:Montserrat,sans-serif;font-size:14px;font-weight:700;color:var(--az)">Conexões Empreendedoras — 4 Territórios — 66 Turmas</div>
+            <div style="font-size:11px;color:#888;margin-top:3px">Percentual de turmas completas segundo o agente de conformidade (regra de ouro: pasta vazia nao conta)</div>
           </div>
           <div id="sc-txt" style="font-family:Montserrat,sans-serif;font-size:44px;font-weight:700;color:var(--azs);white-space:nowrap">--</div>
         </div>
@@ -228,32 +310,39 @@ h1,h2,h3,h4{font-family:'Montserrat',Arial,sans-serif}
         </div>
       </div>
 
-      <div class="st">Execucao por Territorio</div>
+      <div class="st">Execução por Território</div>
       <div class="g4" id="dash-terr" style="margin-bottom:20px"></div>
 
-      <div class="st">Alertas Criticos</div>
+      <div class="st">Alertas Críticos</div>
       <div id="dash-alertas" style="margin-bottom:20px"></div>
 
-      <div class="st">Execucao por Curso</div>
+      <div class="st">Execução por Curso</div>
       <div id="dash-cursos" style="margin-bottom:8px"></div>
     </div>
 
     <!-- TERRITORIOS -->
     <div class="vw" id="vw-territorios">
       <div id="tlist">
-        <div class="st">Selecione um Territorio</div>
+        <div class="st">Selecione um Território</div>
         <div class="g4" id="lista-terr"></div>
       </div>
       <div id="tdetalhe" style="display:none">
-        <button class="back" onclick="voltarLista()">Voltar aos Territorios</button>
+        <button class="back" onclick="voltarLista()">Voltar aos Territórios</button>
         <div id="det-content"></div>
       </div>
     </div>
 
-    <!-- CURSOS -->
-    <div class="vw" id="vw-cursos">
-      <div class="st">Execucao por Curso (Formacao)</div>
-      <div id="tbl-cursos"></div>
+    <!-- ATIVIDADES -->
+    <div class="vw" id="vw-atividades">
+      <div class="st">Acompanhamento das Atividades</div>
+      <div class="filters">
+        <button class="fbtn on" data-status="TODOS" onclick="setFiltroAtividades('TODOS',this)">Todas</button>
+        <button class="fbtn" data-status="Completo" onclick="setFiltroAtividades('Completo',this)">Completas</button>
+        <button class="fbtn" data-status="Insuficiente" onclick="setFiltroAtividades('Insuficiente',this)">Insuficientes</button>
+        <button class="fbtn" data-status="Pendente" onclick="setFiltroAtividades('Pendente',this)">Pendentes</button>
+        <input id="busca-atividades" class="search" placeholder="Buscar território, curso, turma ou competência..." oninput="renderAtividades()">
+      </div>
+      <div id="atividades-content"></div>
     </div>
 
     <!-- METAS -->
@@ -262,17 +351,38 @@ h1,h2,h3,h4{font-family:'Montserrat',Arial,sans-serif}
       <div id="tbl-metas"></div>
     </div>
 
-    <!-- PASTAS DRIVE -->
-    <div class="vw" id="vw-pastas">
-      <div class="st">Pastas de Turma no Google Drive</div>
-      <div style="font-size:12px;color:#888;margin-bottom:20px">Organizado por territorio. Clique em ABRIR PASTA para acessar a pasta da turma no Drive.</div>
-      <div class="fbar" id="flt-pastas"></div>
-      <div id="pastas-content"></div>
+    <!-- EVIDÊNCIAS DRIVE -->
+    <div class="vw" id="vw-evidenciasdrive">
+      <div class="st">Evidências por Território e Atividade</div>
+      <div class="evid-hero">
+        <div>
+          <div class="evid-hero-title">TRILHA DE EVIDÊNCIAS</div>
+          <div class="evid-hero-sub">Cada território apresenta as competências e os cursos que já possuem evidências identificadas pelo monitoramento.</div>
+        </div>
+        <div class="evid-hero-badge">SMPC · DRIVE</div>
+      </div>
+      <div class="g3 evid-kpis" id="drive-kpis"></div>
+      <div class="filters">
+        <button class="fbtn on" data-evf="TODAS" onclick="setFiltroEvidencias('TODAS',this)">Todas com evidência</button>
+        <button class="fbtn" data-evf="FOTOS" onclick="setFiltroEvidencias('FOTOS',this)">Com fotos</button>
+        <button class="fbtn" data-evf="LISTAS" onclick="setFiltroEvidencias('LISTAS',this)">Com lista</button>
+        <select id="ev-territorio" class="search ev-select" onchange="renderEvidenciasDrive()"><option value="">Todos os territórios</option></select>
+        <select id="ev-competencia" class="search ev-select" onchange="renderEvidenciasDrive()"><option value="">Todas as competências</option></select>
+        <input id="ev-busca" class="search" placeholder="Buscar curso, turma, competência ou território..." oninput="renderEvidenciasDrive()">
+      </div>
+      <div id="drive-evidencias-content"></div>
+    </div>
+
+    <!-- ESTRUTURA -->
+    <div class="vw" id="vw-estrutura">
+      <div class="st">Estrutura de Evidências</div>
+      <div class="notice" style="margin-bottom:14px">Visualização da organização do projeto por <strong>território → curso → turma</strong>, com os atalhos oficiais do Drive preservados.</div>
+      <div id="estrutura-content"></div>
     </div>
 
     <div class="foot">
-      <div class="ftxt">Conexao Empreendedora - Instituto BR Arte x UFRRJ - 20/08/2025 a 19/08/2026 - 4 territorios</div>
-      <div class="fbadge">Monitoramento Operacional</div>
+      <div class="ftxt">Conexões Empreendedoras — Instituto BR Arte × UFRRJ — 4 territórios</div>
+      <div class="fbadge">Sistema de Monitoramento de Prestação de Contas — SMPC</div>
     </div>
   </div>
 </div>
@@ -288,6 +398,23 @@ var TERR = [
   'Arraial do Cabo',
   'Mangaratiba'
 ];
+
+// Pastas reais de EVIDENCIAS_ORGANIZADAS localizadas no Drive em 05/10/2026.
+// Servem como atalho de auditoria e fallback visual; o Agente_v2 tambem
+// localiza essas pastas dinamicamente e grava o link por atividade.
+var EVID_ROOTS = {
+  'Nova Iguacu': 'https://drive.google.com/drive/folders/1tEm8dSxvVm8DkobTAfxxwG2naQcPBO6X',
+  'Sao Joao de Meriti': 'https://drive.google.com/drive/folders/1l-xkzvQtah24xDFBwHn84y30otRMxkhB',
+  'Arraial do Cabo': 'https://drive.google.com/drive/folders/1F3oKMn_gbE9HhW0aLXiwAJ56EwCSuDW9',
+  'Mangaratiba': 'https://drive.google.com/drive/folders/1SxlputHBViDjYHaKnSxuS1hSyrhF2pYM'
+};
+
+var PASTAS_TERRITORIOS_CE = {
+  'Nova Iguacu': {raiz:'https://drive.google.com/drive/folders/1JDqJWfam9sV_v_Y83NVhIEjFFZ-hkfPO', acoes:'https://drive.google.com/drive/folders/1gOf8bZf2nHtIZZLiANTdSZ9AuGUBblxr', evidencias:EVID_ROOTS['Nova Iguacu']},
+  'Sao Joao de Meriti': {raiz:'https://drive.google.com/drive/folders/1L8RWUvstjclFsJUAAMGDX6PoJLZcIn5h', acoes:'https://drive.google.com/drive/folders/1ecmwiXqSXh7dHh5-TPJR7UJNC9ZTOTHR', evidencias:EVID_ROOTS['Sao Joao de Meriti']},
+  'Arraial do Cabo': {raiz:'https://drive.google.com/drive/folders/1LwI2aLi8zhz6V7Sf55hwBfyWNKVcBiFS', acoes:'https://drive.google.com/drive/folders/11tGHP3zVQKrdvhr_ACvo5cmQznVBDCip', evidencias:EVID_ROOTS['Arraial do Cabo']},
+  'Mangaratiba': {raiz:'https://drive.google.com/drive/folders/1gl3hWvFxyiIVIFAickQwS_PDyvuRGVJg', acoes:'https://drive.google.com/drive/folders/1-_BkVgoiKNAbY-3dHerDZXyAi9wTvWKg', evidencias:EVID_ROOTS['Mangaratiba']}
+};
 
 var CURSOS = [
   'Analise de Pesquisa de Mercado',
@@ -308,6 +435,8 @@ var HOJE = new Date();
 var FIM_CONVENIO = new Date(2026, 7, 19);
 
 var D = null;
+var FILTRO_ATIVIDADES = 'TODOS';
+var FILTRO_EVIDENCIAS = 'TODAS';
 
 function chkPwd() {
   var v = document.getElementById('pf').value;
@@ -345,11 +474,13 @@ function carregarApp() {
     });
 }
 
-function goV(v) {
+function goV(v, btn) {
   document.querySelectorAll('.vw').forEach(function (e) { e.classList.remove('on'); });
   document.querySelectorAll('.nbtn').forEach(function (e) { e.classList.remove('on'); });
-  document.getElementById('vw-' + v).classList.add('on');
-  document.querySelectorAll('.nbtn').forEach(function (e) {
+  var view = document.getElementById('vw-' + v);
+  if (view) view.classList.add('on');
+  if (btn) btn.classList.add('on');
+  else document.querySelectorAll('.nbtn').forEach(function (e) {
     if ((e.getAttribute('onclick') || '').indexOf("'" + v + "'") !== -1) e.classList.add('on');
   });
 }
@@ -366,6 +497,98 @@ function abrirTerr(idx) {
 }
 
 function ATIV() { return (D && D.atividades) ? D.atividades : []; }
+
+function nEv(row, chave) {
+  var v = row && row[chave];
+  if (v === null || v === undefined || v === '') return 0;
+  var n = parseInt(String(v).replace(/[^0-9-]/g, ''), 10);
+  return isNaN(n) ? 0 : n;
+}
+
+function evidenciaPartes(row) {
+  var obs = String((row && row['Observacoes do Agente']) || '');
+  var f = nEv(row, 'Qtd Fotos');
+  var l = nEv(row, 'Qtd Listas');
+  var o = nEv(row, 'Qtd Outros');
+  if (!f) {
+    var mf = obs.match(/(\d+)\s+foto\(s\)/i);
+    if (mf) f = parseInt(mf[1], 10) || 0;
+  }
+  if (!l && /Lista de presen[cç]a:\s*arquivo presente/i.test(obs)) l = 1;
+  return {fotos:f, listas:l, outros:o, total:f+l+o};
+}
+
+
+function valorSim_(v) {
+  var x=String(v == null ? '' : v).trim().toLowerCase();
+  return x==='sim' || x==='yes' || x==='true' || x==='1' || x==='presente' || x==='ok';
+}
+
+function evidenciaFlags(row) {
+  var ev=evidenciaPartes(row), obs=String((row && row['Observacoes do Agente']) || '');
+  var presenca=ev.listas>0 || valorSim_(row && (row['Lista de Presenca'] || row['Lista Presenca'] || row['listaPresenca']));
+  var relatorio=valorSim_(row && (row['Relatorio Pedagogico'] || row['Relatório Pedagógico'] || row['Relatorio'] || row['relatorioPedagogico'])) ||
+    nEv(row,'Qtd Relatorios')>0 || /relat[oó]rio[^:]*:\s*(arquivo presente|sim|presente)/i.test(obs);
+  var certificacao=valorSim_(row && (row['Certificacao'] || row['Certificação'] || row['certificacao'])) ||
+    nEv(row,'Qtd Certificados')>0 || /certifica[cç][aã]o[^:]*:\s*(arquivo presente|sim|presente)/i.test(obs);
+  return {presenca:presenca, relatorio:relatorio, certificacao:certificacao};
+}
+
+function simNaoCE(v){ return v ? 'Sim' : 'Não'; }
+
+function codigoCursoCE(nome) {
+  var cursos=Array.from(new Set(ATIV().map(function(r){return r['Curso'];}).filter(Boolean)))
+    .sort(function(a,b){return String(a).localeCompare(String(b),'pt-BR');});
+  var i=cursos.indexOf(nome);
+  if(i<0) i=0;
+  return 'CE-' + ('0000' + (i+1)).slice(-4);
+}
+
+function leituraAgenteCE(row) {
+  var st=statusVisual(row), ev=evidenciaPartes(row), fl=evidenciaFlags(row);
+  if(st==='Completo') return 'O Agente identificou evidências suficientes para comprovar documentalmente esta atividade.';
+  if(st==='Insuficiente') {
+    if(ev.fotos>0 && !fl.presenca) return 'Há evidências fotográficas, mas a lista de presença ainda não foi identificada para comprovar esta atividade.';
+    return 'O Agente identificou evidências parciais, mas o conjunto documental ainda é insuficiente para comprovar esta atividade.';
+  }
+  if(st==='Alerta' || st==='Critico' || st==='Erro') return 'A atividade requer conferência documental prioritária antes de ser considerada comprovada.';
+  return 'O Agente ainda não identifica evidências suficientes para comprovar esta atividade.';
+}
+
+function ultimaVerificacaoCE(row) {
+  if(!row) return 'Não informada';
+  var v=row['Última Verificação'] || row['Ultima Verificacao'] || row['Ultima Verificacao do Agente'] || row['Ultima Evidencia'] || '';
+  if(v) return String(v);
+  var obs=String(row['Observacoes do Agente']||'');
+  var m=obs.match(/(?:[ÚU]ltima verifica[cç][aã]o|Verifica[cç][aã]o)\s*:\s*([^|\n]+)/i);
+  return m ? String(m[1]).trim() : 'Não informada';
+}
+
+function qtdEvidencias(row) { return evidenciaPartes(row).total; }
+
+function temEvidencia(row) { return qtdEvidencias(row) > 0; }
+
+function evidenciaResumoHtml(row) {
+  var ev = evidenciaPartes(row);
+  if (!ev.total) return '<div class="evsum"><span class="evpill">Sem evidência inventariada</span></div>';
+  var h = '<div class="evsum">';
+  h += '<span class="evpill">Fotos: ' + ev.fotos + '</span>';
+  h += '<span class="evpill">Listas: ' + ev.listas + '</span>';
+  h += '<span class="evpill">Outros: ' + ev.outros + '</span>';
+  if (row['Ultima Evidencia']) h += '<span class="evpill">Última: ' + row['Ultima Evidencia'] + '</span>';
+  h += '</div>';
+  return h;
+}
+
+function linksEvidenciaHtml(row, classe) {
+  classe = classe || 'evlink';
+  var h = '';
+  var lk = row['Link da Pasta Drive'] || '';
+  var le = row['Link Evidencias Organizadas'] || '';
+  if (lk) h += '<a class="' + classe + '" href="' + lk + '" target="_blank">Pasta monitoramento</a>';
+  if (le && le !== lk) h += '<a class="' + classe + '" href="' + le + '" target="_blank">Evidencias organizadas</a>';
+  return h;
+}
 
 function competenciaPassou_(comp) {
   if (!comp || comp === 'A DEFINIR') return false;
@@ -398,6 +621,7 @@ function bcl(st) {
     case 'Alerta': return 'bC';
     case 'Erro': return 'bC';
     case 'Critico': return 'bC';
+    case 'Pendente': return 'bP';
     default: return 'bN';
   }
 }
@@ -453,9 +677,10 @@ function diasAteFimConvenio() {
 function renderAll() {
   renderDash();
   renderListaTerritorios();
-  renderCursos();
+  renderAtividades();
+  renderEvidenciasDrive();
+  renderEstrutura();
   renderMetas();
-  renderPastas();
 }
 
 function kpi(n, l) {
@@ -465,12 +690,13 @@ function kpi(n, l) {
 function renderDash() {
   var rows = ATIV();
   var completos = rows.filter(function (r) { return (r['Status'] || '').trim() === 'Completo'; }).length;
+  var comEvidencia = rows.filter(function (r) { return temEvidencia(r); }).length;
   var insuficientes = rows.filter(function (r) { return statusVisual(r) === 'Insuficiente'; }).length;
   var criticos = rows.filter(function (r) { var sv = statusVisual(r); return sv === 'Alerta' || sv === 'Erro' || sv === 'Critico'; }).length;
 
   document.getElementById('kpi-row').innerHTML =
-    kpi(TERR.length, 'Territorios Ativos') +
     kpi(rows.length, 'Turmas Previstas') +
+    kpi(comEvidencia, 'Turmas com Evidencia') +
     kpi(completos + ' / ' + rows.length, 'Turmas Completas') +
     kpi(insuficientes, 'Insuficientes') +
     kpi(criticos, 'Criticas / Alertas');
@@ -572,7 +798,7 @@ function renderDetalheTerritorio(idx) {
 
   h += '<div class="card" style="background:var(--az);padding:22px 26px;margin-bottom:20px">';
   h += '<div style="font-size:18px;font-weight:700;color:var(--am);font-family:Montserrat,sans-serif">' + nome + '</div>';
-  h += '<div style="font-size:12px;color:rgba(255,255,255,.6);margin-top:4px">Conexao Empreendedora - Instituto BR Arte / UFRRJ</div>';
+  h += '<div style="font-size:12px;color:rgba(255,255,255,.6);margin-top:4px">Conexões Empreendedoras — Instituto BR Arte / UFRRJ</div>';
   h += '<div style="margin-top:14px;display:flex;align-items:center;gap:16px;flex-wrap:wrap">';
   h += '<div style="font-size:40px;font-weight:700;color:var(--br);font-family:Montserrat,sans-serif">' + sc + '%</div>';
   h += '<div style="flex:1;min-width:160px">';
@@ -603,7 +829,9 @@ function renderDetalheTerritorio(idx) {
       h += '<span class="badge ' + bcl(st) + '">' + st + '</span></div>';
       h += '<div class="cfase">Competencia: ' + (r['Competencia'] || '-') + ' | Meta: ' + (r['Meta Vinculada'] || '-') + '</div>';
       if (obs) h += '<div style="font-size:10px;color:#888;margin:4px 0">' + obs + '</div>';
-      if (lk) h += '<a class="clink" href="' + lk + '" target="_blank">Abrir pasta no Drive</a>';
+      h += evidenciaResumoHtml(r);
+      var linksEv = linksEvidenciaHtml(r, 'clink');
+      if (linksEv) h += linksEv;
       else h += '<div style="font-size:11px;color:#ccc;margin-top:6px">Sem link registrado</div>';
       h += '</div>';
     });
@@ -613,24 +841,159 @@ function renderDetalheTerritorio(idx) {
   document.getElementById('det-content').innerHTML = h;
 }
 
-function renderCursos() {
-  var rows = ATIV();
-  var h = '<div class="card" style="padding:0;overflow:auto"><table class="tbl">';
-  h += '<tr><th>Curso</th><th>Turmas Previstas</th><th>Completas</th><th>Progresso</th><th>Territorios</th></tr>';
-  CURSOS.forEach(function (c) {
-    var cRows = rows.filter(function (r) { return r['Curso'] === c; });
-    if (!cRows.length) return;
-    var exec = cRows.filter(function (r) { return (r['Status'] || '').trim() === 'Completo'; }).length;
-    var pc = pctCurso(c);
-    var terrs = Array.from(new Set(cRows.map(function (r) { return r['Territorio']; }))).join(', ');
-    h += '<tr><td><strong>' + c + '</strong></td>';
-    h += '<td style="text-align:center">' + cRows.length + '</td>';
-    h += '<td style="text-align:center">' + exec + '</td>';
-    h += '<td style="min-width:120px"><div class="sbw" style="height:6px;margin-bottom:2px"><div class="sb ' + scl(pc) + '" style="width:' + pc + '%"></div></div><span style="font-size:10px;color:#888">' + pc + '%</span></td>';
-    h += '<td style="font-size:11px;color:#666">' + terrs + '</td></tr>';
+
+function esc(v) {
+  return String(v == null ? '' : v)
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;').replace(/'/g,'&#039;');
+}
+
+function setFiltroAtividades(f, btn) {
+  FILTRO_ATIVIDADES = f;
+  document.querySelectorAll('[data-status]').forEach(function(e){e.classList.remove('on');});
+  if (btn) btn.classList.add('on');
+  renderAtividades();
+}
+
+function renderAtividades() {
+  var busca = String((document.getElementById('busca-atividades') || {}).value || '').toLowerCase();
+  var rows = ATIV().filter(function(r){
+    var sv = statusVisual(r);
+    var okStatus = FILTRO_ATIVIDADES === 'TODOS' || sv === FILTRO_ATIVIDADES || (FILTRO_ATIVIDADES === 'Pendente' && (sv === 'Pendente' || sv === 'Critico'));
+    var alvo = [r['Territorio'],r['Curso'],r['Turma'],r['Competencia'],r['Meta Vinculada']].join(' ').toLowerCase();
+    return okStatus && (!busca || alvo.indexOf(busca) !== -1);
   });
-  h += '</table></div>';
-  document.getElementById('tbl-cursos').innerHTML = h;
+  if (!rows.length) {
+    document.getElementById('atividades-content').innerHTML='<div class="card" style="color:#666;font-size:13px">Nenhuma atividade encontrada para este filtro.</div>';
+    return;
+  }
+  rows.sort(function(a,b){
+    return String(a['Territorio']||'').localeCompare(String(b['Territorio']||''),'pt-BR') ||
+      String(a['Competencia']||'').localeCompare(String(b['Competencia']||''),'pt-BR') ||
+      String(a['Curso']||'').localeCompare(String(b['Curso']||''),'pt-BR');
+  });
+  var h='<div class="atividade-grid">';
+  rows.forEach(function(r){
+    var st=statusVisual(r), ev=evidenciaPartes(r), fl=evidenciaFlags(r);
+    h+='<div class="atividade-card">';
+    h+='<div class="atividade-card-top"><div><div class="atividade-territorio">'+esc(r['Territorio']||'-')+'</div><div class="atividade-titulo">'+esc(r['Curso']||'-')+'</div><div class="atividade-codigo">'+codigoCursoCE(r['Curso']||'')+'</div></div><span class="badge '+bcl(st)+'">'+esc(st)+'</span></div>';
+    h+='<div class="atividade-competencia">Competência: <strong>'+esc(r['Competencia']||'-')+'</strong></div>';
+    h+='<div class="atividade-evid-grid">';
+    h+='<div class="atividade-evid fotos"><div class="lab">Fotos</div><div class="val">'+ev.fotos+'</div></div>';
+    h+='<div class="atividade-evid"><div class="lab">Presença</div><div class="val">'+simNaoCE(fl.presenca)+'</div></div>';
+    h+='<div class="atividade-evid"><div class="lab">Relatório</div><div class="val">'+simNaoCE(fl.relatorio)+'</div></div>';
+    h+='<div class="atividade-evid"><div class="lab">Certificação</div><div class="val">'+simNaoCE(fl.certificacao)+'</div></div>';
+    h+='</div>';
+    h+='<div class="atividade-reading"><strong>Leitura do Agente</strong><br>'+esc(leituraAgenteCE(r))+'</div>';
+    h+='</div>';
+  });
+  h+='</div>';
+  document.getElementById('atividades-content').innerHTML=h;
+}
+
+function setFiltroEvidencias(f,btn){
+  FILTRO_EVIDENCIAS=f;
+  document.querySelectorAll('[data-evf]').forEach(function(e){e.classList.remove('on');});
+  if(btn) btn.classList.add('on');
+  renderEvidenciasDrive();
+}
+
+function preencherFiltrosEvidencias(){
+  var t=document.getElementById('ev-territorio'), c=document.getElementById('ev-competencia');
+  if(t && t.options.length===1){
+    TERR.forEach(function(x){var o=document.createElement('option');o.value=x;o.textContent=x;t.appendChild(o);});
+  }
+  if(c && c.options.length===1){
+    var comps=Array.from(new Set(ATIV().map(function(r){return r['Competencia'];}).filter(Boolean))).sort();
+    comps.forEach(function(x){var o=document.createElement('option');o.value=x;o.textContent=x;c.appendChild(o);});
+  }
+}
+
+function renderEvidenciasDrive(){
+  preencherFiltrosEvidencias();
+  var terr=(document.getElementById('ev-territorio')||{}).value||'';
+  var comp=(document.getElementById('ev-competencia')||{}).value||'';
+  var busca=String((document.getElementById('ev-busca')||{}).value||'').toLowerCase();
+  var base=ATIV();
+  var comEv=base.filter(temEvidencia);
+  var totalComEv=comEv.length;
+  var totalFotos=comEv.reduce(function(s,r){return s+evidenciaPartes(r).fotos;},0);
+  var totalListas=comEv.reduce(function(s,r){return s+evidenciaPartes(r).listas;},0);
+  var k=document.getElementById('drive-kpis');
+  if(k) k.innerHTML='<div class="evid-kpi"><div class="num">'+totalComEv+'</div><div class="lab">Registros com evidência</div></div><div class="evid-kpi"><div class="num">'+totalFotos+'</div><div class="lab">Fotos identificadas</div></div><div class="evid-kpi"><div class="num">'+totalListas+'</div><div class="lab">Listas identificadas</div></div>';
+
+  var rows=base.filter(function(r){
+    var ev=evidenciaPartes(r);
+    var ok=ev.total>0;
+    if(FILTRO_EVIDENCIAS==='FOTOS') ok=ev.fotos>0;
+    else if(FILTRO_EVIDENCIAS==='LISTAS') ok=ev.listas>0;
+    if(terr && r['Territorio']!==terr) ok=false;
+    if(comp && r['Competencia']!==comp) ok=false;
+    var alvo=[r['Territorio'],r['Curso'],r['Turma'],r['Competencia']].join(' ').toLowerCase();
+    if(busca && alvo.indexOf(busca)===-1) ok=false;
+    return ok;
+  });
+
+  var h='';
+  TERR.forEach(function(nome){
+    var tr=rows.filter(function(r){return r['Territorio']===nome;});
+    if(!tr.length) return;
+    var p=PASTAS_TERRITORIOS_CE[nome]||{};
+    var fotosTerr=tr.reduce(function(s,r){return s+evidenciaPartes(r).fotos;},0);
+    h+='<div class="drive-terr"><div class="drive-terr-head"><div><div class="drive-terr-title">📁 '+esc(nome)+'</div><div class="drive-terr-meta">'+tr.length+' registro(s) com evidência · '+fotosTerr+' foto(s)</div></div><div class="drive-terr-actions">';
+    if(p.acoes) h+='<a class="drive-root-btn" href="'+p.acoes+'" target="_blank" rel="noopener">ABRIR AÇÕES FORMATIVAS</a>';
+    if(p.raiz) h+='<a class="drive-root-btn" href="'+p.raiz+'" target="_blank" rel="noopener">ABRIR TERRITÓRIO</a>';
+    h+='</div></div>';
+
+    var competencias=Array.from(new Set(tr.map(function(r){return r['Competencia']||'Sem competência';})))
+      .sort(function(a,b){return String(a).localeCompare(String(b),'pt-BR');});
+    competencias.forEach(function(competencia){
+      var cr=tr.filter(function(r){return (r['Competencia']||'Sem competência')===competencia;});
+      h+='<div class="drive-comp"><div class="drive-comp-head"><div class="drive-comp-title">'+esc(competencia)+' · '+cr.length+' registro(s)</div></div><div class="drive-grid">';
+      cr.sort(function(a,b){return String(a['Curso']||'').localeCompare(String(b['Curso']||''),'pt-BR');});
+      cr.forEach(function(r){
+        var ev=evidenciaPartes(r), fl=evidenciaFlags(r), st=statusVisual(r);
+        var stSlug=String(st||'').toLowerCase().replace(/[^a-z0-9]+/g,'-');
+        h+='<div class="drive-card '+(ev.fotos>0?'photos ':'')+'st-'+stSlug+'"><div class="drive-card-top"><div class="drive-card-title">'+esc(r['Curso']||'-')+'</div><span class="badge '+bcl(st)+'">'+esc(st)+'</span></div>';
+        h+='<div class="drive-card-meta">Competência: <strong>'+esc(r['Competencia']||'-')+'</strong><br>Última verificação: '+esc(ultimaVerificacaoCE(r))+'</div>';
+        h+='<div class="drive-chips"><span class="evchip photo">📷 '+ev.fotos+' foto(s)</span>';
+        if(ev.outros>0 || ev.listas>0 || fl.relatorio || fl.certificacao) h+='<span class="evchip doc">Documento(s)</span>';
+        if(fl.presenca) h+='<span class="evchip doc">Lista de presença</span>';
+        h+='</div><div class="drive-actions">';
+        if(p.acoes) h+='<a class="drive-open" href="'+p.acoes+'" target="_blank" rel="noopener">ABRIR AÇÕES FORMATIVAS</a>';
+        else if(r['Link da Pasta Drive']) h+='<a class="drive-open" href="'+esc(r['Link da Pasta Drive'])+'" target="_blank" rel="noopener">ABRIR PASTA DA ATIVIDADE</a>';
+        h+='</div></div>';
+      });
+      h+='</div></div>';
+    });
+    h+='</div>';
+  });
+  document.getElementById('drive-evidencias-content').innerHTML=h || '<div class="card" style="color:#666;font-size:13px">Nenhuma evidência encontrada para este filtro.</div>';
+}
+
+function renderEstrutura(){
+  var h='';
+  TERR.forEach(function(nome){
+    var tr=ATIV().filter(function(r){return r['Territorio']===nome;});
+    var p=PASTAS_TERRITORIOS_CE[nome]||{};
+    h+='<div class="folder-terr"><div class="folder-head"><div>'+esc(nome)+'</div><span>'+tr.length+' turma(s)</span></div><div class="comp-wrap">';
+    if(p.raiz || p.acoes || p.evidencias){
+      h+='<div class="drive-terr-actions" style="margin-bottom:12px">';
+      if(p.raiz) h+='<a class="drive-root-btn" href="'+p.raiz+'" target="_blank" rel="noopener">Pasta do território</a>';
+      if(p.acoes) h+='<a class="drive-root-btn" href="'+p.acoes+'" target="_blank" rel="noopener">03_ACOES_FORMATIVAS</a>';
+      if(p.evidencias) h+='<a class="drive-root-btn secondary" href="'+p.evidencias+'" target="_blank" rel="noopener">EVIDENCIAS_ORGANIZADAS</a>';
+      h+='</div>';
+    }
+    var cursos=Array.from(new Set(tr.map(function(r){return r['Curso']||'Sem curso';}))).sort(function(a,b){return a.localeCompare(b,'pt-BR');});
+    h+='<div class="course-grid">';
+    cursos.forEach(function(curso){
+      var cr=tr.filter(function(r){return (r['Curso']||'Sem curso')===curso;});
+      var ev=cr.reduce(function(acc,r){var e=evidenciaPartes(r);acc.f+=e.fotos;acc.l+=e.listas;acc.o+=e.outros;return acc;},{f:0,l:0,o:0});
+      h+='<div class="course-folder"><h4>'+esc(curso)+'</h4><div class="evline"><strong>Turmas:</strong> '+cr.length+'</div><div class="evline"><strong>Fotos:</strong> '+ev.f+' · <strong>Listas:</strong> '+ev.l+' · <strong>Outros:</strong> '+ev.o+'</div><div class="evline"><strong>Competências:</strong> '+esc(Array.from(new Set(cr.map(function(r){return r['Competencia'];}).filter(Boolean))).join(', ')||'-')+'</div></div>';
+    });
+    h+='</div></div></div>';
+  });
+  document.getElementById('estrutura-content').innerHTML=h;
 }
 
 function renderMetas() {
@@ -650,54 +1013,6 @@ function renderMetas() {
   });
   h += '</table></div>';
   document.getElementById('tbl-metas').innerHTML = h;
-}
-
-var filtroPastasAtual = 'Todos';
-
-function renderPastas(filtro) {
-  filtroPastasAtual = filtro || filtroPastasAtual;
-  var fb = '<button class="fbtn' + (filtroPastasAtual === 'Todos' ? ' on' : '') + '" onclick="renderPastas(\'Todos\')">Todos</button>';
-  fb += '<button class="fbtn' + (filtroPastasAtual === 'Completo' ? ' on' : '') + '" onclick="renderPastas(\'Completo\')">Somente Completas</button>';
-  fb += '<button class="fbtn' + (filtroPastasAtual === 'Insuficiente' ? ' on' : '') + '" onclick="renderPastas(\'Insuficiente\')">Somente Insuficientes</button>';
-  fb += '<button class="fbtn' + (filtroPastasAtual === 'Pendente' ? ' on' : '') + '" onclick="renderPastas(\'Pendente\')">Somente Pendentes</button>';
-  fb += '<button class="fbtn' + (filtroPastasAtual === 'Alerta' ? ' on' : '') + '" onclick="renderPastas(\'Alerta\')">Alertas de Duplicidade</button>';
-  fb += '<button class="fbtn' + (filtroPastasAtual === 'Critico' ? ' on' : '') + '" onclick="renderPastas(\'Critico\')">Vencidas (Criticas)</button>';
-  document.getElementById('flt-pastas').innerHTML = fb;
-
-  var rows = ATIV();
-  var html = '';
-  TERR.forEach(function (terr) {
-    var terrRows = rows.filter(function (r) { return r['Territorio'] === terr; });
-    var terrFiltradas = filtroPastasAtual === 'Todos' ? terrRows : terrRows.filter(function (r) { return statusVisual(r) === filtroPastasAtual; });
-    if (!terrFiltradas.length) return;
-
-    html += '<div class="pterr-grupo">';
-    html += '<div class="pterr-nome">' + terr + ' (' + terrFiltradas.length + ' turma(s))</div>';
-    html += '<div class="pterr-grid">';
-    terrFiltradas.forEach(function (r) {
-      var st = statusVisual(r);
-      var lk = r['Link da Pasta Drive'] || '';
-      var obs = r['Observacoes do Agente'] || '';
-      html += '<div class="pcard ' + statusClasse(st) + '"' + (obs ? ' title="' + obs.replace(/"/g, '&quot;') + '"' : '') + '>';
-      html += '<div style="display:flex;align-items:center;justify-content:space-between;gap:4px">';
-      html += '<div class="pcard-mes">' + (r['Turma'] || '-') + '</div>';
-      html += '<span class="badge ' + bcl(st) + '" style="font-size:9px;padding:2px 7px">' + st + '</span>';
-      html += '</div>';
-      html += '<div class="pcard-terr">' + (r['Curso'] || '-') + '</div>';
-      html += '<div class="pcard-fase">Competencia: ' + (r['Competencia'] || '-') + '</div>';
-      if (obs) html += '<div style="font-size:9px;color:#999;line-height:1.3">' + (obs.length > 90 ? obs.substring(0, 90) + '...' : obs) + '</div>';
-      if (lk) {
-        html += '<a class="pcard-btn" href="' + lk + '" target="_blank">ABRIR PASTA</a>';
-      } else {
-        html += '<span class="pcard-btn vazia">SEM LINK</span>';
-      }
-      html += '</div>';
-    });
-    html += '</div></div>';
-  });
-
-  if (!html) html = '<div class="card" style="color:#666;font-size:13px">Nenhuma turma para este filtro.</div>';
-  document.getElementById('pastas-content').innerHTML = html;
 }
 
 window.addEventListener('DOMContentLoaded', function () {
