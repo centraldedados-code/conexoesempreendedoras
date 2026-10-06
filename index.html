@@ -296,12 +296,12 @@ h1,h2,h3,h4{font-family:'Montserrat',Arial,sans-serif}
       <div class="st">Visão Geral do Projeto</div>
       <div class="g5" id="kpi-row" style="margin-bottom:20px"></div>
 
-      <div class="st">Índice Global de Execução</div>
+      <div class="st">Panorama de Evidências Reais</div>
       <div class="card" style="padding:22px 26px;margin-bottom:20px">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;gap:16px">
           <div>
-            <div style="font-family:Montserrat,sans-serif;font-size:14px;font-weight:700;color:var(--az)">Conexões Empreendedoras — 4 Territórios — 66 Turmas</div>
-            <div style="font-size:11px;color:#888;margin-top:3px">Percentual de turmas completas segundo o agente de conformidade (regra de ouro: pasta vazia nao conta)</div>
+            <div style="font-family:Montserrat,sans-serif;font-size:14px;font-weight:700;color:var(--az)">Conexões Empreendedoras — inventário documental do Drive</div>
+            <div style="font-size:11px;color:#888;margin-top:3px">A barra abaixo mostra a proporção de grupos reais de evidência que já possuem ao menos uma lista de presença. Não representa percentual de execução das 66 turmas.</div>
           </div>
           <div id="sc-txt" style="font-family:Montserrat,sans-serif;font-size:44px;font-weight:700;color:var(--azs);white-space:nowrap">--</div>
         </div>
@@ -311,13 +311,13 @@ h1,h2,h3,h4{font-family:'Montserrat',Arial,sans-serif}
         </div>
       </div>
 
-      <div class="st">Execução por Território</div>
+      <div class="st">Evidências por Território</div>
       <div class="g4" id="dash-terr" style="margin-bottom:20px"></div>
 
-      <div class="st">Alertas Críticos</div>
+      <div class="st">Pendências de Conformidade</div>
       <div id="dash-alertas" style="margin-bottom:20px"></div>
 
-      <div class="st">Execução por Curso</div>
+      <div class="st">Evidências por Curso</div>
       <div id="dash-cursos" style="margin-bottom:8px"></div>
     </div>
 
@@ -501,6 +501,55 @@ function abrirTerr(idx) {
 
 function ATIV() { return (D && D.atividades) ? D.atividades : []; }
 function EVID() { return (D && Array.isArray(D.evidenciasDrive)) ? D.evidenciasDrive : []; }
+
+
+function normCE(v) {
+  return String(v == null ? '' : v)
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+}
+
+function numEvidReal(v) {
+  var n = Number(v || 0);
+  return isNaN(n) ? 0 : n;
+}
+
+function evidenciasParaAtividade(row) {
+  if (!row) return [];
+  var t = normCE(row['Territorio']);
+  var c = normCE(row['Curso']);
+  return EVID().filter(function (e) {
+    return normCE(e['Territorio']) === t && normCE(e['Curso_Normalizado'] || e['Curso_Original_Drive']) === c;
+  });
+}
+
+function resumoEvidenciasReais(rows) {
+  rows = Array.isArray(rows) ? rows : [];
+  var r = {grupos:rows.length, fotos:0, listas:0, documentos:0, relatorios:0, certificados:0, vinculados:0, semVinculo:0, gruposComLista:0, gruposComFotos:0};
+  rows.forEach(function (e) {
+    var f=numEvidReal(e['Qtd_Fotos']), l=numEvidReal(e['Qtd_Listas']);
+    r.fotos += f;
+    r.listas += l;
+    r.documentos += numEvidReal(e['Qtd_Documentos']);
+    r.relatorios += numEvidReal(e['Qtd_Relatorios']);
+    r.certificados += numEvidReal(e['Qtd_Certificados']);
+    if (f>0) r.gruposComFotos++;
+    if (l>0) r.gruposComLista++;
+    if (String(e['Status_Vinculo'] || '') === 'VINCULADO_AUTOMATICAMENTE') r.vinculados++;
+    else r.semVinculo++;
+  });
+  return r;
+}
+
+function metricasTerritorioReal(nome) {
+  var n=normCE(nome);
+  return resumoEvidenciasReais(EVID().filter(function(e){ return normCE(e['Territorio'])===n; }));
+}
+
+function metricasCursoReal(nome) {
+  var n=normCE(nome);
+  return resumoEvidenciasReais(EVID().filter(function(e){ return normCE(e['Curso_Normalizado'] || e['Curso_Original_Drive'])===n; }));
+}
 
 function nEv(row, chave) {
   var v = row && row[chave];
@@ -693,122 +742,109 @@ function kpi(n, l) {
 
 function renderDash() {
   var rows = ATIV();
-  var completos = rows.filter(function (r) { return (r['Status'] || '').trim() === 'Completo'; }).length;
-  var comEvidencia = rows.filter(function (r) { return temEvidencia(r); }).length;
-  var insuficientes = rows.filter(function (r) { return statusVisual(r) === 'Insuficiente'; }).length;
-  var criticos = rows.filter(function (r) { var sv = statusVisual(r); return sv === 'Alerta' || sv === 'Erro' || sv === 'Critico'; }).length;
+  var evs = EVID();
+  var real = resumoEvidenciasReais(evs);
+  var vinculadas = new Set(evs.filter(function(e){return String(e['Status_Vinculo']||'')==='VINCULADO_AUTOMATICAMENTE';}).map(function(e){return String(e['Linha_ATIVIDADES']||'');}).filter(Boolean)).size;
 
   document.getElementById('kpi-row').innerHTML =
     kpi(rows.length, 'Turmas Previstas') +
-    kpi(comEvidencia, 'Turmas com Evidencia') +
-    kpi(completos + ' / ' + rows.length, 'Turmas Completas') +
-    kpi(insuficientes, 'Insuficientes') +
-    kpi(criticos, 'Criticas / Alertas');
+    kpi(real.grupos, 'Grupos Reais de Evidencia') +
+    kpi(real.fotos, 'Fotos Identificadas') +
+    kpi(real.listas, 'Listas Identificadas') +
+    kpi(vinculadas + ' / ' + rows.length, 'Vinculos Inequivocos');
 
-  var sg = pctGlobal();
-  document.getElementById('sc-txt').textContent = sg + '%';
+  var coberturaLista = real.grupos ? Math.round((real.gruposComLista / real.grupos) * 100) : 0;
+  document.getElementById('sc-txt').textContent = coberturaLista + '%';
   var bg = document.getElementById('bar-g');
-  bg.style.width = sg + '%';
-  bg.className = 'sb ' + scl(sg);
+  bg.style.width = coberturaLista + '%';
+  bg.className = 'sb ' + scl(coberturaLista);
 
   var th = '';
   TERR.forEach(function (t, i) {
-    var sc = pctTerritorio(t);
-    var terrRows = rows.filter(function (r) { return r['Territorio'] === t; });
-    var cr = terrRows.filter(function (r) { var sv = statusVisual(r); return sv === 'Alerta' || sv === 'Erro' || sv === 'Critico'; }).length;
+    var m = metricasTerritorioReal(t);
+    var terrRows = rows.filter(function (r) { return normCE(r['Territorio']) === normCE(t); });
     th += '<div class="tcard" onclick="goV(\'territorios\');setTimeout(function(){abrirTerr(' + i + ')},120)">';
-    th += '<div class="tnome">' + t + '</div>';
-    th += '<div class="tsc">' + sc + '%</div>';
-    th += '<div style="margin:8px 0"><div class="sbw" style="height:8px"><div class="sb ' + scl(sc) + '" style="width:' + sc + '%"></div></div></div>';
-    if (cr > 0) th += '<span class="badge bC">' + cr + ' critica(s)</span>';
-    else th += '<span class="badge bR" style="opacity:.7">Em dia</span>';
+    th += '<div class="tnome">' + esc(t) + '</div>';
+    th += '<div class="tsc">' + m.grupos + ' grupos</div>';
+    th += '<div class="tmeta">' + m.fotos + ' fotos · ' + m.listas + ' listas</div>';
+    th += '<div style="font-size:11px;color:#777;margin-top:8px">' + terrRows.length + ' turma(s) prevista(s) no planejamento</div>';
+    if (m.semVinculo > 0) th += '<span class="badge bP" style="margin-top:8px">' + m.semVinculo + ' grupo(s) aguardando vínculo</span>';
     th += '</div>';
   });
   document.getElementById('dash-terr').innerHTML = th;
 
-  // Alertas: turmas com Alerta de duplicidade, Erro tecnico, ou
-  // Pendente/Insuficiente cuja competencia ja passou (viraram Critico).
-  var crows = rows.filter(function (r) {
-    var sv = statusVisual(r);
-    return sv === 'Alerta' || sv === 'Erro' || sv === 'Critico';
-  });
-  var ah = '';
-  var diasRestantes = diasAteFimConvenio();
-  if (diasRestantes >= 0 && diasRestantes <= 30) {
-    ah += '<div class="abox"><div class="atit">Convenio encerra em ' + diasRestantes + ' dia(s) (19/08/2026)</div>' +
-      '<div style="font-size:12px;color:#8B1A1A">Confira as turmas criticas abaixo antes de fechar a prestacao de contas.</div></div>';
-  }
-  if (!crows.length) {
-    ah += '<div class="card" style="color:#666;font-size:13px">Nenhuma turma critica no momento.</div>';
+  var pend = rows.filter(function (r) { return statusVisual(r) !== 'Completo'; });
+  var ah = '<div class="card" style="font-size:12px;color:#536273;margin-bottom:10px">Esta seção acompanha a <strong>conformidade das 66 turmas planejadas</strong>. Um status Pendente/Crítico não significa ausência de evidência no Drive; quando houver evidência do mesmo curso e território sem identificação inequívoca de turma, ela aparece explicitamente abaixo.</div>';
+  if (!pend.length) {
+    ah += '<div class="card" style="color:#666;font-size:13px">Nenhuma pendência de conformidade no momento.</div>';
   } else {
     ah += '<div class="card" style="padding:0;overflow:auto"><table class="tbl">';
-    ah += '<tr><th>Territorio</th><th>Curso</th><th>Turma</th><th>Competencia</th><th>Situacao</th><th>Leitura</th></tr>';
-    crows.slice(0, 30).forEach(function (r) {
-      var sv = statusVisual(r);
-      ah += '<tr><td><strong>' + (r['Territorio'] || '-') + '</strong></td>';
-      ah += '<td>' + (r['Curso'] || '-') + '</td>';
-      ah += '<td>' + (r['Turma'] || '-') + '</td>';
-      ah += '<td><span class="badge bC">' + (r['Competencia'] || '-') + '</span></td>';
-      ah += '<td><span class="badge ' + bcl(sv) + '">' + sv + '</span></td>';
-      ah += '<td style="font-size:11px;color:#666;max-width:280px">' + esc(leituraAgenteCE(r)) + '</td></tr>';
+    ah += '<tr><th>Territorio</th><th>Curso</th><th>Turma</th><th>Competencia</th><th>Situacao</th><th>Contexto documental</th></tr>';
+    pend.slice(0, 30).forEach(function (r) {
+      var sv = statusVisual(r), rel=evidenciasParaAtividade(r), rs=resumoEvidenciasReais(rel);
+      var leitura = rs.grupos>0
+        ? ('Há ' + rs.grupos + ' grupo(s) real(is) deste curso no território, com ' + rs.fotos + ' foto(s) e ' + rs.listas + ' lista(s). O vínculo com esta turma só é feito quando a identificação é inequívoca.')
+        : leituraAgenteCE(r);
+      ah += '<tr><td><strong>' + esc(r['Territorio'] || '-') + '</strong></td>';
+      ah += '<td>' + esc(r['Curso'] || '-') + '</td>';
+      ah += '<td>' + esc(r['Turma'] || '-') + '</td>';
+      ah += '<td><span class="badge bP">' + esc(r['Competencia'] || '-') + '</span></td>';
+      ah += '<td><span class="badge ' + bcl(sv) + '">' + esc(sv) + '</span></td>';
+      ah += '<td style="font-size:11px;color:#666;max-width:360px">' + esc(leitura) + '</td></tr>';
     });
     ah += '</table></div>';
-    if (crows.length > 30) {
-      ah += '<div style="font-size:11px;color:#999;margin-top:6px">Mostrando 30 de ' + crows.length + ' turmas criticas. Veja a lista completa em Territorios ou Pastas Drive.</div>';
-    }
+    if (pend.length > 30) ah += '<div style="font-size:11px;color:#999;margin-top:6px">Mostrando 30 de ' + pend.length + ' pendências planejadas. A existência de evidência real pode ser consultada em Evidências Drive.</div>';
   }
   document.getElementById('dash-alertas').innerHTML = ah;
 
   var ch = '<div class="g3">';
   CURSOS.forEach(function (c) {
-    var pc = pctCurso(c);
-    var total = rows.filter(function (r) { return r['Curso'] === c; }).length;
-    if (!total) return;
+    var m=metricasCursoReal(c);
+    var total = rows.filter(function (r) { return normCE(r['Curso']) === normCE(c); }).length;
+    if (!total && !m.grupos) return;
+    var cobertura = m.grupos ? Math.round((m.gruposComLista/m.grupos)*100) : 0;
     ch += '<div class="card">';
-    ch += '<div style="font-size:12px;font-weight:700;color:var(--az);font-family:Montserrat,sans-serif;margin-bottom:6px">' + c + '</div>';
-    ch += '<div class="sbw" style="height:8px;margin-bottom:4px"><div class="sb ' + scl(pc) + '" style="width:' + pc + '%"></div></div>';
-    ch += '<div style="font-size:11px;color:#888">' + pc + '% (' + total + ' turma(s))</div>';
+    ch += '<div style="font-size:12px;font-weight:700;color:var(--az);font-family:Montserrat,sans-serif;margin-bottom:6px">' + esc(c) + '</div>';
+    ch += '<div style="font-size:24px;font-weight:700;color:var(--azs);font-family:Montserrat,sans-serif">' + m.grupos + ' grupos</div>';
+    ch += '<div style="font-size:11px;color:#666;margin:4px 0 8px">' + m.fotos + ' fotos · ' + m.listas + ' listas · ' + total + ' turma(s) prevista(s)</div>';
+    ch += '<div class="sbw" style="height:8px;margin-bottom:4px"><div class="sb ' + scl(cobertura) + '" style="width:' + cobertura + '%"></div></div>';
+    ch += '<div style="font-size:10px;color:#888">' + cobertura + '% dos grupos deste curso têm lista de presença identificada</div>';
     ch += '</div>';
   });
   ch += '</div>';
   document.getElementById('dash-cursos').innerHTML = ch;
 }
-
 function renderListaTerritorios() {
   var h = '';
   TERR.forEach(function (t, i) {
-    var sc = pctTerritorio(t);
-    var terrRows = ATIV().filter(function (r) { return r['Territorio'] === t; });
-    var exec = terrRows.filter(function (r) { return (r['Status'] || '').trim() === 'Completo'; }).length;
-    var cr = terrRows.filter(function (r) { var sv = statusVisual(r); return sv === 'Alerta' || sv === 'Erro' || sv === 'Critico'; }).length;
+    var m=metricasTerritorioReal(t);
+    var terrRows = ATIV().filter(function (r) { return normCE(r['Territorio']) === normCE(t); });
     h += '<div class="tcard" onclick="abrirTerr(' + i + ')">';
-    h += '<div class="tnome">' + t + '</div>';
-    h += '<div class="tsc">' + sc + '%</div>';
-    h += '<div class="tmeta">' + exec + ' de ' + terrRows.length + ' turmas completas</div>';
-    h += '<div style="margin:10px 0"><div class="sbw" style="height:8px"><div class="sb ' + scl(sc) + '" style="width:' + sc + '%"></div></div></div>';
-    if (cr > 0) h += '<span class="badge bC" style="margin-bottom:4px;display:inline-block">' + cr + ' critica(s)</span>';
+    h += '<div class="tnome">' + esc(t) + '</div>';
+    h += '<div class="tsc">' + m.grupos + ' grupos</div>';
+    h += '<div class="tmeta">' + m.fotos + ' fotos · ' + m.listas + ' listas</div>';
+    h += '<div style="font-size:11px;color:#777;margin-top:8px">' + terrRows.length + ' turma(s) prevista(s)</div>';
+    if(m.semVinculo>0) h += '<span class="badge bP" style="margin:8px 0 4px;display:inline-block">' + m.semVinculo + ' grupo(s) aguardando vínculo</span>';
     h += '<div class="tlink">Ver cursos e turmas -&gt;</div>';
     h += '</div>';
   });
   document.getElementById('lista-terr').innerHTML = h;
 }
-
 function renderDetalheTerritorio(idx) {
   var nome = TERR[idx];
   var tR = ATIV().filter(function (r) { return r['Territorio'] === nome; });
-  var sc = pctTerritorio(nome);
-  var exec = tR.filter(function (r) { return (r['Status'] || '').trim() === 'Completo'; }).length;
+  var mTerr = metricasTerritorioReal(nome);
   var h = '';
 
   h += '<div class="card" style="background:var(--az);padding:22px 26px;margin-bottom:20px">';
   h += '<div style="font-size:18px;font-weight:700;color:var(--am);font-family:Montserrat,sans-serif">' + nome + '</div>';
   h += '<div style="font-size:12px;color:rgba(255,255,255,.6);margin-top:4px">Conexões Empreendedoras — Instituto BR Arte / UFRRJ</div>';
-  h += '<div style="margin-top:14px;display:flex;align-items:center;gap:16px;flex-wrap:wrap">';
-  h += '<div style="font-size:40px;font-weight:700;color:var(--br);font-family:Montserrat,sans-serif">' + sc + '%</div>';
-  h += '<div style="flex:1;min-width:160px">';
-  h += '<div class="sbw" style="height:14px"><div class="sb ' + scl(sc) + '" style="width:' + sc + '%"></div></div>';
-  h += '<div style="color:rgba(255,255,255,.5);font-size:11px;margin-top:4px">' + exec + ' de ' + tR.length + ' turmas completas</div>';
-  h += '</div></div></div>';
+  h += '<div style="margin-top:14px;display:flex;align-items:center;gap:22px;flex-wrap:wrap">';
+  h += '<div><div style="font-size:34px;font-weight:700;color:var(--br);font-family:Montserrat,sans-serif">' + mTerr.grupos + '</div><div style="color:rgba(255,255,255,.55);font-size:10px">grupos reais</div></div>';
+  h += '<div><div style="font-size:24px;font-weight:700;color:var(--am);font-family:Montserrat,sans-serif">' + mTerr.fotos + '</div><div style="color:rgba(255,255,255,.55);font-size:10px">fotos</div></div>';
+  h += '<div><div style="font-size:24px;font-weight:700;color:var(--am);font-family:Montserrat,sans-serif">' + mTerr.listas + '</div><div style="color:rgba(255,255,255,.55);font-size:10px">listas</div></div>';
+  h += '<div><div style="font-size:24px;font-weight:700;color:var(--br);font-family:Montserrat,sans-serif">' + tR.length + '</div><div style="color:rgba(255,255,255,.55);font-size:10px">turmas previstas</div></div>';
+  h += '</div></div>';
 
   var porCurso = {};
   tR.forEach(function (r) {
@@ -821,7 +857,9 @@ function renderDetalheTerritorio(idx) {
   Object.keys(porCurso).sort().forEach(function (curso) {
     var turmas = porCurso[curso];
     h += '<div style="margin-bottom:18px">';
-    h += '<div style="font-size:13px;font-weight:700;color:var(--az);font-family:Montserrat,sans-serif;margin-bottom:8px">' + curso + ' (' + turmas.length + ' turma(s))</div>';
+    var mCursoTerr=resumoEvidenciasReais(EVID().filter(function(e){return normCE(e['Territorio'])===normCE(nome) && normCE(e['Curso_Normalizado']||e['Curso_Original_Drive'])===normCE(curso);}));
+    h += '<div style="font-size:13px;font-weight:700;color:var(--az);font-family:Montserrat,sans-serif;margin-bottom:4px">' + esc(curso) + ' (' + turmas.length + ' turma(s) prevista(s))</div>';
+    h += '<div style="font-size:11px;color:#667;margin-bottom:8px"><strong>Evidência real do curso:</strong> ' + mCursoTerr.grupos + ' grupo(s) · ' + mCursoTerr.fotos + ' foto(s) · ' + mCursoTerr.listas + ' lista(s)</div>';
     h += '<div class="g3">';
     turmas.forEach(function (r) {
       var st = statusVisual(r);
@@ -834,6 +872,8 @@ function renderDetalheTerritorio(idx) {
       h += '<div class="cfase">Competencia: ' + (r['Competencia'] || '-') + ' | Meta: ' + (r['Meta Vinculada'] || '-') + '</div>';
       if (obs) h += '<div style="font-size:10px;color:#888;margin:4px 0">' + obs + '</div>';
       h += evidenciaResumoHtml(r);
+      var relTurma=evidenciasParaAtividade(r), rsTurma=resumoEvidenciasReais(relTurma);
+      if(!temEvidencia(r) && rsTurma.grupos>0) h += '<div style="font-size:10px;background:#eef8fb;border-left:3px solid var(--ci);padding:7px 8px;margin:7px 0;color:#31566a"><strong>Há evidência real do curso no território:</strong> ' + rsTurma.grupos + ' grupo(s), ' + rsTurma.fotos + ' foto(s), ' + rsTurma.listas + ' lista(s). Não atribuída automaticamente a esta turma sem identificação inequívoca.</div>';
       var linksEv = linksEvidenciaHtml(r, 'clink');
       if (linksEv) h += linksEv;
       else h += '<div style="font-size:11px;color:#ccc;margin-top:6px">Sem link registrado</div>';
@@ -888,7 +928,11 @@ function renderAtividades() {
     h+='<div class="atividade-evid"><div class="lab">Relatório</div><div class="val">'+simNaoCE(fl.relatorio)+'</div></div>';
     h+='<div class="atividade-evid"><div class="lab">Certificação</div><div class="val">'+simNaoCE(fl.certificacao)+'</div></div>';
     h+='</div>';
-    h+='<div class="atividade-reading"><strong>Leitura do Agente</strong><br>'+esc(leituraAgenteCE(r))+'</div>';
+    var relReal=evidenciasParaAtividade(r), sumReal=resumoEvidenciasReais(relReal);
+    if(!temEvidencia(r) && sumReal.grupos>0){
+      h+='<div style="margin-top:10px;background:#eef8fb;border-left:4px solid var(--ci);padding:9px 10px;font-size:11px;color:#31566a"><strong>Evidência real localizada no Drive:</strong> '+sumReal.grupos+' grupo(s), '+sumReal.fotos+' foto(s) e '+sumReal.listas+' lista(s) deste curso no território. O agente não atribui esse conjunto a esta turma sem identificação inequívoca.</div>';
+    }
+    h+='<div class="atividade-reading"><strong>Leitura do Agente</strong><br>'+esc(sumReal.grupos>0 && !temEvidencia(r) ? 'Há evidência do curso no território, mas esta turma planejada ainda não possui vínculo documental inequívoco.' : leituraAgenteCE(r))+'</div>';
     if(r['Observacoes do Agente']) h+='<details class="atividade-detalhes"><summary>Ver detalhes</summary><div>'+esc(r['Observacoes do Agente'])+'</div></details>';
     h+='</div>';
   });
