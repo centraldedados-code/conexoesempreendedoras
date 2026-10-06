@@ -266,6 +266,82 @@ h1,h2,h3,h4{font-family:'Montserrat',Arial,sans-serif}
 @media(max-width:950px){.atividade-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.drive-grid{grid-template-columns:repeat(2,1fr)}.course-grid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:600px){.atividade-grid,.drive-grid,.course-grid{grid-template-columns:1fr}.atividade-card{min-height:auto}.evid-hero{align-items:flex-start}.evid-hero-badge{display:none}}
 
+
+
+/* ===== DASHBOARD EXECUTIVO V8 ===== */
+.exec-toolbar{display:flex;align-items:center;justify-content:space-between;gap:16px;margin:0 0 16px;flex-wrap:wrap}
+.exec-toolbar-left{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.exec-eyebrow{font-family:'Montserrat',sans-serif;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--azs)}
+.exec-title{font-family:'Montserrat',sans-serif;font-size:22px;font-weight:700;color:var(--az);line-height:1.15}
+.exec-sub{font-size:11px;color:#6b7788;margin-top:4px}
+.exec-select{appearance:none;background:#fff;border:1px solid #d8e1ec;border-radius:10px;padding:10px 34px 10px 12px;font-family:'Montserrat',sans-serif;font-size:11px;font-weight:700;color:var(--az);outline:none;box-shadow:0 2px 8px rgba(9,32,64,.04)}
+.exec-hero{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(240px,.45fr);gap:18px;background:linear-gradient(135deg,#071c38 0%,#092040 64%,#07375b 100%);border-radius:18px;padding:24px;margin-bottom:18px;box-shadow:0 14px 34px rgba(2,23,56,.14);overflow:hidden;position:relative}
+.exec-hero:after{content:'';position:absolute;width:260px;height:260px;border:1px solid rgba(0,183,215,.18);border-radius:50%;right:-90px;top:-110px;box-shadow:0 0 0 42px rgba(0,183,215,.04),0 0 0 90px rgba(236,194,3,.025)}
+.exec-hero-copy{position:relative;z-index:2}
+.exec-hero-kicker{color:var(--am);font-family:'Montserrat',sans-serif;font-size:10px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase}
+.exec-hero h2{color:#fff;font-size:22px;margin:7px 0 8px;max-width:720px}
+.exec-hero p{color:rgba(255,255,255,.68);font-size:12px;line-height:1.7;max-width:760px}
+.exec-hero-tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.exec-tag{font-size:10px;font-weight:700;border-radius:999px;padding:6px 9px;background:rgba(255,255,255,.08);color:#fff;border:1px solid rgba(255,255,255,.12)}
+.exec-readiness{position:relative;z-index:2;display:flex;align-items:center;justify-content:center;gap:16px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:15px;padding:16px}
+.exec-ring{--pct:0;width:112px;height:112px;border-radius:50%;background:conic-gradient(var(--azs) calc(var(--pct)*1%),rgba(255,255,255,.12) 0);position:relative;display:grid;place-items:center;flex:0 0 auto}
+.exec-ring:before{content:'';position:absolute;inset:9px;border-radius:50%;background:#092040}
+.exec-ring-value{position:relative;z-index:2;color:#fff;font-family:'Montserrat',sans-serif;font-size:26px;font-weight:700}
+.exec-ring-value small{font-size:12px;color:var(--azs)}
+.exec-ring-text{color:#fff;min-width:110px}
+.exec-ring-text strong{display:block;font-family:'Montserrat',sans-serif;font-size:12px;margin-bottom:5px}
+.exec-ring-text span{font-size:10px;color:rgba(255,255,255,.62);line-height:1.45}
+.exec-kpis{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin-bottom:18px}
+.exec-kpi{background:#fff;border:1px solid #dbe4ee;border-radius:14px;padding:14px 15px;box-shadow:0 5px 15px rgba(9,32,64,.035);position:relative;overflow:hidden;min-height:96px}
+.exec-kpi:before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--azs)}
+.exec-kpi.warn:before{background:var(--am)}.exec-kpi.risk:before{background:#d85b5b}.exec-kpi.good:before{background:#3f9b67}
+.exec-kpi .label{font-size:9px;font-family:'Montserrat',sans-serif;font-weight:700;color:#6f7c8d;text-transform:uppercase;letter-spacing:.8px}
+.exec-kpi .value{font-family:'Montserrat',sans-serif;color:var(--az);font-size:25px;font-weight:700;margin:6px 0 2px}
+.exec-kpi .hint{font-size:10px;color:#8490a0;line-height:1.35}
+.exec-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:18px}
+.exec-panel{background:#fff;border:1px solid #dbe4ee;border-radius:15px;padding:17px;box-shadow:0 5px 16px rgba(9,32,64,.035)}
+.exec-panel-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:13px}
+.exec-panel-title{font-family:'Montserrat',sans-serif;font-size:13px;font-weight:700;color:var(--az)}
+.exec-panel-sub{font-size:10px;color:#8793a2;margin-top:3px;line-height:1.4}
+.exec-insights{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:18px}
+.exec-insight{background:#fff;border:1px solid #dbe4ee;border-radius:13px;padding:14px;min-height:112px;position:relative}
+.exec-insight:before{content:'';position:absolute;left:14px;top:14px;width:8px;height:8px;border-radius:50%;background:var(--azs);box-shadow:0 0 0 4px rgba(0,183,215,.1)}
+.exec-insight.warn:before{background:var(--am);box-shadow:0 0 0 4px rgba(236,194,3,.12)}
+.exec-insight.risk:before{background:#d85b5b;box-shadow:0 0 0 4px rgba(216,91,91,.1)}
+.exec-insight strong{display:block;font-family:'Montserrat',sans-serif;font-size:11px;color:var(--az);margin-left:18px;margin-bottom:8px}
+.exec-insight p{font-size:10px;color:#687587;line-height:1.55}
+.funnel{display:flex;flex-direction:column;gap:9px}
+.funnel-row{display:grid;grid-template-columns:minmax(150px,1fr) 54px;gap:10px;align-items:center}
+.funnel-label{font-size:10px;color:#536273;margin-bottom:4px;display:flex;justify-content:space-between;gap:8px}
+.funnel-track{height:9px;background:#edf1f5;border-radius:999px;overflow:hidden}
+.funnel-bar{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--azs),#078aa4);min-width:2px}
+.funnel-bar.warn{background:linear-gradient(90deg,var(--am),#d09f00)}
+.funnel-bar.good{background:linear-gradient(90deg,#3f9b67,#2d7c50)}
+.funnel-num{font-family:'Montserrat',sans-serif;font-size:18px;font-weight:700;color:var(--az);text-align:right}
+.exec-territories{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:18px}
+.exec-territory{background:#fff;border:1px solid #dbe4ee;border-radius:14px;padding:14px;cursor:pointer;transition:.2s;position:relative;overflow:hidden}
+.exec-territory:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(9,32,64,.08);border-color:#bfdce5}
+.exec-territory .name{font-family:'Montserrat',sans-serif;font-size:11px;font-weight:700;color:var(--az);padding-right:56px}
+.exec-territory .score{position:absolute;right:12px;top:12px;font-family:'Montserrat',sans-serif;font-size:18px;font-weight:700;color:var(--azs)}
+.exec-territory .status{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-top:3px;color:#7b8796}
+.exec-territory .meta{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:12px}
+.exec-territory .mini{background:#f6f8fa;border-radius:8px;padding:7px;text-align:center}
+.exec-territory .mini b{display:block;font-family:'Montserrat',sans-serif;color:var(--az);font-size:13px}.exec-territory .mini span{font-size:8px;color:#8b96a5;text-transform:uppercase}
+.exec-territory .bar{height:5px;background:#edf1f5;border-radius:999px;margin-top:10px;overflow:hidden}.exec-territory .bar i{display:block;height:100%;background:var(--azs);border-radius:999px}
+.prio-list{display:flex;flex-direction:column;gap:8px}
+.prio-item{display:grid;grid-template-columns:34px minmax(0,1fr) 140px;gap:10px;align-items:center;border:1px solid #e0e7ef;border-radius:10px;padding:10px 11px;background:#fff}
+.prio-rank{width:28px;height:28px;border-radius:9px;background:#fff3c4;color:#8d6500;display:grid;place-items:center;font-family:'Montserrat',sans-serif;font-weight:700;font-size:11px}
+.prio-main strong{font-family:'Montserrat',sans-serif;font-size:10px;color:var(--az);display:block}.prio-main span{font-size:9px;color:#7f8b9a;display:block;margin-top:3px;line-height:1.35}
+.prio-action{font-size:9px;color:#526173;text-align:right;line-height:1.35}
+.matrix-wrap{overflow:auto;border:1px solid #dbe4ee;border-radius:13px;background:#fff}
+.exec-matrix{border-collapse:separate;border-spacing:0;width:100%;min-width:760px;font-size:9px}
+.exec-matrix th{background:var(--az);color:#fff;font-family:'Montserrat',sans-serif;font-size:9px;padding:10px 8px;text-transform:uppercase;letter-spacing:.4px;position:sticky;top:0;z-index:1}
+.exec-matrix th:first-child{text-align:left;left:0;z-index:2}.exec-matrix td{padding:8px;border-bottom:1px solid #edf1f4;text-align:center}.exec-matrix td:first-child{text-align:left;font-family:'Montserrat',sans-serif;font-weight:700;color:var(--az);background:#fff;position:sticky;left:0;z-index:1;min-width:190px}
+.matrix-pill{display:inline-block;border-radius:999px;padding:4px 7px;font-size:8px;font-weight:700;white-space:nowrap}.mx-forte{background:#e8f6ed;color:#246e45}.mx-vinculo{background:#fff5d6;color:#8b6500}.mx-atencao{background:#fff0dc;color:#9a5700}.mx-sem{background:#fdeaea;color:#a13434}.mx-na{background:#f1f3f5;color:#8a94a1}
+.exec-footnote{font-size:9px;color:#8793a2;line-height:1.5;margin-top:8px}
+@media(max-width:980px){.exec-kpis{grid-template-columns:repeat(2,1fr)}.exec-insights{grid-template-columns:repeat(2,1fr)}.exec-territories{grid-template-columns:repeat(2,1fr)}.exec-hero{grid-template-columns:1fr}.exec-grid-2{grid-template-columns:1fr}}
+@media(max-width:620px){.exec-kpis,.exec-insights,.exec-territories{grid-template-columns:1fr}.exec-readiness{justify-content:flex-start}.prio-item{grid-template-columns:34px 1fr}.prio-action{grid-column:2;text-align:left}.exec-title{font-size:18px}}
+
 </style>
 </head>
 <body>
@@ -317,32 +393,66 @@ h1,h2,h3,h4{font-family:'Montserrat',Arial,sans-serif}
 
     <!-- DASHBOARD -->
     <div class="vw on" id="vw-dashboard">
-      <div class="st">Visão Geral do Projeto</div>
-      <div class="g5" id="kpi-row" style="margin-bottom:20px"></div>
-
-      <div class="st">Panorama de Evidências Reais</div>
-      <div class="card" style="padding:22px 26px;margin-bottom:20px">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;gap:16px">
-          <div>
-            <div style="font-family:Montserrat,sans-serif;font-size:14px;font-weight:700;color:var(--az)">Conexões Empreendedoras — inventário documental do Drive</div>
-            <div style="font-size:11px;color:#888;margin-top:3px">A barra abaixo mostra a proporção de grupos reais de evidência que já possuem ao menos uma lista de presença. Não representa percentual de execução das 66 turmas.</div>
-          </div>
-          <div id="sc-txt" style="font-family:Montserrat,sans-serif;font-size:44px;font-weight:700;color:var(--azs);white-space:nowrap">--</div>
+      <div class="exec-toolbar">
+        <div>
+          <div class="exec-eyebrow">Centro Executivo de Monitoramento</div>
+          <div class="exec-title">Visão inteligente da execução e da conformidade</div>
+          <div class="exec-sub">Drive real, vínculo das turmas e risco documental analisados separadamente para evitar leituras enganosas.</div>
         </div>
-        <div class="sbw" style="height:22px"><div class="sb" id="bar-g" style="width:0%"></div></div>
-        <div style="display:flex;justify-content:space-between;margin-top:6px;font-size:10px;color:#bbb">
-          <span>0%</span><span>25%</span><span>50%</span><span>75%</span><span>100%</span>
+        <div class="exec-toolbar-left">
+          <label class="exec-eyebrow" for="dash-filter-territorio">Visão</label>
+          <select id="dash-filter-territorio" class="exec-select" onchange="renderDash()">
+            <option value="">Projeto inteiro</option>
+          </select>
         </div>
       </div>
 
-      <div class="st">Evidências por Território</div>
-      <div class="g4" id="dash-terr" style="margin-bottom:20px"></div>
+      <div class="exec-hero">
+        <div class="exec-hero-copy">
+          <div class="exec-hero-kicker">Leitura executiva</div>
+          <h2 id="dash-headline">Carregando inteligência do monitoramento...</h2>
+          <p id="dash-headline-sub">O painel cruza as evidências reais do Drive com as turmas previstas sem multiplicar evidências entre turmas.</p>
+          <div class="exec-hero-tags" id="dash-hero-tags"></div>
+        </div>
+        <div class="exec-readiness">
+          <div class="exec-ring" id="dash-readiness" style="--pct:0"><div class="exec-ring-value"><span id="dash-readiness-value">0</span><small>/100</small></div></div>
+          <div class="exec-ring-text"><strong>Prontidão documental</strong><span id="dash-readiness-label">Calculando...</span></div>
+        </div>
+      </div>
 
-      <div class="st">Pendências de Conformidade</div>
-      <div id="dash-alertas" style="margin-bottom:20px"></div>
+      <div class="exec-kpis" id="dash-exec-kpis"></div>
 
-      <div class="st">Evidências por Curso</div>
-      <div id="dash-cursos" style="margin-bottom:8px"></div>
+      <div class="st">Inteligência do Monitoramento</div>
+      <div class="exec-insights" id="dash-insights"></div>
+
+      <div class="exec-grid-2">
+        <div class="exec-panel">
+          <div class="exec-panel-head"><div><div class="exec-panel-title">Funil Documental do Drive</div><div class="exec-panel-sub">Qualidade dos grupos reais de evidência, sem usar turmas planejadas como denominador.</div></div></div>
+          <div id="dash-funil-drive"></div>
+        </div>
+        <div class="exec-panel">
+          <div class="exec-panel-head"><div><div class="exec-panel-title">Funil de Conformidade das Turmas</div><div class="exec-panel-sub">Da previsão no plano até o vínculo documental inequívoco e a conclusão.</div></div></div>
+          <div id="dash-funil-conformidade"></div>
+        </div>
+      </div>
+
+      <div class="st">Leitura Territorial</div>
+      <div class="exec-territories" id="dash-terr"></div>
+
+      <div class="exec-grid-2">
+        <div class="exec-panel">
+          <div class="exec-panel-head"><div><div class="exec-panel-title">Prioridades de Ação</div><div class="exec-panel-sub">Situações que mais aumentam o risco documental neste momento.</div></div><button class="pend-open" onclick="goV('atividades')">Ver atividades</button></div>
+          <div class="prio-list" id="dash-prioridades"></div>
+        </div>
+        <div class="exec-panel">
+          <div class="exec-panel-head"><div><div class="exec-panel-title">Diagnóstico Executivo</div><div class="exec-panel-sub">Indicadores de cobertura, vínculo e conclusão em uma leitura única.</div></div></div>
+          <div id="dash-diagnostico"></div>
+        </div>
+      </div>
+
+      <div class="st">Matriz Executiva por Curso e Território</div>
+      <div class="matrix-wrap" id="dash-matriz"></div>
+      <div class="exec-footnote">Forte = evidência + lista + vínculo/conclusão; Vínculo = evidência consistente, porém turma ainda não identificada de forma inequívoca; Atenção = evidência parcial; Sem evidência = curso planejado sem evidência real localizada.</div>
     </div>
 
     <!-- TERRITORIOS -->
@@ -538,6 +648,11 @@ function numEvidReal(v) {
   return isNaN(n) ? 0 : n;
 }
 
+function evidenciaVinculadaCE(e) {
+  if (!e) return false;
+  return !!String(e['Linha_ATIVIDADES'] || '').trim() || !!String(e['Vinculo_Atividade'] || '').trim() || String(e['Status_Vinculo'] || '') === 'VINCULADO_AUTOMATICAMENTE';
+}
+
 function evidenciasParaAtividade(row) {
   if (!row) return [];
   var t = normCE(row['Territorio']);
@@ -601,7 +716,7 @@ function resumoEvidenciasReais(rows) {
     r.certificados += numEvidReal(e['Qtd_Certificados']);
     if (f>0) r.gruposComFotos++;
     if (l>0) r.gruposComLista++;
-    if (String(e['Status_Vinculo'] || '') === 'VINCULADO_AUTOMATICAMENTE') r.vinculados++;
+    if (evidenciaVinculadaCE(e)) r.vinculados++;
     else r.semVinculo++;
   });
   return r;
@@ -806,105 +921,170 @@ function kpi(n, l) {
   return '<div class="kpi"><div class="knum">' + n + '</div><div class="klab">' + l + '</div></div>';
 }
 
+
+function dashTerritorioSelecionado(){
+  var el=document.getElementById('dash-filter-territorio');
+  return el ? String(el.value||'') : '';
+}
+
+function preencherFiltroDashboard(){
+  var el=document.getElementById('dash-filter-territorio');
+  if(!el || el.options.length>1) return;
+  TERR.forEach(function(t){var o=document.createElement('option');o.value=t;o.textContent=t;el.appendChild(o);});
+}
+
+function evsDashboard(territorio){
+  var t=normCE(territorio||'');
+  return EVID().filter(function(e){return !t || normCE(e['Territorio'])===t;});
+}
+function atividadesDashboard(territorio){
+  var t=normCE(territorio||'');
+  return ATIV().filter(function(r){return !t || normCE(r['Territorio'])===t;});
+}
+function pctCE(a,b){return b?Math.round((a/b)*100):0;}
+function clampCE(n){return Math.max(0,Math.min(100,Math.round(n||0)));}
+function pairKeyCE(t,c){return normCE(t)+'||'+normCE(c);}
+
+function calcularDashboardExecutivo(territorio){
+  var rows=atividadesDashboard(territorio), evs=evsDashboard(territorio), real=resumoEvidenciasReais(evs);
+  var gruposComFotosELista=evs.filter(function(e){return numEvidReal(e['Qtd_Fotos'])>0 && numEvidReal(e['Qtd_Listas'])>0;}).length;
+  var linhasVinculadas=new Set(evs.filter(evidenciaVinculadaCE).map(function(e){return String(e['Linha_ATIVIDADES']||'').trim() || String(e['Vinculo_Atividade']||'').trim();}).filter(Boolean));
+  var turmasCompletas=rows.filter(function(r){return String(r['Status']||'').trim()==='Completo';}).length;
+  var cursosComEvidencia=new Set(evs.map(function(e){return normCE(e['Curso_Normalizado']||e['Curso_Original_Drive']);}).filter(Boolean)).size;
+  var paresPlanejados=new Set(rows.map(function(r){return pairKeyCE(r['Territorio'],r['Curso']);}));
+  var paresEvidencia=new Set(evs.map(function(e){return pairKeyCE(e['Territorio'],e['Curso_Normalizado']||e['Curso_Original_Drive']);}));
+  var paresCobertos=0; paresPlanejados.forEach(function(k){if(paresEvidencia.has(k)) paresCobertos++;});
+  var turmasCursoTerrComEvid=rows.filter(function(r){return paresEvidencia.has(pairKeyCE(r['Territorio'],r['Curso']));}).length;
+  var coberturaDoc=pctCE(gruposComFotosELista,real.grupos);
+  var coberturaLista=pctCE(real.gruposComLista,real.grupos);
+  var coberturaFoto=pctCE(real.gruposComFotos,real.grupos);
+  var coberturaPares=pctCE(paresCobertos,paresPlanejados.size);
+  var vinculoPct=pctCE(linhasVinculadas.size,rows.length);
+  var conclusaoPct=pctCE(turmasCompletas,rows.length);
+  var prontidao=clampCE(coberturaDoc*.34+coberturaPares*.26+vinculoPct*.25+conclusaoPct*.15);
+  var datas=evs.map(function(e){return String(e['Data_Referencia']||'');}).filter(function(x){return /^\d{4}-\d{2}-\d{2}/.test(x);}).sort();
+  return {
+    turmasPrevistas:rows.length,gruposReais:real.grupos,fotos:real.fotos,listas:real.listas,documentos:real.documentos,
+    gruposComFotos:real.gruposComFotos,gruposComLista:real.gruposComLista,gruposComFotosELista:gruposComFotosELista,
+    vinculosInequivocos:linhasVinculadas.size,turmasCompletas:turmasCompletas,cursosComEvidencia:cursosComEvidencia,
+    paresPlanejados:paresPlanejados.size,paresCobertos:paresCobertos,turmasCursoTerrComEvid:turmasCursoTerrComEvid,
+    coberturaDocumental:coberturaDoc,coberturaListas:coberturaLista,coberturaFotos:coberturaFoto,coberturaPares:coberturaPares,
+    vinculoPct:vinculoPct,conclusaoPct:conclusaoPct,prontidao:prontidao,ultimaEvidencia:datas.length?datas[datas.length-1]:'-'
+  };
+}
+
+function linhasVinculadasCursoTerritorio(territorio,curso){
+  var ev=evidenciasCanonicasCursoTerritorio(territorio,curso), s=new Set();
+  ev.forEach(function(e){if(evidenciaVinculadaCE(e)){var k=String(e['Linha_ATIVIDADES']||'').trim() || String(e['Vinculo_Atividade']||'').trim();if(k)s.add(k);}});
+  return s.size;
+}
+
+function gerarPrioridadesExecutivas(territorio){
+  var rows=atividadesDashboard(territorio), mapa={};
+  rows.forEach(function(r){
+    var k=pairKeyCE(r['Territorio'],r['Curso']);
+    if(!mapa[k]) mapa[k]={territorio:r['Territorio']||'Sem território',curso:r['Curso']||'Sem curso',rows:[]};
+    mapa[k].rows.push(r);
+  });
+  return Object.keys(mapa).map(function(k){
+    var g=mapa[k], ev=evidenciasCanonicasCursoTerritorio(g.territorio,g.curso), rs=resumoEvidenciasReais(ev);
+    var linked=linhasVinculadasCursoTerritorio(g.territorio,g.curso);
+    var completos=g.rows.filter(function(r){return String(r['Status']||'').trim()==='Completo';}).length;
+    var alertas=g.rows.filter(function(r){var st=statusVisual(r);return st==='Alerta'||st==='Erro';}).length;
+    var score=0, motivo='',acao='';
+    if(!rs.grupos){score=100;motivo='Curso planejado sem evidência real localizada.';acao='Localizar ou migrar evidências para o Drive monitorado.';}
+    else if(!rs.listas){score=88;motivo='Há evidência, mas nenhuma lista de presença foi identificada.';acao='Organizar as listas de presença do curso.';}
+    else if(!linked){score=74;motivo='Evidência consistente, porém sem vínculo inequívoco com as turmas.';acao='Identificar turma/núcleo nas evidências ou no caminho da pasta.';}
+    else if(alertas){score=64;motivo='Existem alertas documentais mesmo com evidência localizada.';acao='Revisar as ocorrências sinalizadas pelo Agente.';}
+    else if(!completos){score=54;motivo='Há vínculo, mas nenhuma turma deste curso está concluída.';acao='Completar os documentos exigidos para conformidade.';}
+    else {score=18;motivo='Curso com evidência e conclusão parcial/total.';acao='Manter monitoramento e fechar pendências residuais.';}
+    score += Math.min(8,Math.max(0,g.rows.length-completos));
+    return {territorio:g.territorio,curso:g.curso,score:score,motivo:motivo,acao:acao,grupos:rs.grupos,fotos:rs.fotos,listas:rs.listas,linked:linked,completos:completos,turmas:g.rows.length};
+  }).sort(function(a,b){return b.score-a.score || String(a.territorio).localeCompare(String(b.territorio),'pt-BR') || String(a.curso).localeCompare(String(b.curso),'pt-BR');});
+}
+
+function gerarInsightsExecutivos(territorio,m,prioridades){
+  var territorios=territorio?[territorio]:TERR.slice();
+  var ranking=territorios.map(function(t){var x=calcularDashboardExecutivo(t);return {t:t,m:x};}).sort(function(a,b){return b.m.gruposReais-a.m.gruposReais;});
+  var top=ranking[0]||{t:'-',m:{gruposReais:0,fotos:0}};
+  var gargalos=[{n:'vínculo das turmas',v:m.vinculoPct},{n:'cobertura documental completa',v:m.coberturaDocumental},{n:'cobertura dos cursos/territórios',v:m.coberturaPares},{n:'conclusão das turmas',v:m.conclusaoPct}].sort(function(a,b){return a.v-b.v;});
+  var p=prioridades&&prioridades.length?prioridades[0]:null;
+  var out=[];
+  out.push({tipo:'info',titulo:'Maior volume documental',texto:top.t+' concentra '+top.m.gruposReais+' grupo(s) real(is) e '+top.m.fotos+' foto(s) na visão atual.'});
+  out.push({tipo:gargalos[0].v<35?'risk':'warn',titulo:'Principal gargalo',texto:'O ponto mais fraco é '+gargalos[0].n+', hoje em '+gargalos[0].v+'%. O volume de arquivos não deve ser confundido com conformidade.'});
+  if(p) out.push({tipo:p.score>=85?'risk':'warn',titulo:'Prioridade nº 1',texto:p.territorio+' · '+p.curso+': '+p.motivo});
+  out.push({tipo:m.coberturaFotos>=70?'info':'warn',titulo:'Qualidade do inventário',texto:m.coberturaFotos+'% dos grupos têm fotos e '+m.coberturaListas+'% têm lista; '+m.coberturaDocumental+'% possuem ambos.'});
+  return out;
+}
+
+function faixaProntidao(n){if(n>=75)return {rotulo:'Alta prontidão',cls:'good'};if(n>=50)return {rotulo:'Prontidão moderada',cls:'warn'};return {rotulo:'Prontidão baixa',cls:'risk'};}
+
+function funnelHtml(itens,max){
+  max=max||1;var h='<div class="funnel">';
+  itens.forEach(function(i){var p=max?Math.round((i.valor/max)*100):0;h+='<div class="funnel-row"><div><div class="funnel-label"><span>'+esc(i.label)+'</span><span>'+p+'%</span></div><div class="funnel-track"><div class="funnel-bar '+(i.cls||'')+'" style="width:'+Math.max(2,p)+'%"></div></div></div><div class="funnel-num">'+i.valor+'</div></div>';});
+  return h+'</div>';
+}
+
+function diagnosticoHtml(m){
+  var itens=[['Cobertura fotos',m.coberturaFotos],['Cobertura listas',m.coberturaListas],['Fotos + listas',m.coberturaDocumental],['Cobertura cursos/territórios',m.coberturaPares],['Vínculo inequívoco',m.vinculoPct],['Turmas completas',m.conclusaoPct]];
+  var h='<div class="funnel">';
+  itens.forEach(function(i){h+='<div class="funnel-row"><div><div class="funnel-label"><span>'+i[0]+'</span><span>'+i[1]+'%</span></div><div class="funnel-track"><div class="funnel-bar '+(i[1]>=70?'good':i[1]>=40?'':'warn')+'" style="width:'+Math.max(2,i[1])+'%"></div></div></div><div class="funnel-num" style="font-size:15px">'+i[1]+'%</div></div>';});
+  return h+'</div>';
+}
+
+function statusMatrizCursoTerritorio(territorio,curso){
+  var rows=ATIV().filter(function(r){return normCE(r['Territorio'])===normCE(territorio)&&normCE(r['Curso'])===normCE(curso);});
+  var ev=evidenciasCanonicasCursoTerritorio(territorio,curso), rs=resumoEvidenciasReais(ev), linked=linhasVinculadasCursoTerritorio(territorio,curso), completos=rows.filter(function(r){return String(r['Status']||'').trim()==='Completo';}).length;
+  if(!rows.length&&!rs.grupos)return {l:'—',c:'mx-na'};
+  if(!rs.grupos)return {l:'Sem evidência',c:'mx-sem'};
+  if(!rs.listas || !rs.fotos)return {l:'Atenção',c:'mx-atencao'};
+  if(!linked)return {l:'Vínculo',c:'mx-vinculo'};
+  if(completos>0)return {l:'Forte',c:'mx-forte'};
+  return {l:'Atenção',c:'mx-atencao'};
+}
+
+function renderMatrizExecutiva(territorio){
+  var trs=territorio?[territorio]:TERR.slice();
+  var cursos=Array.from(new Set(atividadesDashboard(territorio).map(function(r){return r['Curso'];}).filter(Boolean))).sort(function(a,b){return String(a).localeCompare(String(b),'pt-BR');});
+  var h='<table class="exec-matrix"><thead><tr><th>Curso</th>'+trs.map(function(t){return '<th>'+esc(t)+'</th>';}).join('')+'</tr></thead><tbody>';
+  cursos.forEach(function(c){h+='<tr><td>'+esc(c)+'</td>';trs.forEach(function(t){var s=statusMatrizCursoTerritorio(t,c);h+='<td><span class="matrix-pill '+s.c+'">'+esc(s.l)+'</span></td>';});h+='</tr>';});
+  return h+'</tbody></table>';
+}
+
 function renderDash() {
-  var rows = ATIV();
-  var evs = EVID();
-  var real = resumoEvidenciasReais(evs);
-  var vinculadas = new Set(evs.filter(function(e){return String(e['Status_Vinculo']||'')==='VINCULADO_AUTOMATICAMENTE';}).map(function(e){return String(e['Linha_ATIVIDADES']||'');}).filter(Boolean)).size;
+  preencherFiltroDashboard();
+  var territorio=dashTerritorioSelecionado(), m=calcularDashboardExecutivo(territorio), faixa=faixaProntidao(m.prontidao), pri=gerarPrioridadesExecutivas(territorio), insights=gerarInsightsExecutivos(territorio,m,pri);
+  var scope=territorio||'Projeto inteiro';
+  var head=document.getElementById('dash-headline'); if(head) head.textContent=scope+': execução documental robusta no Drive, com conformidade medida separadamente.';
+  var sub=document.getElementById('dash-headline-sub'); if(sub) sub.textContent='O índice combina cobertura documental, presença de evidências por curso/território, vínculos inequívocos e turmas concluídas. Ele não transforma volume de arquivos em execução automaticamente.';
+  var tags=document.getElementById('dash-hero-tags'); if(tags) tags.innerHTML='<span class="exec-tag">Última evidência: '+esc(m.ultimaEvidencia)+'</span><span class="exec-tag">'+m.cursosComEvidencia+' curso(s) com evidência</span><span class="exec-tag">'+m.paresCobertos+'/'+m.paresPlanejados+' curso-território cobertos</span>';
+  var ring=document.getElementById('dash-readiness'); if(ring) ring.style.setProperty('--pct',m.prontidao);
+  var rv=document.getElementById('dash-readiness-value'); if(rv) rv.textContent=m.prontidao;
+  var rl=document.getElementById('dash-readiness-label'); if(rl) rl.textContent=faixa.rotulo+'. Índice executivo, não percentual de execução física.';
 
-  document.getElementById('kpi-row').innerHTML =
-    kpi(rows.length, 'Turmas Previstas') +
-    kpi(real.grupos, 'Grupos Reais de Evidencia') +
-    kpi(real.fotos, 'Fotos Identificadas') +
-    kpi(real.listas, 'Listas Identificadas') +
-    kpi(vinculadas + ' / ' + rows.length, 'Vinculos Inequivocos');
+  var kp=document.getElementById('dash-exec-kpis'); if(kp) kp.innerHTML=''
+    +'<div class="exec-kpi good"><div class="label">Grupos reais no Drive</div><div class="value">'+m.gruposReais+'</div><div class="hint">Inventário documental efetivamente localizado</div></div>'
+    +'<div class="exec-kpi"><div class="label">Fotos identificadas</div><div class="value">'+m.fotos+'</div><div class="hint">Arquivos classificados como evidência fotográfica</div></div>'
+    +'<div class="exec-kpi warn"><div class="label">Listas identificadas</div><div class="value">'+m.listas+'</div><div class="hint">'+m.coberturaListas+'% dos grupos possuem ao menos uma lista</div></div>'
+    +'<div class="exec-kpi"><div class="label">Turmas previstas</div><div class="value">'+m.turmasPrevistas+'</div><div class="hint">Base de planejamento/conformidade</div></div>'
+    +'<div class="exec-kpi risk"><div class="label">Vínculos inequívocos</div><div class="value">'+m.vinculosInequivocos+'</div><div class="hint">'+m.vinculoPct+'% das turmas previstas estão ligadas sem ambiguidade</div></div>';
 
-  var coberturaLista = real.grupos ? Math.round((real.gruposComLista / real.grupos) * 100) : 0;
-  document.getElementById('sc-txt').textContent = coberturaLista + '%';
-  var bg = document.getElementById('bar-g');
-  bg.style.width = coberturaLista + '%';
-  bg.className = 'sb ' + scl(coberturaLista);
+  var ih=document.getElementById('dash-insights'); if(ih) ih.innerHTML=insights.map(function(x){return '<div class="exec-insight '+x.tipo+'"><strong>'+esc(x.titulo)+'</strong><p>'+esc(x.texto)+'</p></div>';}).join('');
 
-  var th = '';
-  TERR.forEach(function (t, i) {
-    var m = metricasTerritorioReal(t);
-    var terrRows = rows.filter(function (r) { return normCE(r['Territorio']) === normCE(t); });
-    th += '<div class="tcard" onclick="goV(\'territorios\');setTimeout(function(){abrirTerr(' + i + ')},120)">';
-    th += '<div class="tnome">' + esc(t) + '</div>';
-    th += '<div class="tsc">' + m.grupos + ' grupos</div>';
-    th += '<div class="tmeta">' + m.fotos + ' fotos · ' + m.listas + ' listas</div>';
-    th += '<div style="font-size:11px;color:#777;margin-top:8px">' + terrRows.length + ' turma(s) prevista(s) no planejamento</div>';
-    if (m.semVinculo > 0) th += '<span class="badge bP" style="margin-top:8px">' + m.semVinculo + ' grupo(s) aguardando vínculo</span>';
-    th += '</div>';
-  });
-  document.getElementById('dash-terr').innerHTML = th;
+  var fd=document.getElementById('dash-funil-drive'); if(fd) fd.innerHTML=funnelHtml([
+    {label:'Grupos reais inventariados',valor:m.gruposReais},{label:'Com fotos',valor:m.gruposComFotos},{label:'Com lista',valor:m.gruposComLista,cls:'warn'},{label:'Com fotos + lista',valor:m.gruposComFotosELista,cls:'good'}
+  ],Math.max(1,m.gruposReais));
+  var fc=document.getElementById('dash-funil-conformidade'); if(fc) fc.innerHTML=funnelHtml([
+    {label:'Turmas previstas',valor:m.turmasPrevistas},{label:'Curso/território com evidência',valor:m.turmasCursoTerrComEvid},{label:'Vínculo inequívoco',valor:m.vinculosInequivocos,cls:'warn'},{label:'Turmas completas',valor:m.turmasCompletas,cls:'good'}
+  ],Math.max(1,m.turmasPrevistas));
 
-  var pend = rows.filter(function (r) { return statusVisual(r) !== 'Completo'; });
-  var gruposPend = pendenciasAgrupadasPorCurso(pend);
-  var ah = '<div class="card" style="font-size:12px;color:#536273;margin-bottom:10px">';
-  ah += '<strong>Leitura por território e curso.</strong> As evidências reais aparecem <strong>uma única vez por curso</strong>; abaixo delas ficam somente as turmas previstas e o estado do vínculo. Assim, o mesmo conjunto de fotos/listas não é repetido em cada turma.</div>';
+  var terrs=territorio?[territorio]:TERR.slice(), th='';
+  terrs.forEach(function(t){var x=calcularDashboardExecutivo(t), f=faixaProntidao(x.prontidao), idx=TERR.indexOf(t);th+='<div class="exec-territory" onclick="goV(\'territorios\');setTimeout(function(){abrirTerr('+idx+')},120)"><div class="name">'+esc(t)+'</div><div class="score">'+x.prontidao+'</div><div class="status">'+esc(f.rotulo)+'</div><div class="meta"><div class="mini"><b>'+x.gruposReais+'</b><span>grupos</span></div><div class="mini"><b>'+x.fotos+'</b><span>fotos</span></div><div class="mini"><b>'+x.listas+'</b><span>listas</span></div></div><div class="bar"><i style="width:'+x.prontidao+'%"></i></div></div>';});
+  var dt=document.getElementById('dash-terr'); if(dt) dt.innerHTML=th;
 
-  if (!gruposPend.length) {
-    ah += '<div class="card" style="color:#666;font-size:13px">Nenhuma pendência de conformidade no momento.</div>';
-  } else {
-    gruposPend.forEach(function(grupo){
-      grupo.evidencias = evidenciasCanonicasCursoTerritorio(grupo.territorio, grupo.curso);
-      var rs = resumoEvidenciasReais(grupo.evidencias);
-      var temCurso = rs.grupos > 0;
-      ah += '<div class="pend-course">';
-      ah += '<div class="pend-course-head"><div class="pend-course-title"><small>'+esc(grupo.territorio)+'</small>'+esc(grupo.curso)+'</div>';
-      ah += '<button class="pend-open" onclick="goV(\'evidencias\')">Ver Evidências Drive</button></div>';
-
-      ah += '<div class="pend-course-evidence">';
-      if (temCurso) {
-        ah += '<div class="pend-evid-summary">';
-        ah += '<div class="pend-evid-kpi"><div class="n">'+rs.grupos+'</div><div class="l">grupos reais</div></div>';
-        ah += '<div class="pend-evid-kpi"><div class="n">'+rs.fotos+'</div><div class="l">fotos</div></div>';
-        ah += '<div class="pend-evid-kpi"><div class="n">'+rs.listas+'</div><div class="l">listas</div></div>';
-        if (rs.documentos) ah += '<div class="pend-evid-kpi"><div class="n">'+rs.documentos+'</div><div class="l">documentos</div></div>';
-        ah += '</div>';
-        ah += '<div class="pend-evid-note">Evidência localizada no Drive para este curso. Os totais acima pertencem ao <strong>curso/território</strong> e não são multiplicados pelas turmas abaixo.</div>';
-      } else {
-        ah += '<div class="pend-empty">Nenhuma evidência real deste curso foi localizada no Drive.</div>';
-      }
-      ah += '</div>';
-
-      ah += '<div class="pend-turmas">';
-      grupo.turmas.forEach(function(r){
-        var st = statusTurmaNoGrupo(r, temCurso);
-        var msg = '';
-        if (st === 'Vínculo pendente') msg = 'Há evidência do curso, mas esta turma ainda não foi identificada de forma inequívoca no Drive.';
-        else if (st === 'Insuficiente') msg = 'Esta turma possui algum vínculo/evidência, porém o conjunto documental ainda está incompleto.';
-        else if (st === 'Alerta' || st === 'Erro') msg = leituraAgenteCE(r);
-        else if (!temCurso) msg = 'Não há evidência real localizada para este curso/território.';
-        else msg = leituraAgenteCE(r);
-        ah += '<div class="pend-turma">';
-        ah += '<div class="pend-turma-top"><div class="pend-turma-nome">'+esc(r['Turma']||'Turma não informada')+'</div><span class="badge '+badgeTurmaNoGrupo(st)+'">'+esc(st)+'</span></div>';
-        ah += '<div class="pend-turma-comp">Competência: '+esc(r['Competencia']||'-')+'</div>';
-        ah += '<div class="pend-turma-msg">'+esc(msg)+'</div>';
-        ah += '</div>';
-      });
-      ah += '</div></div>';
-    });
-  }
-  document.getElementById('dash-alertas').innerHTML = ah;
-
-  var ch = '<div class="g3">';
-  CURSOS.forEach(function (c) {
-    var m=metricasCursoReal(c);
-    var total = rows.filter(function (r) { return normCE(r['Curso']) === normCE(c); }).length;
-    if (!total && !m.grupos) return;
-    var cobertura = m.grupos ? Math.round((m.gruposComLista/m.grupos)*100) : 0;
-    ch += '<div class="card">';
-    ch += '<div style="font-size:12px;font-weight:700;color:var(--az);font-family:Montserrat,sans-serif;margin-bottom:6px">' + esc(c) + '</div>';
-    ch += '<div style="font-size:24px;font-weight:700;color:var(--azs);font-family:Montserrat,sans-serif">' + m.grupos + ' grupos</div>';
-    ch += '<div style="font-size:11px;color:#666;margin:4px 0 8px">' + m.fotos + ' fotos · ' + m.listas + ' listas · ' + total + ' turma(s) prevista(s)</div>';
-    ch += '<div class="sbw" style="height:8px;margin-bottom:4px"><div class="sb ' + scl(cobertura) + '" style="width:' + cobertura + '%"></div></div>';
-    ch += '<div style="font-size:10px;color:#888">' + cobertura + '% dos grupos deste curso têm lista de presença identificada</div>';
-    ch += '</div>';
-  });
-  ch += '</div>';
-  document.getElementById('dash-cursos').innerHTML = ch;
+  var pp=document.getElementById('dash-prioridades'); if(pp){var top=pri.slice(0,6);pp.innerHTML=top.length?top.map(function(p,i){return '<div class="prio-item"><div class="prio-rank">'+(i+1)+'</div><div class="prio-main"><strong>'+esc(p.territorio)+' · '+esc(p.curso)+'</strong><span>'+esc(p.motivo)+' · '+p.grupos+' grupo(s), '+p.fotos+' foto(s), '+p.listas+' lista(s).</span></div><div class="prio-action">'+esc(p.acao)+'</div></div>';}).join(''):'<div class="exec-panel-sub">Nenhuma prioridade crítica identificada.</div>';}
+  var dg=document.getElementById('dash-diagnostico'); if(dg) dg.innerHTML=diagnosticoHtml(m);
+  var mx=document.getElementById('dash-matriz'); if(mx) mx.innerHTML=renderMatrizExecutiva(territorio);
 }
 function renderListaTerritorios() {
   var h = '';
@@ -1054,8 +1234,8 @@ function preencherFiltrosEvidencias(){
 }
 
 function numEvDrive(r,k){var n=Number(r&&r[k]||0);return isNaN(n)?0:n;}
-function statusVinculoLabel(r){return String(r&&r['Status_Vinculo']||'PENDENTE_REVISAO');}
-function vinculoPendente(r){return statusVinculoLabel(r)!=='VINCULADO_AUTOMATICAMENTE';}
+function statusVinculoLabel(r){return evidenciaVinculadaCE(r)?'VINCULADO_AUTOMATICAMENTE':String(r&&r['Status_Vinculo']||r&&r['Vinculo_Atividade']||'PENDENTE_REVISAO');}
+function vinculoPendente(r){return !evidenciaVinculadaCE(r);}
 
 function renderEvidenciasDrive(){
   preencherFiltrosEvidencias();
