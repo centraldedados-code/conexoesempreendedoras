@@ -163,6 +163,30 @@ h1,h2,h3,h4{font-family:'Montserrat',Arial,sans-serif}
 @media(max-width:900px){.pterr-grid{grid-template-columns:repeat(3,1fr)}}
 @media(max-width:600px){.pterr-grid{grid-template-columns:repeat(2,1fr)}}
 
+
+/* PENDÊNCIAS AGRUPADAS POR TERRITÓRIO + CURSO */
+.pend-course{background:#fff;border:1.5px solid #dfe5ec;border-radius:14px;overflow:hidden;margin-bottom:14px;box-shadow:0 3px 12px rgba(9,32,64,.04)}
+.pend-course-head{background:var(--az);color:#fff;padding:13px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.pend-course-title{font:700 12px Montserrat;line-height:1.45}
+.pend-course-title small{display:block;color:var(--azs);font-size:9px;text-transform:uppercase;letter-spacing:.5px;margin-bottom:2px}
+.pend-course-evidence{padding:13px 16px;background:#f8fbfc;border-bottom:1px solid #e8edf2;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.pend-evid-summary{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.pend-evid-kpi{background:#fff;border:1px solid #e0e6ee;border-radius:9px;padding:7px 10px;min-width:84px}
+.pend-evid-kpi .n{font:700 15px Montserrat;color:var(--azs)}
+.pend-evid-kpi .l{font:700 8px Montserrat;color:#7d8792;text-transform:uppercase;letter-spacing:.35px;margin-top:2px}
+.pend-evid-note{font-size:10px;color:#61707e;line-height:1.45;max-width:430px}
+.pend-turmas{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;padding:12px 16px 16px}
+.pend-turma{border:1px solid #e2e7ed;border-radius:10px;padding:10px 11px;background:#fff;min-height:92px}
+.pend-turma-top{display:flex;align-items:flex-start;justify-content:space-between;gap:7px;margin-bottom:7px}
+.pend-turma-nome{font:700 10.5px Montserrat;color:var(--az)}
+.pend-turma-comp{font-size:9.5px;color:#7d8792;margin-bottom:5px}
+.pend-turma-msg{font-size:9.5px;color:#66717d;line-height:1.42}
+.pend-empty{color:#8B1A1A;background:#fff6f6;border:1px solid #f2cece;border-radius:8px;padding:8px 10px;font-size:10px}
+.pend-open{background:var(--az);color:var(--am);border:none;border-radius:8px;padding:7px 10px;font:700 9px Montserrat;cursor:pointer;text-transform:uppercase}
+.pend-open:hover{background:var(--azs);color:#fff}
+@media(max-width:900px){.pend-turmas{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:520px){.pend-turmas{grid-template-columns:1fr}}
+
 /* FOOTER */
 .foot{background:var(--az);border-radius:12px;padding:14px 24px;display:flex;align-items:center;justify-content:space-between;margin-top:32px;flex-wrap:wrap;gap:10px}
 .ftxt{color:rgba(255,255,255,.45);font-size:11px}
@@ -523,6 +547,48 @@ function evidenciasParaAtividade(row) {
   });
 }
 
+
+// Para o resumo visual de um curso, evita misturar o ramo planejado com
+// EVIDENCIAS_ORGANIZADAS quando já existe um inventário organizado para o curso.
+// Isso reduz a sensação de evidência repetida sem alterar a planilha ou o Drive.
+function evidenciasCanonicasCursoTerritorio(territorio, curso) {
+  var t = normCE(territorio), c = normCE(curso);
+  var todas = EVID().filter(function(e){
+    return normCE(e['Territorio']) === t && normCE(e['Curso_Normalizado'] || e['Curso_Original_Drive']) === c;
+  });
+  var organizadas = todas.filter(function(e){
+    return String(e['Fonte_Ramo'] || '').toUpperCase() === 'EVIDENCIAS_ORGANIZADAS';
+  });
+  return organizadas.length ? organizadas : todas;
+}
+
+function pendenciasAgrupadasPorCurso(rows) {
+  var mapa = {};
+  (rows || []).forEach(function(r){
+    if (statusVisual(r) === 'Completo') return;
+    var terr = r['Territorio'] || 'Sem território';
+    var curso = r['Curso'] || 'Sem curso';
+    var key = normCE(terr) + '||' + normCE(curso);
+    if (!mapa[key]) mapa[key] = {territorio:terr, curso:curso, turmas:[]};
+    mapa[key].turmas.push(r);
+  });
+  return Object.keys(mapa).map(function(k){return mapa[k];}).sort(function(a,b){
+    var x = String(a.territorio).localeCompare(String(b.territorio),'pt-BR');
+    return x || String(a.curso).localeCompare(String(b.curso),'pt-BR');
+  });
+}
+
+function statusTurmaNoGrupo(row, temEvidenciaNoCurso) {
+  var atual = statusVisual(row);
+  if (temEvidencia(row) || atual === 'Insuficiente' || atual === 'Alerta' || atual === 'Erro') return atual;
+  if (temEvidenciaNoCurso) return 'Vínculo pendente';
+  return atual;
+}
+
+function badgeTurmaNoGrupo(st) {
+  return st === 'Vínculo pendente' ? 'bP' : bcl(st);
+}
+
 function resumoEvidenciasReais(rows) {
   rows = Array.isArray(rows) ? rows : [];
   var r = {grupos:rows.length, fotos:0, listas:0, documentos:0, relatorios:0, certificados:0, vinculados:0, semVinculo:0, gruposComLista:0, gruposComFotos:0};
@@ -774,26 +840,52 @@ function renderDash() {
   document.getElementById('dash-terr').innerHTML = th;
 
   var pend = rows.filter(function (r) { return statusVisual(r) !== 'Completo'; });
-  var ah = '<div class="card" style="font-size:12px;color:#536273;margin-bottom:10px">Esta seção acompanha a <strong>conformidade das 66 turmas planejadas</strong>. Um status Pendente/Crítico não significa ausência de evidência no Drive; quando houver evidência do mesmo curso e território sem identificação inequívoca de turma, ela aparece explicitamente abaixo.</div>';
-  if (!pend.length) {
+  var gruposPend = pendenciasAgrupadasPorCurso(pend);
+  var ah = '<div class="card" style="font-size:12px;color:#536273;margin-bottom:10px">';
+  ah += '<strong>Leitura por território e curso.</strong> As evidências reais aparecem <strong>uma única vez por curso</strong>; abaixo delas ficam somente as turmas previstas e o estado do vínculo. Assim, o mesmo conjunto de fotos/listas não é repetido em cada turma.</div>';
+
+  if (!gruposPend.length) {
     ah += '<div class="card" style="color:#666;font-size:13px">Nenhuma pendência de conformidade no momento.</div>';
   } else {
-    ah += '<div class="card" style="padding:0;overflow:auto"><table class="tbl">';
-    ah += '<tr><th>Territorio</th><th>Curso</th><th>Turma</th><th>Competencia</th><th>Situacao</th><th>Contexto documental</th></tr>';
-    pend.slice(0, 30).forEach(function (r) {
-      var sv = statusVisual(r), rel=evidenciasParaAtividade(r), rs=resumoEvidenciasReais(rel);
-      var leitura = rs.grupos>0
-        ? ('Há ' + rs.grupos + ' grupo(s) real(is) deste curso no território, com ' + rs.fotos + ' foto(s) e ' + rs.listas + ' lista(s). O vínculo com esta turma só é feito quando a identificação é inequívoca.')
-        : leituraAgenteCE(r);
-      ah += '<tr><td><strong>' + esc(r['Territorio'] || '-') + '</strong></td>';
-      ah += '<td>' + esc(r['Curso'] || '-') + '</td>';
-      ah += '<td>' + esc(r['Turma'] || '-') + '</td>';
-      ah += '<td><span class="badge bP">' + esc(r['Competencia'] || '-') + '</span></td>';
-      ah += '<td><span class="badge ' + bcl(sv) + '">' + esc(sv) + '</span></td>';
-      ah += '<td style="font-size:11px;color:#666;max-width:360px">' + esc(leitura) + '</td></tr>';
+    gruposPend.forEach(function(grupo){
+      grupo.evidencias = evidenciasCanonicasCursoTerritorio(grupo.territorio, grupo.curso);
+      var rs = resumoEvidenciasReais(grupo.evidencias);
+      var temCurso = rs.grupos > 0;
+      ah += '<div class="pend-course">';
+      ah += '<div class="pend-course-head"><div class="pend-course-title"><small>'+esc(grupo.territorio)+'</small>'+esc(grupo.curso)+'</div>';
+      ah += '<button class="pend-open" onclick="goV(\'evidencias\')">Ver Evidências Drive</button></div>';
+
+      ah += '<div class="pend-course-evidence">';
+      if (temCurso) {
+        ah += '<div class="pend-evid-summary">';
+        ah += '<div class="pend-evid-kpi"><div class="n">'+rs.grupos+'</div><div class="l">grupos reais</div></div>';
+        ah += '<div class="pend-evid-kpi"><div class="n">'+rs.fotos+'</div><div class="l">fotos</div></div>';
+        ah += '<div class="pend-evid-kpi"><div class="n">'+rs.listas+'</div><div class="l">listas</div></div>';
+        if (rs.documentos) ah += '<div class="pend-evid-kpi"><div class="n">'+rs.documentos+'</div><div class="l">documentos</div></div>';
+        ah += '</div>';
+        ah += '<div class="pend-evid-note">Evidência localizada no Drive para este curso. Os totais acima pertencem ao <strong>curso/território</strong> e não são multiplicados pelas turmas abaixo.</div>';
+      } else {
+        ah += '<div class="pend-empty">Nenhuma evidência real deste curso foi localizada no Drive.</div>';
+      }
+      ah += '</div>';
+
+      ah += '<div class="pend-turmas">';
+      grupo.turmas.forEach(function(r){
+        var st = statusTurmaNoGrupo(r, temCurso);
+        var msg = '';
+        if (st === 'Vínculo pendente') msg = 'Há evidência do curso, mas esta turma ainda não foi identificada de forma inequívoca no Drive.';
+        else if (st === 'Insuficiente') msg = 'Esta turma possui algum vínculo/evidência, porém o conjunto documental ainda está incompleto.';
+        else if (st === 'Alerta' || st === 'Erro') msg = leituraAgenteCE(r);
+        else if (!temCurso) msg = 'Não há evidência real localizada para este curso/território.';
+        else msg = leituraAgenteCE(r);
+        ah += '<div class="pend-turma">';
+        ah += '<div class="pend-turma-top"><div class="pend-turma-nome">'+esc(r['Turma']||'Turma não informada')+'</div><span class="badge '+badgeTurmaNoGrupo(st)+'">'+esc(st)+'</span></div>';
+        ah += '<div class="pend-turma-comp">Competência: '+esc(r['Competencia']||'-')+'</div>';
+        ah += '<div class="pend-turma-msg">'+esc(msg)+'</div>';
+        ah += '</div>';
+      });
+      ah += '</div></div>';
     });
-    ah += '</table></div>';
-    if (pend.length > 30) ah += '<div style="font-size:11px;color:#999;margin-top:6px">Mostrando 30 de ' + pend.length + ' pendências planejadas. A existência de evidência real pode ser consultada em Evidências Drive.</div>';
   }
   document.getElementById('dash-alertas').innerHTML = ah;
 
