@@ -393,6 +393,24 @@ h1,h2,h3,h4{font-family:'Montserrat',Arial,sans-serif}
 @media(max-width:760px){.simple-guide{grid-template-columns:1fr 1fr}.admin-menu-panel{right:auto;left:0}}
 @media(max-width:500px){.simple-guide{grid-template-columns:1fr}}
 
+
+/* RISCOS — LEITURA EXECUTIVA SIMPLIFICADA */
+.risk-simple-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(360px,1fr));gap:14px}
+.risk-simple-card{background:#fff;border:1px solid #dfe6ee;border-radius:14px;padding:16px;box-shadow:0 5px 18px rgba(9,32,64,.04)}
+.risk-simple-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.risk-simple-kicker{font:700 9px Montserrat,sans-serif;text-transform:uppercase;letter-spacing:.55px;color:#6f7f8f;margin-bottom:5px}
+.risk-simple-title{font:700 14px Montserrat,sans-serif;color:var(--az);line-height:1.35}
+.risk-simple-meta{display:flex;gap:6px;flex-wrap:wrap;margin-top:9px}
+.risk-simple-chip{display:inline-flex;align-items:center;border-radius:999px;background:#f1f5f8;color:#52616f;padding:5px 8px;font-size:9px;font-weight:700}
+.risk-simple-section{margin-top:13px;padding-top:12px;border-top:1px solid #edf1f5}
+.risk-simple-section strong{display:block;color:var(--az);font-size:10px;text-transform:uppercase;letter-spacing:.35px;margin-bottom:5px}
+.risk-simple-section span{display:block;color:#536171;font-size:11px;line-height:1.52}
+.risk-related{display:flex;gap:5px;flex-wrap:wrap;margin-top:7px}
+.risk-related .pill{font-size:8px}
+.risk-simple-actions{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:12px;flex-wrap:wrap}
+.risk-simple-responsible{font-size:9px;color:#758290}
+@media(max-width:520px){.risk-simple-grid{grid-template-columns:1fr}}
+
 </style>
 </head>
 <body>
@@ -626,7 +644,7 @@ h1,h2,h3,h4{font-family:'Montserrat',Arial,sans-serif}
     </div>
 
     <!-- RISCOS -->
-    <div class="vw" id="vw-riscos"><div class="exec-page-head"><div><div class="exec-page-kicker">Administração · matriz de riscos</div><h2>Riscos</h2><p>Exposição institucional, probabilidade, impacto e mitigação separados das pendências operacionais.</p></div></div><div class="shared-kpi-grid" id="riscos-kpis"></div><div class="exec-insights" id="riscos-inteligencia"></div><div id="riscos-content"></div></div>
+    <div class="vw" id="vw-riscos"><div class="exec-page-head"><div><div class="exec-page-kicker">Administração · visão de riscos</div><h2>Riscos</h2><p>Veja, em linguagem direta, o que pode comprometer o projeto, onde está o problema, o que fazer e quais pendências precisam ser resolvidas.</p></div></div><div class="view-help"><strong>Como ler:</strong> risco é a exposição do projeto; pendência é a ação concreta que precisa ser resolvida para reduzir esse risco.</div><div class="shared-kpi-grid" id="riscos-kpis"></div><div class="exec-insights" id="riscos-inteligencia"></div><div id="riscos-content"></div></div>
 
     <!-- AUDITORIA -->
     <div class="vw" id="vw-auditoria"><div class="exec-page-head"><div><div class="exec-page-kicker">Administração · histórico</div><h2>Auditoria</h2><p>Trilha de alterações por usuário, ação, entidade, antes/depois e correlação.</p></div></div><div class="shared-kpi-grid" id="auditoria-kpis"></div><div id="auditoria-content"></div></div>
@@ -1494,8 +1512,116 @@ function pendencyQuickAction_(){openAdminArea();}
 function submitPendencyCommand(){openAdminArea();return Promise.resolve({redirected:true});}
 function renderMetas(){return renderStrategicGoals(D||{});}
 
-function buildRiskViewModels(data){data=data||{};return (data.riscos||[]).map(function(r){var probability=Number(r.Probabilidade||0),impact=Number(r.Impacto||0),exposure=Number(r.Exposicao||0);if(!exposure&&probability&&impact)exposure=Math.round(probability*impact/100);return {id:String(r.Risco_ID||r.id||''),category:String(r.Categoria||r.category||'Não classificado'),title:String(r.Titulo||r.title||'Risco'),description:String(r.Descricao||r.description||''),territory:String(r.Territorio||''),course:String(r.Curso||''),probability:probability,impact:impact,exposure:exposure,level:String(r.Nivel||r.level||riskLabelFromRank_(exposure>=80?4:exposure>=60?3:exposure>=40?2:1)).toUpperCase(),trend:String(r.Tendencia||r.trend||'ESTÁVEL'),mitigation:String(r.Mitigacao||r.mitigation||''),responsible:String(r.Responsavel||''),status:String(r.Status||'ABERTO'),relatedPendencies:String(r.Pendencias_Relacionadas||''),raw:r};}).sort(function(a,b){return riskRank_(b.level)-riskRank_(a.level)||b.exposure-a.exposure;});}
-function renderRiskIntelligence(data){D=data||D||{};var rows=buildRiskViewModels(D),el=document.getElementById('riscos-content');if(!el)return;var open=rows.filter(function(r){return !closedStatus_(r.status);}),critical=open.filter(function(r){return riskRank_(r.level)>=4;}),high=open.filter(function(r){return riskRank_(r.level)===3;}),worse=open.filter(function(r){return normCE(r.trend).indexOf('pior')>=0||normCE(r.trend).indexOf('alta')>=0;}),avg=open.length?Math.round(open.reduce(function(a,r){return a+r.exposure;},0)/open.length):0;var k=document.getElementById('riscos-kpis');if(k)k.innerHTML=[renderKpiCard({label:'Riscos abertos',value:open.length,detail:'Registro institucional',accent:true}),renderKpiCard({label:'Críticos',value:critical.length,detail:'Exposição máxima'}),renderKpiCard({label:'Altos',value:high.length,detail:'Exigem mitigação prioritária'}),renderKpiCard({label:'Exposição média',value:avg,detail:'Índice médio dos riscos abertos'}),renderKpiCard({label:'Piorando',value:worse.length,detail:'Tendência desfavorável'})].join('');var intel=document.getElementById('riscos-inteligencia');if(intel){var top=open[0];intel.innerHTML='<div class="exec-insight '+(critical.length?'risk':high.length?'warn':'good')+'"><strong>Exposição prioritária</strong><span>'+(top?esc(top.title)+' · '+esc(top.level)+' · exposição '+top.exposure:'Nenhum risco aberto registrado.')+'</span></div><div class="exec-insight '+(worse.length?'risk':'info')+'"><strong>Tendência</strong><span>'+worse.length+' risco(s) com trajetória desfavorável.</span></div><div class="exec-insight info"><strong>Regra de governança</strong><span>Riscos representam exposição institucional; pendências representam ações operacionais e são geridas separadamente.</span></div>';}if(!rows.length){el.innerHTML=renderEmptyState({title:'Nenhum risco registrado',message:'A matriz de riscos será preenchida pelo motor de inteligência e por registros autorizados.'});return;}el.innerHTML='<div class="atividade-grid">'+rows.map(function(r){return '<div class="atividade-card"><div class="atividade-card-top"><div><div class="atividade-territorio">'+esc(r.category)+' · '+esc(r.territory||'Projeto')+'</div><div class="atividade-titulo">'+esc(r.title)+'</div><div class="atividade-codigo">'+esc([r.course,r.id].filter(Boolean).join(' · '))+'</div></div>'+renderRiskBadge({level:r.level})+'</div><div class="atividade-evid-grid"><div class="atividade-evid"><div class="lab">Probabilidade</div><div class="val">'+r.probability+'</div></div><div class="atividade-evid"><div class="lab">Impacto</div><div class="val">'+r.impact+'</div></div><div class="atividade-evid"><div class="lab">Exposição</div><div class="val">'+r.exposure+'</div></div><div class="atividade-evid"><div class="lab">Tendência</div><div class="val" style="font-size:11px">'+esc(r.trend)+'</div></div></div><div class="atividade-reading"><strong>Mitigação</strong><br>'+esc(r.mitigation||'Mitigação ainda não registrada.')+'</div></div>';}).join('')+'</div>';}
+function riskTextLabel_(value,fallback){
+  var raw=String(value==null?'':value).trim();
+  if(!raw)return fallback||'N/D';
+  var n=Number(raw);
+  if(!isNaN(n)){
+    if(n>=80)return 'ALTA';
+    if(n>=60)return 'ALTA';
+    if(n>=40)return 'MÉDIA';
+    return 'BAIXA';
+  }
+  return raw.toUpperCase();
+}
+function buildRiskViewModels(data){
+  data=data||{};
+  return (data.riscos||[]).map(function(r){
+    var exposure=Number(r.Exposicao||0);
+    if(isNaN(exposure))exposure=0;
+    var probabilityLabel=riskTextLabel_(r.Probabilidade,'N/D');
+    var impactLabel=String(r.Impacto||'N/D').toUpperCase();
+    return {
+      id:String(r.Risco_ID||r.id||''),
+      category:String(r.Categoria||r.category||'Não classificado'),
+      title:String(r.Titulo||r.title||'Risco'),
+      description:String(r.Descricao||r.description||''),
+      territory:String(r.Territorio||''),
+      course:String(r.Curso||''),
+      probabilityLabel:probabilityLabel,
+      impactLabel:impactLabel,
+      exposure:exposure,
+      level:String(r.Nivel||r.level||riskLabelFromRank_(exposure>=80?4:exposure>=60?3:exposure>=40?2:1)).toUpperCase(),
+      trend:String(r.Tendencia||r.trend||'SEM HISTÓRICO'),
+      mitigation:String(r.Mitigacao||r.mitigation||''),
+      responsible:String(r.Responsavel||''),
+      status:String(r.Status||'ABERTO'),
+      relatedPendencies:String(r.Pendencias_Relacionadas||''),
+      raw:r
+    };
+  }).sort(function(a,b){
+    return riskRank_(b.level)-riskRank_(a.level)||b.exposure-a.exposure;
+  });
+}
+function renderRiskIntelligence(data){
+  D=data||D||{};
+  var rows=buildRiskViewModels(D),el=document.getElementById('riscos-content');
+  if(!el)return;
+
+  var open=rows.filter(function(r){return !closedStatus_(r.status);});
+  var critical=open.filter(function(r){return riskRank_(r.level)>=4;});
+  var high=open.filter(function(r){return riskRank_(r.level)===3;});
+  var medium=open.filter(function(r){return riskRank_(r.level)===2;});
+  var territories={};
+  open.forEach(function(r){if(r.territory)territories[r.territory]=true;});
+
+  var k=document.getElementById('riscos-kpis');
+  if(k)k.innerHTML=[
+    renderKpiCard({label:'Riscos abertos',value:open.length,detail:'Situações que exigem acompanhamento',accent:true}),
+    renderKpiCard({label:'Altos',value:high.length,detail:'Prioridade de mitigação'}),
+    renderKpiCard({label:'Médios',value:medium.length,detail:'Acompanhar e corrigir'}),
+    renderKpiCard({label:'Territórios afetados',value:Object.keys(territories).length,detail:'Abrangência dos riscos'})
+  ].join('');
+
+  var intel=document.getElementById('riscos-inteligencia');
+  if(intel){
+    var top=open[0];
+    intel.innerHTML=
+      '<div class="exec-insight '+(critical.length?'risk':high.length?'warn':'good')+'"><strong>Maior exposição</strong><span>'+
+      (top?esc(top.territory||'Projeto')+' · '+esc(top.title)+' · '+esc(top.level):'Nenhum risco aberto registrado.')+
+      '</span></div>'+
+      '<div class="exec-insight info"><strong>O que fazer primeiro</strong><span>'+
+      (top?esc(top.mitigation||'Definir ação de mitigação.'):'Sem ação prioritária registrada.')+
+      '</span></div>'+
+      '<div class="exec-insight info"><strong>Regra simples</strong><span>O risco mostra o que pode comprometer o projeto. As pendências relacionadas mostram exatamente o que precisa ser feito.</span></div>';
+  }
+
+  if(!rows.length){
+    el.innerHTML=renderEmptyState({title:'Nenhum risco registrado',message:'A matriz de riscos ainda não possui registros.'});
+    return;
+  }
+
+  el.innerHTML='<div class="risk-simple-grid">'+rows.map(function(r){
+    var related=String(r.relatedPendencies||'').split(',').map(function(x){return x.trim();}).filter(Boolean);
+    var relatedHtml=related.length
+      ? '<div class="risk-related">'+related.map(function(id){return '<span class="pill">'+esc(id)+'</span>';}).join('')+'</div>'
+      : '<span>Nenhuma pendência relacionada.</span>';
+
+    return '<div class="risk-simple-card">'+
+      '<div class="risk-simple-top">'+
+        '<div>'+
+          '<div class="risk-simple-kicker">'+esc(r.category)+' · '+esc(r.territory||'Projeto')+'</div>'+
+          '<div class="risk-simple-title">'+esc(r.title)+'</div>'+
+        '</div>'+
+        renderRiskBadge({level:r.level})+
+      '</div>'+
+      '<div class="risk-simple-meta">'+
+        '<span class="risk-simple-chip">Probabilidade: '+esc(r.probabilityLabel)+'</span>'+
+        '<span class="risk-simple-chip">Impacto: '+esc(r.impactLabel)+'</span>'+
+        '<span class="risk-simple-chip">Exposição: '+esc(r.exposure)+'</span>'+
+        '<span class="risk-simple-chip">Status: '+esc(r.status)+'</span>'+
+      '</div>'+
+      (r.course?'<div class="risk-simple-section"><strong>Onde / cursos relacionados</strong><span>'+esc(r.course)+'</span></div>':'')+
+      '<div class="risk-simple-section"><strong>O que pode acontecer</strong><span>'+esc(r.description||'Descrição do risco ainda não registrada.')+'</span></div>'+
+      '<div class="risk-simple-section"><strong>O que fazer</strong><span>'+esc(r.mitigation||'Ação de mitigação ainda não registrada.')+'</span></div>'+
+      '<div class="risk-simple-section"><strong>Pendências relacionadas</strong>'+relatedHtml+'</div>'+
+      '<div class="risk-simple-actions">'+
+        '<span class="risk-simple-responsible"><strong>Responsável:</strong> '+esc(r.responsible||'A definir')+'</span>'+
+        (related.length?'<button class="btn-open" onclick="goV(\'pendencias\')">Abrir pendências</button>':'')+
+      '</div>'+
+    '</div>';
+  }).join('')+'</div>';
+}
 function buildAuditTimelineGroups(data){data=data||{};var groups={};(data.auditoria||[]).forEach(function(a){var cid=String(a.Correlation_ID||a.Audit_ID||('AUD-'+Math.random()));if(!groups[cid])groups[cid]={correlationId:cid,dateTime:String(a.Data_Hora||''),user:String(a.Usuario||''),profile:String(a.Perfil||''),action:String(a.Acao||''),entity:String(a.Entidade||''),entityId:String(a.Entidade_ID||''),justification:String(a.Justificativa||''),origin:String(a.Origem||''),changes:[]};groups[cid].changes.push({field:String(a.Campo_Alterado||''),before:String(a.Valor_Anterior==null?'':a.Valor_Anterior),after:String(a.Valor_Novo==null?'':a.Valor_Novo),auditId:String(a.Audit_ID||'')});});var out=Object.keys(groups).map(function(k){var g=groups[k],source='';if(normCE(g.entity)==='pendencia'){var p=(data.pendencias||[]).find(function(x){return String(x.Pendencia_ID||x.id||'')===g.entityId;});if(p)source=String(p.Evidencia_Link||p.evidenceLink||'');}else if(normCE(g.entity)==='risco'){var r=(data.riscos||[]).find(function(x){return String(x.Risco_ID||x.id||'')===g.entityId;});if(r)source=String(r.Evidencia_Link||r.Link_Evidencia||'');}g.sourceLink=source;return g;});return out.sort(function(a,b){return String(b.dateTime).localeCompare(String(a.dateTime));});}
 function renderAuditTimeline(data){D=data||D||{};var el=document.getElementById('auditoria-content');if(!el)return;if(!sessionHasPermission_('AUDITORIA_VER')){el.innerHTML=renderEmptyState({title:'Acesso restrito',message:'Este perfil não possui permissão AUDITORIA_VER.'});return;}var groups=buildAuditTimelineGroups(D),changes=groups.reduce(function(a,g){return a+g.changes.length;},0),users={};groups.forEach(function(g){if(g.user)users[g.user]=true;});var k=document.getElementById('auditoria-kpis');if(k)k.innerHTML=[renderKpiCard({label:'Eventos auditados',value:groups.length,detail:'Comandos/correlações',accent:true}),renderKpiCard({label:'Campos alterados',value:changes,detail:'Antes/depois preservados'}),renderKpiCard({label:'Usuários',value:Object.keys(users).length,detail:'Atores identificados'}),renderKpiCard({label:'Rastreabilidade',value:'Append-only',detail:'Histórico institucional'})].join('');if(!groups.length){el.innerHTML=renderEmptyState({title:'Sem eventos de auditoria',message:'As alterações governadas aparecerão aqui após a ativação das escritas.'});return;}el.innerHTML=groups.map(function(g){return '<div class="card" style="margin-bottom:12px"><div class="atividade-card-top"><div><div class="atividade-territorio">'+esc(g.dateTime||'-')+' · '+esc(g.profile||'-')+'</div><div class="atividade-titulo">'+esc(g.action||'Alteração')+'</div><div class="atividade-codigo">'+esc(g.entity)+' '+esc(g.entityId)+' · '+esc(g.user||'Usuário não identificado')+'</div></div><span class="pill">'+esc(g.correlationId)+'</span></div><div style="margin-top:10px">'+g.changes.map(function(c){return '<div class="atividade-reading" style="margin-bottom:7px"><strong>'+esc(c.field||'Campo')+'</strong><br><span style="color:#9a5656">Antes: '+esc(c.before||'∅')+'</span><br><span style="color:#26745f">Depois: '+esc(c.after||'∅')+'</span></div>';}).join('')+'</div>'+(g.justification?'<div style="font-size:10px;color:#647181;margin-top:8px"><strong>Justificativa:</strong> '+esc(g.justification)+'</div>':'')+(g.sourceLink?'<div class="drive-actions" style="margin-top:8px"><a class="drive-open secondary" href="'+esc(g.sourceLink)+'" target="_blank" rel="noopener">Abrir fonte / evidência</a></div>':'')+'</div>';}).join('');}
 function buildUserPermissionModels(data){data=data||{};var canManage=!!(data.session&&Array.isArray(data.session.permissions)&&data.session.permissions.indexOf('USUARIO_GERENCIAR')>=0);return (data.usuariosPermissoes||[]).map(function(u){var active=u.Ativo===true||String(u.Ativo).toLowerCase()==='true'||String(u.Ativo)==='1'||normCE(u.Ativo)==='sim';return {email:String(u.Email||''),name:String(u.Nome||''),profile:String(u.Perfil||''),active:active,territories:String(u.Territorios_Permitidos||''),extras:String(u.Permissoes_Extras||''),canManage:canManage,raw:u};});}
