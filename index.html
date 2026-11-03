@@ -463,6 +463,33 @@ h1,h2,h3,h4{font-family:'Montserrat',Arial,sans-serif}
 @media(max-width:980px){.ceg-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.ceg-files{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media(max-width:600px){.ceg-grid,.ceg-files{grid-template-columns:1fr}.ceg-course-head{align-items:start;flex-direction:column}.ceg-toolbar select,.ceg-toolbar input{flex-basis:100%}}
 
+
+/* CONEXÕES EMPREENDEDORAS — fichas por relatório / visualizador v2 */
+.ceg-toolbar > label{font:700 10px Montserrat;color:#37536b}
+.ceg-report-filter{background:#fff;border:1px solid #dbe5ed;border-radius:12px;padding:16px;margin:0 0 14px;display:grid;grid-template-columns:minmax(200px,1fr) 2fr;gap:10px;align-items:center}
+.ceg-report-filter select{width:100%;max-width:100%;padding:11px 12px;border-radius:9px;border:1px solid #c7d7e3;background:#fff;color:#092040;font:600 11px 'Open Sans',Arial,sans-serif}
+.ceg-report-filter label{font:700 11px Montserrat;color:#092040}
+.ceg-report-filter p{grid-column:1 / -1;margin:0;font-size:10.5px;color:#6b7a89;line-height:1.5}
+.ceg-link-ok{border-left:3px solid #1A6B3C;background:#edf9f1;padding:8px 10px;border-radius:6px;font-size:10px;color:#286346}
+.ceg-ficha{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-bottom:15px}
+.ceg-ficha>div{border:1px solid #e0e8ef;background:#f8fafc;padding:11px 12px;border-radius:9px;overflow-wrap:anywhere}
+.ceg-ficha small{display:block;font:700 9px Montserrat;color:#758796;text-transform:uppercase;margin-bottom:5px}
+.ceg-ficha strong{display:block;font:700 11px/1.5 Montserrat;color:#092040}
+.ceg-modal-tabs{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0 10px}
+.ceg-modal-tabs button{border:1px solid #cbdbe6;background:#fff;color:#092040;border-radius:9px;padding:10px 16px;font:700 11px Montserrat;cursor:pointer}
+.ceg-modal-tabs button[aria-pressed=true]{background:#092040;color:#ECC203}
+#ceg-folder-extras{font-size:10px;margin:9px 0;color:#596c7c}
+#ceg-folder-extras a{color:#167b91}
+.ceg-report-open{margin:15px 0 2px!important}
+.ceg-viewer-img-zone{display:flex;align-items:center;justify-content:center;overflow:auto;max-width:98vw;max-height:78vh;min-height:50vh}
+#ceg-viewer-img{transition:transform .15s ease;transform-origin:center center;max-width:95vw;max-height:76vh;object-fit:contain}
+.ceg-viewer-toolbar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:12px}
+.ceg-viewer-toolbar button{border:1px solid #adc3d5;background:#fff;color:#092040;border-radius:8px;padding:8px 12px;font:700 11px Montserrat;cursor:pointer}
+.ceg-viewer-toolbar span{color:#dce8f2;font:600 11px 'Open Sans';max-width:420px;overflow-wrap:anywhere}
+#ceg-embedded-gallery{display:block;margin-top:12px;width:100%;height:65vh;border:1px solid #dbe5ec;border-radius:11px;background:#fff}
+.ceg-dialog{max-height:93vh}
+.ceg-dialog-body{max-height:calc(93vh - 85px);overflow-y:auto}
+@media(max-width:650px){.ceg-report-filter{grid-template-columns:1fr}.ceg-ficha{grid-template-columns:repeat(2,minmax(0,1fr))}.ceg-dialog-body{padding:13px}.ceg-viewer-toolbar button{padding:8px}}
 </style>
 </head>
 <body>
@@ -678,10 +705,12 @@ h1,h2,h3,h4{font-family:'Montserrat',Arial,sans-serif}
     <div class="vw" id="vw-galeria">
       <div class="exec-page-head"><div><div class="exec-page-kicker">Acervo visual · atividades formativas</div><h2>Galeria de Evidências</h2><p>Fotografias e listas de presença divididas por território, curso, competência e turma.</p></div></div>
       <div class="ceg-note"><strong>Leitura documental:</strong> os totais vêm do inventário oficial e não significam aprovação automática. As miniaturas são consultadas individualmente no Drive quando o serviço do Apps Script estiver conectado. Documentos continuam sujeitos às permissões do Google Drive.</div>
-      <div class="ceg-mode" role="group" aria-label="Tipo de galeria">
-        <button data-ceg-tipo="foto" aria-pressed="true" onclick="CE_GALERIA_tipo('foto')">📷 Galeria de fotos</button>
-        <button data-ceg-tipo="lista" aria-pressed="false" onclick="CE_GALERIA_tipo('lista')">📋 Listas de presença</button>
+      <div class="ceg-report-filter">
+        <label for="ceg-relatorio">Relatório de referência</label>
+        <select id="ceg-relatorio" onchange="CE_GALERIA_alterarRelatorio()"><option value="">Todas as atividades e períodos</option></select>
+        <p id="ceg-reports-legend">Selecione um relatório para visualizar suas atividades no período.</p>
       </div>
+      <div class="ceg-note" id="ceg-periodo-alerta" style="display:none">Este recorte usa a data/competência da evidência. <strong>Não significa que o arquivo foi efetivamente anexado ou aprovado no relatório escolhido.</strong> Registros sem data comprovável ficam fora deste filtro. <a id="ceg-report-link" target="_blank" rel="noopener noreferrer" style="display:none;margin-left:8px">Abrir documento do relatório</a></div>
       <div class="ceg-toolbar">
         <select id="ceg-territorio" onchange="CE_GALERIA_filtrar()" aria-label="Filtrar por território"><option value="">Todos os territórios</option></select>
         <select id="ceg-curso" onchange="CE_GALERIA_filtrar()" aria-label="Filtrar por curso"><option value="">Todos os cursos</option></select>
@@ -745,14 +774,32 @@ h1,h2,h3,h4{font-family:'Montserrat',Arial,sans-serif}
 <div id="ceg-modal" class="ceg-overlay" onclick="if(event.target===this)CE_GALERIA_fechar()">
   <div class="ceg-dialog" role="dialog" aria-modal="true" aria-labelledby="ceg-modal-title">
     <div class="ceg-dialog-head"><div><h3 id="ceg-modal-title">Arquivos de evidência</h3><div id="ceg-modal-sub" class="ceg-count"></div></div><button class="ceg-close" onclick="CE_GALERIA_fechar()" aria-label="Fechar">×</button></div>
-    <div class="ceg-dialog-body"><a id="ceg-modal-drive" class="ceg-btn secondary" target="_blank" rel="noopener noreferrer" style="display:none">Abrir pasta original no Drive</a><div id="ceg-modal-files" aria-live="polite"></div></div>
+    <div class="ceg-dialog-body">
+      <div id="ceg-ficha-info"></div>
+      <a id="ceg-modal-drive" class="ceg-btn secondary" target="_blank" rel="noopener noreferrer" style="display:none">Abrir pasta original no Drive</a>
+      <div id="ceg-folder-extras"></div>
+      <div class="ceg-modal-tabs" role="group" aria-label="Evidências desta atividade">
+        <button type="button" data-ceg-modal-tab="foto" aria-pressed="true" onclick="CE_GALERIA_modalTab('foto')">Fotos e ampliações</button>
+        <button type="button" data-ceg-modal-tab="lista" aria-pressed="false" onclick="CE_GALERIA_modalTab('lista')">Listas de presença e documentos</button>
+      </div>
+      <div id="ceg-modal-files" aria-live="polite"></div>
+    </div>
   </div>
 </div>
 <div id="ceg-viewer" class="ceg-viewer" role="dialog" aria-modal="true" aria-label="Visualização de evidência">
   <button class="ceg-close" onclick="CE_GALERIA_fecharPreview()" style="align-self:flex-end;margin:0 20px 10px 0" aria-label="Fechar prévia">×</button>
-  <img id="ceg-viewer-img" alt="Fotografia de atividade" style="display:none">
-  <iframe id="ceg-viewer-frame" title="Visualizador de documento" style="display:none" referrerpolicy="no-referrer"></iframe>
-  <div class="ceg-viewer-actions"><span id="ceg-viewer-label"></span><a id="ceg-viewer-link" class="ceg-btn" target="_blank" rel="noopener noreferrer">Abrir original no Drive</a></div>
+  <div class="ceg-viewer-img-zone">
+    <img id="ceg-viewer-img" alt="Fotografia de atividade" style="display:none">
+    <iframe id="ceg-viewer-frame" title="Visualizador de documento" style="display:none" referrerpolicy="no-referrer"></iframe>
+  </div>
+  <div class="ceg-viewer-toolbar">
+    <button type="button" onclick="CE_GALERIA_navegar(-1)" aria-label="Arquivo anterior">← Anterior</button>
+    <button type="button" onclick="CE_GALERIA_zoom(.25)" aria-label="Ampliar">Zoom +</button>
+    <button type="button" onclick="CE_GALERIA_zoom(-.25)" aria-label="Reduzir">Zoom −</button>
+    <button type="button" onclick="CE_GALERIA_navegar(1)" aria-label="Próximo arquivo">Próximo →</button>
+    <span id="ceg-viewer-label"></span>
+    <a id="ceg-viewer-link" class="ceg-btn" target="_blank" rel="noopener noreferrer">Abrir original no Drive</a>
+  </div>
 </div>
 
 <script>
@@ -1197,6 +1244,7 @@ function renderAll() {
   renderUsersPermissions(D);
   renderExecutiveReports(D);
   renderSystemConfiguration(D);
+  if (typeof CE_GALERIA_linkarRelatorios === 'function') CE_GALERIA_linkarRelatorios();
 }
 
 function kpi(n, l) {
@@ -1748,58 +1796,155 @@ window.addEventListener('DOMContentLoaded', function () {
 </script>
 <script>
 
-/* Conexões Empreendedoras — Galeria de evidências por território, curso e turma.
-   Contagens provêm de D.evidenciasDrive; miniaturas exigem ação galeria_arquivos no Apps Script. */
-(function(){
+/* Conexões Empreendedoras | Galeria de fichas de atividades v2.
+ * Leitura dos resumos: D.evidenciasDrive (existente).
+ * Miniaturas privadas: Apps Script galeria_arquivos autenticado (NOVA implantação).
+ * Nenhuma evidência é validada automaticamente.
+ */
+(function () {
 'use strict';
-var S={tipo:'foto',pagina:1,porPagina:30,grupos:[],selecionado:null,arquivos:[],pagArquivos:1,seq:0,parcial:false};
-function el(id){return document.getElementById(id);}
-function escG(x){return String(x==null?'':x).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');}
-function normG(x){return String(x==null?'':x).normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim();}
-function urlG(x){x=String(x||'').trim();return /^https:\/\/(?:drive|docs)\.google\.com\//i.test(x)?x:'';}
-function folderG(x){var m=urlG(x).match(/\/folders\/([A-Za-z0-9_-]+)/);return m?m[1]:'';}
-function kG(a){return [a.territorio,a.curso,a.turma,a.competencia,a.data].map(normG).join('|');}
-function gruposG(){
+var G={groups:[],selected:null,report:'',page:1,perPage:36,tab:'foto',files:{foto:[],lista:[]},loading:{foto:false,lista:false},errors:{},partial:{},abort:{},viewIndex:0,scale:1,reportChoices:[],req:0};
+function $(id){return document.getElementById(id);}
+function esc(x){return String(x==null?'':x).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');}
+function norm(x){return String(x||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim();}
+function driveUrl(x){x=String(x||'').trim();return /^https:\/\/(?:drive|docs)\.google\.com\//i.test(x)?x:'';}
+function folderId(x){var m=driveUrl(x).match(/\/folders\/([\w-]+)/);return m?m[1]:'';}
+function positive(x){var v=Number(x);return isFinite(v)&&v>0?v:0;}
+function isoDate(value){
+ var s=String(value||'').trim(),m;if((m=s.match(/^(\d{4})-(\d{2})-(\d{2})/)))return m[1]+'-'+m[2]+'-'+m[3];
+ if((m=s.match(/^(\d{2})\/(\d{2})\/(\d{4})/)))return m[3]+'-'+m[2]+'-'+m[1];
+ return '';
+}
+function isoMonth(x){var m=String(x||'').trim().match(/^(\d{4})-(\d{2})/);return m?m[1]+'-'+m[2]:'';}
+function exactMonth(d,comp){return isoMonth(d)||isoMonth(comp);}
+function reportModels(){
+ var a=(typeof D!=='undefined'&&D&&Array.isArray(D.relatoriosExecutivos))?D.relatoriosExecutivos:[];
+ return a.map(function(r){return {id:String(r.Relatorio_ID||''),start:isoDate(r.Periodo_Inicio),end:isoDate(r.Periodo_Fim),name:String(r.Relatorio_ID||'Relatório')+' · '+String(r.Periodo_Inicio||'')+' a '+String(r.Periodo_Fim||'')+' · '+String(r.Status_Envio||'Sem status'),link:driveUrl(r.Link_Arquivo)}}).filter(function(r){return r.id&&r.start&&r.end;}).sort(function(a,b){return b.end.localeCompare(a.end)||b.id.localeCompare(a.id);});
+}
+function periodOf(g){var d=isoDate(g.data),m=exactMonth(g.data,g.competencia);return {date:d,month:m};}
+function intersectsReport(g,r){
+ var p=periodOf(g);if(p.date)return p.date>=r.start&&p.date<=r.end;
+ if(p.month)return p.month>=r.start.slice(0,7)&&p.month<=r.end.slice(0,7);
+ return false; // Não atribuir ao relatório evidência sem data confiável.
+}
+function items(){
  var rows=(typeof D!=='undefined'&&D&&Array.isArray(D.evidenciasDrive))?D.evidenciasDrive:[],m=new Map();
  rows.forEach(function(r){
-  var a={territorio:String(r.Territorio||'Não identificado'),curso:String(r.Curso_Normalizado||r.Curso_Original_Drive||'Curso a classificar'),turma:String(r.Nucleo_Turma_Real||'Turma não identificada'),competencia:String(r.Competencia||'Competência não identificada'),data:String(r.Data_Referencia||''),ramo:String(r.Fonte_Ramo||''),vinculado:typeof evidenciaVinculadaCE==='function'?evidenciaVinculadaCE(r):!!r.Linha_ATIVIDADES,fotos:Math.max(0,Number(r.Qtd_Fotos||0)||0),listas:Math.max(0,Number(r.Qtd_Listas||0)||0),link:urlG(r.Link_Pasta_Evidencia)};
-  var key=kG(a);if(!m.has(key))m.set(key,{...a,linhas:[]});m.get(key).linhas.push(a);
+  var row={territory:String(r.Territorio||'Não identificado'),course:String(r.Curso_Normalizado||r.Curso_Original_Drive||'Curso a classificar'),group:String(r.Nucleo_Turma_Real||'Turma não identificada'),comp:String(r.Competencia||''),date:String(r.Data_Referencia||''),branch:String(r.Fonte_Ramo||''),folder:driveUrl(r.Link_Pasta_Evidencia),photos:positive(r.Qtd_Fotos),lists:positive(r.Qtd_Listas),linked:typeof evidenciaVinculadaCE==='function'?evidenciaVinculadaCE(r):!!r.Linha_ATIVIDADES,status:String(r.Status_Vinculo||'')};
+  var key=[row.territory,row.course,row.group,row.comp,row.date].map(norm).join('|');
+  if(!m.has(key))m.set(key,{territory:row.territory,course:row.course,group:row.group,competencia:row.comp,data:row.date,rows:[]});
+  m.get(key).rows.push(row);
  });
  return Array.from(m.values()).map(function(g){
-  var org=g.linhas.filter(function(x){return x.ramo.toUpperCase()==='EVIDENCIAS_ORGANIZADAS';});
-  var preferidas=org.length?org:g.linhas,folders=new Map();
-  preferidas.forEach(function(x){var id=folderG(x.link);if(id){var prev=folders.get(id);if(!prev||x.fotos+x.listas>prev.fotos+prev.listas)folders.set(id,x);}else folders.set('sem-link-'+folders.size,x);});
-  var fr=Array.from(folders.values());g.fotos=fr.reduce(function(s,x){return s+x.fotos;},0);g.listas=fr.reduce(function(s,x){return s+x.listas;},0);
-  g.links=Array.from(new Set(fr.map(function(x){return x.link;}).filter(Boolean)));g.vinculado=fr.some(function(x){return x.vinculado;});delete g.linhas;return g;
- }).sort(function(a,b){return [a.territorio,a.curso,a.competencia,a.turma].join('|').localeCompare([b.territorio,b.curso,b.competencia,b.turma].join('|'),'pt-BR');});
+  var organized=g.rows.filter(function(x){return x.branch.toUpperCase()==='EVIDENCIAS_ORGANIZADAS';});
+  var selected=organized.length?organized:g.rows,fold=new Map();
+  selected.forEach(function(x){var id=folderId(x.folder),key=id||'sem-pasta-'+fold.size,prev=fold.get(key);if(!prev||x.photos+x.lists>prev.photos+prev.lists)fold.set(key,x);});
+  var actual=Array.from(fold.values());g.photos=actual.reduce(function(s,x){return s+x.photos;},0);g.lists=actual.reduce(function(s,x){return s+x.lists;},0);
+  g.links=Array.from(new Set(actual.map(function(x){return x.folder;}).filter(Boolean)));g.linked=actual.some(function(x){return x.linked;});
+  g.groupId=[g.territory,g.course,g.group,g.competencia,g.data].map(norm).join('|');
+  delete g.rows;return g;
+ }).sort(function(a,b){return [a.territory,a.course,a.competencia,a.data,a.group].join('|').localeCompare([b.territory,b.course,b.competencia,b.data,b.group].join('|'),'pt-BR');});
 }
-function preencheG(input,values,label,previous){if(!input)return;input.innerHTML='<option value="">'+label+'</option>';Array.from(new Set(values.filter(Boolean))).sort(function(a,b){return a.localeCompare(b,'pt-BR');}).forEach(function(s){var o=document.createElement('option');o.value=s;o.textContent=s;input.appendChild(o);});if(Array.from(input.options).some(function(o){return o.value===previous;}))input.value=previous;}
-function filtrosG(){var rows=gruposG(),t=el('ceg-territorio'),c=el('ceg-curso'),p=el('ceg-competencia'),q=el('ceg-busca'),T=t&&t.value||'',C=c&&c.value||'',P=p&&p.value||'';
- preencheG(t,rows.map(function(x){return x.territorio;}),'Todos os territórios',T);
- preencheG(c,rows.filter(function(x){return !T||x.territorio===T;}).map(function(x){return x.curso;}),'Todos os cursos',C);
- preencheG(p,rows.filter(function(x){return (!T||x.territorio===T)&&(!C||x.curso===C);}).map(function(x){return x.competencia;}),'Todas as competências',P);
- var filter=normG(q&&q.value||'');rows=rows.filter(function(x){return (!t||!t.value||x.territorio===t.value)&&(!c||!c.value||x.curso===c.value)&&(!p||!p.value||x.competencia===p.value)&&(!filter||normG([x.territorio,x.curso,x.turma,x.competencia,x.data].join(' ')).includes(filter))&&(S.tipo==='foto'?x.fotos>0:x.listas>0);});
- S.grupos=rows;return rows;
+function fillSelect(id,values,label){var e=$(id);if(!e)return;var prev=e.value;e.innerHTML='';var z=document.createElement('option');z.value='';z.textContent=label;e.appendChild(z);Array.from(new Set(values.filter(Boolean))).sort(function(a,b){return a.localeCompare(b,'pt-BR');}).forEach(function(v){var o=document.createElement('option');o.value=v;o.textContent=v;e.appendChild(o);});if(Array.from(e.options).some(function(o){return o.value===prev;}))e.value=prev;}
+function fillReport(){
+ var s=$('ceg-relatorio');if(!s)return;var prev=G.report||s.value;G.reportChoices=reportModels();s.innerHTML='<option value="">Todas as atividades e períodos</option>';
+ G.reportChoices.forEach(function(r){var o=document.createElement('option');o.value=r.id;o.textContent=r.name;s.appendChild(o);});
+ if(prev&&G.reportChoices.some(function(r){return r.id===prev;}))s.value=prev;else s.value='';G.report=s.value;
+ $('ceg-reports-legend').textContent=G.reportChoices.length?'Selecione o relatório para consultar as atividades do seu período. A coincidência de datas não comprova inclusão no documento.':'Nenhum relatório disponível nesta sessão. Use os filtros de competência e território para consultar o inventário.';
 }
-function cardG(g,i){var url=g.links[0]||'';return '<article class="ceg-card"><div><h4>'+escG(g.turma)+'</h4><p>'+escG(g.competencia)+(g.data?' · '+escG(g.data):'')+'</p></div><div class="ceg-stats"><span class="ceg-chip alt">'+g.fotos+' foto(s)</span><span class="ceg-chip">'+g.listas+' lista(s)</span></div><div class="'+(g.vinculado?'ceg-note':'ceg-warning')+'" style="margin:0;padding:8px;font-size:10px">'+(g.vinculado?'Vínculo registrado':'Vínculo da turma a conferir')+'</div><div class="ceg-actions"><button class="ceg-btn" onclick="CE_GALERIA_abrir('+i+')">Ver '+(S.tipo==='foto'?'fotografias':'listas')+'</button>'+(url?'<a class="ceg-btn secondary" href="'+escG(url)+'" target="_blank" rel="noopener noreferrer">Pasta no Drive</a>':'')+'</div></article>';}
-function renderG(reset){var container=el('ceg-atividades');if(!container)return;if(reset)S.pagina=1;var rows=filtrosG(),shown=rows.slice(0,S.pagina*S.porPagina),f=rows.reduce(function(s,x){return s+x.fotos;},0),l=rows.reduce(function(s,x){return s+x.listas;},0);el('ceg-total').textContent=rows.length+' grupo(s) · '+f+' fotografia(s) e '+l+' lista(s) indicadas no inventário, sem validação documental.';if(!rows.length){container.innerHTML='<div class="ceg-empty">Nenhuma evidência desse tipo foi identificada para os filtros informados.</div>';return;}var lastTerr='',lastCourse='',html='';shown.forEach(function(g,i){if(g.territorio!==lastTerr){if(lastCourse)html+='</div></section>';html+='<h3 class="ceg-territory">'+escG(g.territorio)+'</h3>';lastTerr=g.territorio;lastCourse='';}var ck=g.territorio+'|'+g.curso;if(ck!==lastCourse){if(lastCourse)html+='</div></section>';html+='<section class="ceg-course"><div class="ceg-course-head"><strong>'+escG(g.curso)+'</strong><small>Atividades formativas · fotos e listas por turma</small></div><div class="ceg-grid">';lastCourse=ck;}html+=cardG(g,i);});if(lastCourse)html+='</div></section>';container.innerHTML=html+(rows.length>shown.length?'<button class="ceg-btn ceg-more" onclick="CE_GALERIA_mais()">Mostrar mais grupos ('+(rows.length-shown.length)+' restantes)</button>':'');}
-window.renderGaleriaCE=function(){renderG(false);};
-window.CE_GALERIA_filtrar=function(){renderG(true);};
-window.CE_GALERIA_tipo=function(tipo){S.tipo=tipo==='lista'?'lista':'foto';document.querySelectorAll('[data-ceg-tipo]').forEach(function(b){b.setAttribute('aria-pressed',String(b.getAttribute('data-ceg-tipo')===S.tipo));});renderG(true);};
-window.CE_GALERIA_mais=function(){S.pagina++;renderG(false);};
-window.CE_GALERIA_fechar=function(){S.seq++;el('ceg-modal').classList.remove('open');S.selecionado=null;el('ceg-modal-files').innerHTML='';};
-window.CE_GALERIA_abrir=function(i){var g=S.grupos[i];if(!g)return;S.selecionado=g;S.arquivos=[];S.pagArquivos=1;el('ceg-modal').classList.add('open');el('ceg-modal-title').textContent=g.curso+' · '+g.turma;el('ceg-modal-sub').textContent=g.territorio+' · '+g.competencia+' · '+(S.tipo==='foto'?'Fotografias':'Listas de presença');var a=el('ceg-modal-drive');a.style.display=g.links[0]?'inline-block':'none';if(g.links[0])a.href=g.links[0];el('ceg-modal-files').innerHTML='<div class="ceg-empty">Consultando arquivos individuais do Drive…</div>';
- var base=window.CE_GALERIA_API_URL||(typeof APPS_SCRIPT_URL!=='undefined'?APPS_SCRIPT_URL:'');if(!base){erroG('O endpoint de arquivos individuais não foi conectado. Os atalhos das pastas continuam disponíveis.');return;}
- var q=new URLSearchParams({action:'galeria_arquivos',territorio:g.territorio,curso:g.curso,turma:g.turma,competencia:g.competencia,data:g.data,tipo:S.tipo});var seq=++S.seq;
- fetch(base+(base.indexOf('?')>=0?'&':'?')+q.toString(),{cache:'no-store'}).then(function(r){if(!r.ok)throw Error('HTTP '+r.status);return r.json();}).then(function(resp){if(seq!==S.seq||!S.selecionado)return;if(!resp||resp.ok!==true||!Array.isArray(resp.arquivos))throw Error(resp&&resp.erro||'Resposta sem arquivos individuais');S.arquivos=resp.arquivos.filter(function(x){return /^[A-Za-z0-9_-]{10,}$/.test(String(x.id||''));});S.parcial=!!resp.parcial;renderArquivosG();}).catch(function(err){if(seq===S.seq)erroG('Miniaturas ainda não conectadas ou sem autorização: '+String(err.message||err)+'. Abra a pasta do Drive para visualizar os originais.');});
+function filtered(){
+ var all=items(),r=G.reportChoices.find(function(x){return x.id===G.report;});
+ if(r)all=all.filter(function(g){return intersectsReport(g,r);});
+ var t=$('ceg-territorio'),c=$('ceg-curso'),p=$('ceg-competencia'),q=$('ceg-busca');
+ var T=t&&t.value||'',C=c&&c.value||'',P=p&&p.value||'';
+ fillSelect('ceg-territorio',all.map(function(g){return g.territory;}),'Todos os territórios');
+ fillSelect('ceg-curso',all.filter(function(g){return !T||g.territory===T;}).map(function(g){return g.course;}),'Todos os cursos');
+ fillSelect('ceg-competencia',all.filter(function(g){return (!T||g.territory===T)&&(!C||g.course===C);}).map(function(g){return g.competencia||isoMonth(g.data);}).filter(Boolean),'Todas as competências');
+ var s=norm(q&&q.value||'');all=all.filter(function(g){return (!t||!t.value||g.territory===t.value)&&(!c||!c.value||g.course===c.value)&&(!p||!p.value||g.competencia===p.value||isoMonth(g.data)===p.value)&&(!s||norm([g.territory,g.course,g.group,g.competencia,g.data].join(' ')).includes(s));});
+ G.groups=all;return all;
+}
+function renderCard(g,i){return '<article class="ceg-card"><h4>'+esc(g.group)+'</h4><p>'+esc(g.data||g.competencia||'Data/competência não identificada')+'</p><div class="ceg-stats"><span class="ceg-chip alt">'+g.photos+' foto(s)</span><span class="ceg-chip">'+g.lists+' lista(s)</span></div><div class="'+(g.linked?'ceg-link-ok':'ceg-warning')+'">'+(g.linked?'Vínculo com atividade registrado':'Vínculo exato da turma ainda não comprovado')+'</div><button type="button" class="ceg-btn" onclick="CE_GALERIA_abrir('+i+')">Abrir ficha e todas as miniaturas</button></article>';}
+function render(reset){if(!$('ceg-atividades'))return;if(reset)G.page=1;fillReport();var rows=filtered(),show=rows.slice(0,G.page*G.perPage),f=rows.reduce(function(s,x){return s+x.photos;},0),l=rows.reduce(function(s,x){return s+x.lists;},0),r=G.reportChoices.find(function(x){return x.id===G.report;});
+ $('ceg-total').textContent=rows.length+' fichas de evidências · '+f+' fotos e '+l+' listas informadas no inventário'+(r?' · Recorte: '+r.id:'')+'.';
+ $('ceg-periodo-alerta').style.display=r?'block':'none';var reportLink=$('ceg-report-link');if(reportLink){reportLink.style.display=r&&r.link?'inline-block':'none';if(r&&r.link)reportLink.href=r.link;}
+ $('ceg-atividades').innerHTML=rows.length?'':'<div class="ceg-empty">Nenhuma evidência identificada neste recorte. Isso não significa que a atividade não ocorreu.</div>';
+ if(!rows.length)return;
+ var html='',territory='',course='';show.forEach(function(g,i){if(territory!==g.territory){if(course)html+='</div></section>';html+='<h3 class="ceg-territory">'+esc(g.territory)+'</h3>';territory=g.territory;course='';}var key=g.territory+'|'+g.course;if(course!==key){if(course)html+='</div></section>';html+='<section class="ceg-course"><div class="ceg-course-head"><strong>'+esc(g.course)+'</strong><small>Fichas por turma e data/competência</small></div><div class="ceg-grid">';course=key;}html+=renderCard(g,i);});if(course)html+='</div></section>';
+ if(rows.length>show.length)html+='<button type="button" class="ceg-btn ceg-more" onclick="CE_GALERIA_mais()">Mais fichas ('+(rows.length-show.length)+' restantes)</button>';
+ $('ceg-atividades').innerHTML=html;
+}
+function closeRequests(){Object.keys(G.abort).forEach(function(k){try{G.abort[k].abort();}catch(e){}});G.abort={};G.req++;}
+function resetFiles(){closeRequests();G.files={foto:[],lista:[]};G.errors={};G.loading={foto:false,lista:false};G.partial={foto:false,lista:false};}
+function currentGroup(){return G.selected;}
+function renderModal(){var g=currentGroup();if(!g)return;
+ $('ceg-modal-title').textContent=g.course+' · '+g.group;
+ $('ceg-modal-sub').textContent=g.territory+' · '+(g.data||g.competencia||'Competência a conferir')+' · Ficha da atividade';
+ $('ceg-ficha-info').innerHTML='<div class="ceg-ficha"><div><small>Território</small><strong>'+esc(g.territory)+'</strong></div><div><small>Curso</small><strong>'+esc(g.course)+'</strong></div><div><small>Turma</small><strong>'+esc(g.group)+'</strong></div><div><small>Competência / data</small><strong>'+esc(g.competencia||'Não informada')+' · '+esc(g.data||'Não informada')+'</strong></div><div><small>Inventário</small><strong>'+g.photos+' fotos · '+g.lists+' listas</strong></div><div><small>Vínculo</small><strong>'+ (g.linked?'Registrado':'Conferência necessária')+'</strong></div></div>';
+ $('ceg-modal-drive').style.display=g.links.length?'inline-block':'none';if(g.links.length)$('ceg-modal-drive').href=g.links[0];
+ $('ceg-folder-extras').innerHTML=g.links.length>1?g.links.slice(1).map(function(u,i){return '<a href="'+esc(u)+'" target="_blank" rel="noopener noreferrer">Pasta adicional '+(i+2)+'</a>';}).join(' · '):'';
+ tab(G.tab);
+}
+function tab(tipo){G.tab=tipo==='lista'?'lista':'foto';document.querySelectorAll('[data-ceg-modal-tab]').forEach(function(b){b.setAttribute('aria-pressed',String(b.getAttribute('data-ceg-modal-tab')===G.tab));});renderFiles();}
+function renderFiles(){var e=$('ceg-modal-files');if(!e||!G.selected)return;var type=G.tab,arr=G.files[type],loading=G.loading[type],err=G.errors[type],partial=G.partial[type],expected=type==='foto'?G.selected.photos:G.selected.lists;
+ var head='<p class="ceg-count">'+arr.length+' arquivo(s) individual(is) carregado(s) · '+expected+' indicado(s) no inventário. Não é validação documental.</p>';
+ if(loading)head+='<div class="ceg-note" role="status">Carregando as miniaturas autorizadas… '+arr.length+' arquivo(s) já recebido(s).</div>';
+ if(err)head+='<div class="ceg-warning">'+esc(err)+'</div>';
+ if(partial&&!loading)head+='<div class="ceg-warning">A consulta é parcial; pode haver outros arquivos nas pastas. Confira o Drive.</div>';
+ if(!arr.length){e.innerHTML=head+'<div class="ceg-empty">'+(loading?'Aguardando primeira resposta do Drive…':(err?'Use o botão de pasta original acima.':'Não foram retornados arquivos individuais deste tipo.'))+'</div>';return;}
+ e.innerHTML=head+'<div class="ceg-files">'+arr.map(function(x,i){var id=encodeURIComponent(x.id),url=driveUrl(x.url)||'https://drive.google.com/file/d/'+id+'/view',name=esc(x.nome||'Arquivo sem nome'),thumb='https://drive.google.com/thumbnail?id='+id+'&sz=w600';return '<article class="ceg-file"><button type="button" class="ceg-thumb" onclick="CE_GALERIA_prever('+i+')" aria-label="Ampliar '+name+'"><img loading="lazy" src="'+thumb+'" alt="'+name+'" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'block\'"><span class="ceg-fallback" style="display:none">Prévia bloqueada. Abra o original no Drive.</span></button><div class="ceg-file-meta"><strong>'+name+'</strong><a href="'+esc(url)+'" target="_blank" rel="noopener noreferrer">Original no Drive</a></div></article>';}).join('')+'</div>';
+}
+function queryOf(group,type,cursor){var q=new URLSearchParams({action:'galeria_arquivos',territorio:group.territory,curso:group.course,turma:group.group,competencia:group.competencia,data:group.data,tipo:type});if(cursor)q.set('cursor',cursor);return q.toString();}
+function abortableFetch(url,controller){var ms=14000,tm=setTimeout(function(){controller.abort();},ms);return fetch(url,{cache:'no-store',signal:controller.signal,credentials:'omit'}).then(function(r){if(!r.ok)throw Error('HTTP '+r.status);return r.json();}).finally(function(){clearTimeout(tm);});}
+function load(type,seq){var group=G.selected;if(!group)return;var url=String(window.CE_GALERIA_API_URL||'').trim();
+ if(!/^https:\/\/script\.google\.com\/macros\/s\/[\w-]+\/exec(?:\?|$)/.test(url)){
+  G.errors[type]='A consulta individual ainda não está ativada: é necessário implantar GaleriaCE.gs e informar a URL da nova implantação no index. Os arquivos podem ser abertos pelo Drive.';
+  renderFiles();return;
+ }
+ G.loading[type]=true;G.errors[type]='';renderFiles();var cursor='',pages=0,seen=new Set(),limitPages=40;
+ function loop(){if(seq!==G.req||!G.selected)return;var a=new AbortController();G.abort[type]=a;return abortableFetch(url+(url.indexOf('?')>=0?'&':'?')+queryOf(group,type,cursor),a).then(function(r){if(seq!==G.req)return;
+   if(!r||r.ok!==true||!Array.isArray(r.arquivos))throw Error(String(r&&r.erro||'Endpoint não forneceu arquivos individuais'));
+   r.arquivos.forEach(function(x){if(!x||!(/^[\w-]{10,}$/.test(String(x.id||'')))||seen.has(x.id))return;seen.add(x.id);G.files[type].push({id:x.id,nome:String(x.nome||''),url:driveUrl(x.url)});});
+   G.partial[type]=!!r.parcial;cursor=String(r.proximoCursor||'');pages++;
+   if(G.tab===type)renderFiles();if(cursor&&pages<limitPages)return loop();
+   if(cursor){G.partial[type]=true;G.errors[type]='Limite de páginas atingido nesta consulta. Veja também a pasta original no Drive.';}
+  });}
+ loop().catch(function(err){if(seq!==G.req)return;G.partial[type]=true;G.errors[type]=(err.name==='AbortError'?'A consulta excedeu 14 segundos.':('Não foi possível consultar os arquivos: '+String(err.message||err)+'.'))+' Verifique a implantação, as permissões Google e o acesso entre domínios; a ficha permanece disponível.';}).finally(function(){if(seq===G.req){G.loading[type]=false;if(G.tab===type)renderFiles();}});
+}
+function embeddedFrame(group){
+ var base=String(window.CE_GALERIA_API_URL||'').trim();
+ var ok=/^https:\/\/script\.google\.com\/macros\/s\/[\w-]+\/exec(?:\?|$)/.test(base);
+ $('ceg-modal-tabs').style.display=ok?'none':'flex';
+ if(!ok)return false;
+ var q=new URLSearchParams({view:'galeria_ce',territorio:group.territory,curso:group.course,turma:group.group,competencia:group.competencia,data:group.data});
+ var src=base+(base.indexOf('?')>=0?'&':'?')+q.toString();
+ var parent=$('ceg-modal-files');parent.innerHTML='';
+ var note=document.createElement('p');note.className='ceg-note';note.textContent='Galeria autenticada do Apps Script: fotos e listas são carregadas dentro da ficha. Se o Google bloquear a exibição incorporada, abra a galeria em uma aba própria.';parent.appendChild(note);
+ var link=document.createElement('a');link.className='ceg-btn secondary';link.href=src;link.target='_blank';link.rel='noopener noreferrer';link.textContent='Abrir galeria autenticada em nova aba';parent.appendChild(link);
+ var frame=document.createElement('iframe');frame.id='ceg-embedded-gallery';frame.title='Galeria de miniaturas autenticada da atividade';frame.src=src;frame.setAttribute('allowfullscreen','');frame.setAttribute('loading','eager');parent.appendChild(frame);
+ return true;
+}
+window.CE_GALERIA_abrir=function(i){var g=G.groups[i];if(!g)return;resetFiles();G.selected=g;G.tab='foto';$('ceg-modal').classList.add('open');renderModal();if(embeddedFrame(g))return;var seq=G.req;load('foto',seq);load('lista',seq);};
+window.CE_GALERIA_modalTab=function(x){tab(x);};
+window.CE_GALERIA_fechar=function(){resetFiles();G.selected=null;$('ceg-modal').classList.remove('open');$('ceg-modal-files').innerHTML='';};
+window.CE_GALERIA_mais=function(){G.page++;render(false);};
+window.CE_GALERIA_filtrar=function(){render(true);};
+window.CE_GALERIA_tipo=function(type){ // compatibilidade com botões antigos, se presentes
+ document.querySelectorAll('[data-ceg-tipo]').forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.cegTipo===type));});
+ render(true);
 };
-function erroG(s){el('ceg-modal-files').innerHTML='<div class="ceg-empty">'+escG(s)+'</div>';}
-function renderArquivosG(){var shown=S.arquivos.slice(0,S.pagArquivos*24);if(!S.arquivos.length){erroG('Nenhum arquivo individual retornado para este grupo. Confira a pasta original; o inventário pode estar desatualizado.');return;}var h='<div class="ceg-note">'+S.arquivos.length+' arquivo(s) individual(is) identificado(s). Conferir data, autoria, vínculo, qualidade e assinaturas.'+(S.parcial?' Consulta limitada; pode haver mais arquivos.':'')+'</div><div class="ceg-files">';h+=shown.map(function(x,i){var id=encodeURIComponent(x.id),name=escG(x.nome||'Arquivo'),thumb='https://drive.google.com/thumbnail?id='+id+'&sz=w600',url=urlG(x.url)||'https://drive.google.com/file/d/'+id+'/view';return '<article class="ceg-file"><button class="ceg-thumb" onclick="CE_GALERIA_prever('+i+')" aria-label="Visualizar arquivo"><img loading="lazy" src="'+thumb+'" alt="'+name+'" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'block\'"><span class="ceg-fallback" style="display:none">Prévia indisponível. Abra no Drive.</span></button><div class="ceg-file-meta"><strong>'+name+'</strong><a href="'+escG(url)+'" target="_blank" rel="noopener noreferrer">Abrir original</a></div></article>';}).join('');h+='</div>';if(S.arquivos.length>shown.length)h+='<button class="ceg-btn ceg-more" onclick="CE_GALERIA_maisArquivos()">Exibir mais arquivos</button>';el('ceg-modal-files').innerHTML=h;}
-window.CE_GALERIA_maisArquivos=function(){S.pagArquivos++;renderArquivosG();};
-window.CE_GALERIA_prever=function(i){var x=S.arquivos[i];if(!x)return;var id=encodeURIComponent(x.id),img=el('ceg-viewer-img'),frame=el('ceg-viewer-frame');img.style.display=S.tipo==='foto'?'block':'none';frame.style.display=S.tipo==='lista'?'block':'none';img.src=S.tipo==='foto'?'https://drive.google.com/thumbnail?id='+id+'&sz=w1600':'';frame.src=S.tipo==='lista'?'https://drive.google.com/file/d/'+id+'/preview':'about:blank';el('ceg-viewer-label').textContent=(i+1)+' de '+S.arquivos.length+' · '+String(x.nome||'Arquivo');el('ceg-viewer-link').href=urlG(x.url)||'https://drive.google.com/file/d/'+id+'/view';el('ceg-viewer').classList.add('open');};
-window.CE_GALERIA_fecharPreview=function(){el('ceg-viewer').classList.remove('open');el('ceg-viewer-frame').src='about:blank';el('ceg-viewer-img').removeAttribute('src');};
-document.addEventListener('keydown',function(e){if(e.key!=='Escape')return;if(el('ceg-viewer')&&el('ceg-viewer').classList.contains('open'))CE_GALERIA_fecharPreview();else if(el('ceg-modal')&&el('ceg-modal').classList.contains('open'))CE_GALERIA_fechar();});
+window.renderGaleriaCE=function(){render(false);};
+window.CE_GALERIA_alterarRelatorio=function(){G.report=$('ceg-relatorio').value;render(true);};
+window.CE_GALERIA_abrirRelatorio=function(id){G.report=String(id||'');goV('galeria');render(true);$('vw-galeria').scrollIntoView({behavior:'smooth',block:'start'});};
+window.CE_GALERIA_linkarRelatorios=function(){var panel=$('relatorios-content');if(!panel||!G.reportChoices.length)G.reportChoices=reportModels();if(!panel)return;var cards=panel.querySelectorAll(':scope > .card'),rr=typeof buildExecutiveReportModels==='function'?buildExecutiveReportModels(D||{}):[];cards.forEach(function(card,i){var r=rr[i];if(!r||card.querySelector('.ceg-report-open'))return;var b=document.createElement('button');b.type='button';b.className='ceg-btn ceg-report-open';b.textContent='Abrir fichas de atividades e miniaturas do período';b.addEventListener('click',function(){window.CE_GALERIA_abrirRelatorio(r.id);});card.appendChild(b);});};
+function photoUrl(x,sz){return 'https://drive.google.com/thumbnail?id='+encodeURIComponent(x.id)+'&sz=w'+sz;}
+function viewerShow(){var arr=G.files[G.tab],x=arr[G.viewIndex];if(!x)return;G.scale=1;var isPhoto=G.tab==='foto',img=$('ceg-viewer-img'),frame=$('ceg-viewer-frame');img.style.display=isPhoto?'block':'none';frame.style.display=isPhoto?'none':'block';if(isPhoto){img.src=photoUrl(x,2400);img.style.transform='scale(1)';frame.src='about:blank';}else{frame.src='https://drive.google.com/file/d/'+encodeURIComponent(x.id)+'/preview';img.removeAttribute('src');} $('ceg-viewer-label').textContent=(G.viewIndex+1)+' / '+arr.length+' · '+String(x.nome||'Arquivo');$('ceg-viewer-link').href=driveUrl(x.url)||'https://drive.google.com/file/d/'+encodeURIComponent(x.id)+'/view';$('ceg-viewer').classList.add('open');}
+window.CE_GALERIA_prever=function(index){G.viewIndex=index;viewerShow();};
+window.CE_GALERIA_navegar=function(delta){var a=G.files[G.tab];if(!a.length)return;G.viewIndex=(G.viewIndex+delta+a.length)%a.length;viewerShow();};
+window.CE_GALERIA_zoom=function(delta){if(G.tab!=='foto')return;G.scale=Math.max(1,Math.min(4,G.scale+delta));$('ceg-viewer-img').style.transform='scale('+G.scale+')';};
+window.CE_GALERIA_fecharPreview=function(){$('ceg-viewer').classList.remove('open');$('ceg-viewer-img').removeAttribute('src');$('ceg-viewer-frame').src='about:blank';};
+document.addEventListener('keydown',function(e){if(e.key==='Escape'){if($('ceg-viewer')&&$('ceg-viewer').classList.contains('open'))CE_GALERIA_fecharPreview();else if($('ceg-modal')&&$('ceg-modal').classList.contains('open'))CE_GALERIA_fechar();}if($('ceg-viewer')&&$('ceg-viewer').classList.contains('open')){if(e.key==='ArrowRight')CE_GALERIA_navegar(1);if(e.key==='ArrowLeft')CE_GALERIA_navegar(-1);if(e.key==='+')CE_GALERIA_zoom(.25);if(e.key==='-')CE_GALERIA_zoom(-.25);}});
 })();
+
 
 </script>
 </body>
