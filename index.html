@@ -807,7 +807,7 @@ var SENHA = atob('QnJhcnRlQDIwMjY='); // Brarte@2026
 
 var APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw1ApXYewPhOt1PZ1Ob5o7PNsz8Nmb1TeuQezL5u_1r8YILkfTRuZlsm_ve1PukOHMC/exec';
 // URL opcional da implantação autenticada da galeria; preencha após implantar GaleriaCE.gs.
-window.CE_GALERIA_API_URL = '';
+window.CE_GALERIA_API_URL = 'https://script.google.com/macros/s/AKfycbw1ApXYewPhOt1PZ1Ob5o7PNsz8Nmb1TeuQezL5u_1r8YILkfTRuZlsm_ve1PukOHMC/exec';
 var ADMIN_WEB_URL = 'https://script.google.com/macros/s/AKfycby6K0Gd93fgoHAWf1ocLGJVXtnMZKDr0ngt7P407l1HAcgvpw94Krn5af3BJwHLnlmx/exec?view=admin';
 
 function openAdminArea(){
@@ -868,7 +868,7 @@ function chkPwd() {
   var v = document.getElementById('pf').value;
   if (v === SENHA) {
     document.getElementById('pwd').classList.add('off');
-    sessionStorage.setItem('ce_ok', '1');
+    // Sessão visual não é reaproveitada após atualizar a página.
     carregarApp();
   } else {
     document.getElementById('perr').textContent = 'Senha incorreta. Verifique com a coordenacao.';
@@ -1783,15 +1783,14 @@ function submitConfigCommand(payload){if(!sessionHasPermission_('CONFIG_EDITAR')
 function submitExecutiveReportCommand(){if(!sessionHasPermission_('RELATORIO_ENVIAR'))return Promise.reject(new Error('Sessão sem permissão RELATORIO_ENVIAR'));return fetch(APPS_SCRIPT_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({command:'RELATORIO_ENVIAR',payload:{}})}).then(function(r){return r.json();}).then(function(res){if(!res||res.ok===false)throw new Error(res&&res.error||'Envio recusado');carregarApp();return res;});}
 
 window.addEventListener('DOMContentLoaded', function () {
-  if (sessionStorage.getItem('ce_ok') === '1') {
-    document.getElementById('pwd').classList.add('off');
-    carregarApp();
-  } else {
-    setTimeout(function () {
-      var f = document.getElementById('pf');
-      if (f) f.focus();
-    }, 100);
-  }
+  // Exibe a tela de login em todo novo carregamento da página.
+  // A senha visual não substitui a autorização Google dos documentos.
+  try { sessionStorage.removeItem('ce_ok'); } catch (e) {}
+  document.getElementById('pwd').classList.remove('off');
+  setTimeout(function () {
+    var f = document.getElementById('pf');
+    if (f) f.focus();
+  }, 100);
 });
 </script>
 <script>
