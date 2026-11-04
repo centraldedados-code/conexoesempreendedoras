@@ -195,7 +195,7 @@ h1,h2,h3,h4{font-family:'Montserrat',Arial,sans-serif}
 @media(max-width:480px){.g4,.g3,.g2,.g5{grid-template-columns:1fr}}
 
 
-/* ===== PADRÃO CONEXÕES CRIATIVAS — ATIVIDADES, EVIDÊNCIAS E ESTRUTURA ===== */
+/* ===== PADRÃO CONEXÕES EMPREENDEDORAS — ATIVIDADES, EVIDÊNCIAS E ESTRUTURA ===== */
 .atividade-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
 .atividade-card{background:#fff;border:1.5px solid #dde4ee;border-radius:14px;padding:17px 18px;display:flex;flex-direction:column;min-height:300px;box-shadow:0 3px 12px rgba(9,32,64,.04)}
 .atividade-card:hover{border-color:var(--azs);box-shadow:0 7px 20px rgba(0,183,215,.10)}
@@ -490,6 +490,34 @@ h1,h2,h3,h4{font-family:'Montserrat',Arial,sans-serif}
 .ceg-dialog{max-height:93vh}
 .ceg-dialog-body{max-height:calc(93vh - 85px);overflow-y:auto}
 @media(max-width:650px){.ceg-report-filter{grid-template-columns:1fr}.ceg-ficha{grid-template-columns:repeat(2,minmax(0,1fr))}.ceg-dialog-body{padding:13px}.ceg-viewer-toolbar button{padding:8px}}
+
+/* CONEXÕES EMPREENDEDORAS — galeria de fichas no padrão PULSA SP */
+.ceg-overview{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:14px 0 18px}
+.ceg-ov{padding:17px 19px;background:linear-gradient(135deg,#092040,#10476a);border-radius:13px;border:1px solid #154d74;box-shadow:0 5px 20px #0217381a;color:#fff}
+.ceg-ov strong{display:block;color:#ECC203;font:800 25px Montserrat,sans-serif;margin:7px 0 4px}
+.ceg-ov span{display:block;color:#cfe0ec;font:700 10px Montserrat,sans-serif}
+.ceg-ov small{color:#a8c2d7;font-size:10px}
+.ceg-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;padding:15px}
+.ceg-card{border-left:4px solid #00B7D7;border-radius:13px;box-shadow:0 6px 20px #0217380a;padding:18px;gap:12px}
+.ceg-card.ceg-unlinked{border-left-color:#d3a547}
+.ceg-card h4{font-size:13px;line-height:1.5}
+.ceg-card .ceg-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:auto}
+.ceg-card .ceg-actions .ceg-btn{flex:1;min-width:140px}
+.ceg-card .ceg-actions a{background:#fff;border:1px solid #c9dde9;color:#092040}
+.ceg-card .ceg-status{font:700 10px 'Open Sans';color:#536d83;margin-top:3px}
+.ceg-card .ceg-report-tag{font:700 10px Montserrat;color:#047f9a;letter-spacing:.03em}
+.ceg-ficha-title{font:800 12px Montserrat;color:#092040;margin:22px 0 11px;border-left:4px solid #00B7D7;padding-left:10px}
+.ceg-check-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin:8px 0 13px}
+.ceg-check{padding:12px;background:#f7fafc;border:1px solid #dce7ee;border-radius:10px;min-height:92px}
+.ceg-check strong{display:block;font:800 18px Montserrat;color:#092040;margin-top:8px}
+.ceg-check span{font:700 10px 'Open Sans';color:#566b7d}
+.ceg-ficha-note{color:#5b6c7e;font:400 10px/1.5 'Open Sans';padding:7px 0}
+.ceg-modal-source{display:flex;flex-wrap:wrap;gap:9px;align-items:center;margin-bottom:10px}
+.ceg-modal-source .ceg-btn{display:inline-flex;align-items:center;min-height:36px}
+#ceg-embedded-gallery{height:66vh;min-height:420px}
+@media(max-width:950px){.ceg-check-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.ceg-overview{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:650px){.ceg-grid,.ceg-check-grid{grid-template-columns:1fr 1fr}.ceg-overview{grid-template-columns:repeat(2,minmax(0,1fr))}.ceg-card .ceg-actions .ceg-btn{min-width:0}#ceg-embedded-gallery{height:70vh}}
+@media(max-width:430px){.ceg-check-grid{grid-template-columns:1fr 1fr}.ceg-overview{grid-template-columns:1fr 1fr}.ceg-ov{padding:13px 11px}.ceg-ov strong{font-size:21px}}
 </style>
 </head>
 <body>
@@ -704,7 +732,7 @@ h1,h2,h3,h4{font-family:'Montserrat',Arial,sans-serif}
     <!-- GALERIA DE EVIDÊNCIAS — FOTOS E LISTAS -->
     <div class="vw" id="vw-galeria">
       <div class="exec-page-head"><div><div class="exec-page-kicker">Acervo visual · atividades formativas</div><h2>Galeria de Evidências</h2><p>Fotografias e listas de presença divididas por território, curso, competência e turma.</p></div></div>
-      <div class="ceg-note"><strong>Leitura documental:</strong> os totais vêm do inventário oficial e não significam aprovação automática. As miniaturas são consultadas individualmente no Drive quando o serviço do Apps Script estiver conectado. Documentos continuam sujeitos às permissões do Google Drive.</div>
+      <div class="ceg-note"><strong>Leitura documental:</strong> os totais vêm do inventário oficial e não significam aprovação automática. As miniaturas são consultadas na galeria autenticada do Apps Script, dentro da ficha, respeitando as permissões do Drive. Documentos continuam sujeitos às permissões do Google Drive.</div>
       <div class="ceg-report-filter">
         <label for="ceg-relatorio">Relatório de referência</label>
         <select id="ceg-relatorio" onchange="CE_GALERIA_alterarRelatorio()"><option value="">Todas as atividades e períodos</option></select>
@@ -717,6 +745,16 @@ h1,h2,h3,h4{font-family:'Montserrat',Arial,sans-serif}
         <select id="ceg-competencia" onchange="CE_GALERIA_filtrar()" aria-label="Filtrar por competência"><option value="">Todas as competências</option></select>
         <input id="ceg-busca" oninput="CE_GALERIA_filtrar()" placeholder="Buscar curso, turma ou território..." aria-label="Buscar na galeria">
       </div>
+      <div class="ceg-toolbar" style="margin-top:-7px">
+        <select id="ceg-tipo-filtro" aria-label="Filtrar tipo de evidência" onchange="CE_GALERIA_filtrar()">
+          <option value="todos">Todas as evidências</option>
+          <option value="fotos">Com fotografias</option>
+          <option value="listas">Com listas de presença</option>
+          <option value="documentos">Com outros documentos</option>
+          <option value="pendentes">Vínculo da atividade a conferir</option>
+        </select>
+      </div>
+      <div class="ceg-overview" id="ceg-overview" aria-label="Indicadores da galeria"></div>
       <div class="ceg-count" id="ceg-total" aria-live="polite">Aguardando inventário oficial…</div>
       <div id="ceg-atividades"></div>
     </div>
@@ -778,7 +816,7 @@ h1,h2,h3,h4{font-family:'Montserrat',Arial,sans-serif}
       <div id="ceg-ficha-info"></div>
       <a id="ceg-modal-drive" class="ceg-btn secondary" target="_blank" rel="noopener noreferrer" style="display:none">Abrir pasta original no Drive</a>
       <div id="ceg-folder-extras"></div>
-      <div class="ceg-modal-tabs" role="group" aria-label="Evidências desta atividade">
+      <div id="ceg-modal-tabs" class="ceg-modal-tabs" role="group" aria-label="Evidências desta atividade">
         <button type="button" data-ceg-modal-tab="foto" aria-pressed="true" onclick="CE_GALERIA_modalTab('foto')">Fotos e ampliações</button>
         <button type="button" data-ceg-modal-tab="lista" aria-pressed="false" onclick="CE_GALERIA_modalTab('lista')">Listas de presença e documentos</button>
       </div>
@@ -1797,7 +1835,7 @@ window.addEventListener('DOMContentLoaded', function () {
 
 /* Conexões Empreendedoras | Galeria de fichas de atividades v2.
  * Leitura dos resumos: D.evidenciasDrive (existente).
- * Miniaturas privadas: Apps Script galeria_arquivos autenticado (NOVA implantação).
+ * Miniaturas privadas: Apps Script autenticado já configurado (implantação existente).
  * Nenhuma evidência é validada automaticamente.
  */
 (function () {
@@ -1829,7 +1867,7 @@ function intersectsReport(g,r){
 function items(){
  var rows=(typeof D!=='undefined'&&D&&Array.isArray(D.evidenciasDrive))?D.evidenciasDrive:[],m=new Map();
  rows.forEach(function(r){
-  var row={territory:String(r.Territorio||'Não identificado'),course:String(r.Curso_Normalizado||r.Curso_Original_Drive||'Curso a classificar'),group:String(r.Nucleo_Turma_Real||'Turma não identificada'),comp:String(r.Competencia||''),date:String(r.Data_Referencia||''),branch:String(r.Fonte_Ramo||''),folder:driveUrl(r.Link_Pasta_Evidencia),photos:positive(r.Qtd_Fotos),lists:positive(r.Qtd_Listas),linked:typeof evidenciaVinculadaCE==='function'?evidenciaVinculadaCE(r):!!r.Linha_ATIVIDADES,status:String(r.Status_Vinculo||'')};
+  var row={territory:String(r.Territorio||'Não identificado'),course:String(r.Curso_Normalizado||r.Curso_Original_Drive||'Curso a classificar'),group:String(r.Nucleo_Turma_Real||'Turma não identificada'),comp:String(r.Competencia||''),date:String(r.Data_Referencia||''),branch:String(r.Fonte_Ramo||''),folder:driveUrl(r.Link_Pasta_Evidencia),photos:positive(r.Qtd_Fotos),lists:positive(r.Qtd_Listas),documents:positive(r.Qtd_Documentos),reports:positive(r.Qtd_Relatorios),certificates:positive(r.Qtd_Certificados),linked:typeof evidenciaVinculadaCE==='function'?evidenciaVinculadaCE(r):!!r.Linha_ATIVIDADES,status:String(r.Status_Vinculo||'')};
   var key=[row.territory,row.course,row.group,row.comp,row.date].map(norm).join('|');
   if(!m.has(key))m.set(key,{territory:row.territory,course:row.course,group:row.group,competencia:row.comp,data:row.date,rows:[]});
   m.get(key).rows.push(row);
@@ -1838,7 +1876,7 @@ function items(){
   var organized=g.rows.filter(function(x){return x.branch.toUpperCase()==='EVIDENCIAS_ORGANIZADAS';});
   var selected=organized.length?organized:g.rows,fold=new Map();
   selected.forEach(function(x){var id=folderId(x.folder),key=id||'sem-pasta-'+fold.size,prev=fold.get(key);if(!prev||x.photos+x.lists>prev.photos+prev.lists)fold.set(key,x);});
-  var actual=Array.from(fold.values());g.photos=actual.reduce(function(s,x){return s+x.photos;},0);g.lists=actual.reduce(function(s,x){return s+x.lists;},0);
+  var actual=Array.from(fold.values());g.photos=actual.reduce(function(s,x){return s+x.photos;},0);g.lists=actual.reduce(function(s,x){return s+x.lists;},0);g.documents=actual.reduce(function(s,x){return s+x.documents;},0);g.reports=actual.reduce(function(s,x){return s+x.reports;},0);g.certificates=actual.reduce(function(s,x){return s+x.certificates;},0);
   g.links=Array.from(new Set(actual.map(function(x){return x.folder;}).filter(Boolean)));g.linked=actual.some(function(x){return x.linked;});
   g.groupId=[g.territory,g.course,g.group,g.competencia,g.data].map(norm).join('|');
   delete g.rows;return g;
@@ -1859,12 +1897,26 @@ function filtered(){
  fillSelect('ceg-territorio',all.map(function(g){return g.territory;}),'Todos os territórios');
  fillSelect('ceg-curso',all.filter(function(g){return !T||g.territory===T;}).map(function(g){return g.course;}),'Todos os cursos');
  fillSelect('ceg-competencia',all.filter(function(g){return (!T||g.territory===T)&&(!C||g.course===C);}).map(function(g){return g.competencia||isoMonth(g.data);}).filter(Boolean),'Todas as competências');
+ var typeSelect=$('ceg-tipo-filtro'),type=typeSelect?typeSelect.value:'todos';all=all.filter(function(g){return (type==='todos'||(type==='fotos'&&g.photos>0)||(type==='listas'&&g.lists>0)||(type==='documentos'&&(g.documents+g.reports+g.certificates)>0)||(type==='pendentes'&&!g.linked));});
  var s=norm(q&&q.value||'');all=all.filter(function(g){return (!t||!t.value||g.territory===t.value)&&(!c||!c.value||g.course===c.value)&&(!p||!p.value||g.competencia===p.value||isoMonth(g.data)===p.value)&&(!s||norm([g.territory,g.course,g.group,g.competencia,g.data].join(' ')).includes(s));});
  G.groups=all;return all;
 }
-function renderCard(g,i){return '<article class="ceg-card"><h4>'+esc(g.group)+'</h4><p>'+esc(g.data||g.competencia||'Data/competência não identificada')+'</p><div class="ceg-stats"><span class="ceg-chip alt">'+g.photos+' foto(s)</span><span class="ceg-chip">'+g.lists+' lista(s)</span></div><div class="'+(g.linked?'ceg-link-ok':'ceg-warning')+'">'+(g.linked?'Vínculo com atividade registrado':'Vínculo exato da turma ainda não comprovado')+'</div><button type="button" class="ceg-btn" onclick="CE_GALERIA_abrir('+i+')">Abrir ficha e todas as miniaturas</button></article>';}
+function renderCard(g,i){
+ var drive=g.links&&g.links[0];
+ return '<article class="ceg-card '+(g.linked?'':'ceg-unlinked')+'">'
+  +'<div class="ceg-report-tag">'+esc(g.territory)+' · '+esc(g.competencia||'Competência não identificada')+'</div>'
+  +'<h4>'+esc(g.course)+' — '+esc(g.group)+'</h4>'
+  +'<p>Data: '+esc(g.data||'não identificada')+'</p>'
+  +'<div class="ceg-stats"><span class="ceg-chip alt">📷 '+g.photos+' foto(s)</span><span class="ceg-chip">📄 '+g.lists+' lista(s)</span><span class="ceg-chip">'+(g.documents+g.reports+g.certificates)+' outro(s)</span></div>'
+  +'<div class="ceg-status">'+(g.linked?'Vínculo registrado na planilha':'Vínculo da atividade precisa de conferência')+'</div>'
+  +'<div class="ceg-actions"><button type="button" class="ceg-btn" onclick="CE_GALERIA_abrir('+i+')">Abrir ficha e galeria</button>'
+  +(drive?'<a href="'+esc(drive)+'" class="ceg-btn secondary" target="_blank" rel="noopener noreferrer">Pasta no Drive</a>':'')+'</div></article>';
+}
 function render(reset){if(!$('ceg-atividades'))return;if(reset)G.page=1;fillReport();var rows=filtered(),show=rows.slice(0,G.page*G.perPage),f=rows.reduce(function(s,x){return s+x.photos;},0),l=rows.reduce(function(s,x){return s+x.lists;},0),r=G.reportChoices.find(function(x){return x.id===G.report;});
  $('ceg-total').textContent=rows.length+' fichas de evidências · '+f+' fotos e '+l+' listas informadas no inventário'+(r?' · Recorte: '+r.id:'')+'.';
+ var others=rows.reduce(function(s,x){return s+x.documents+x.reports+x.certificates;},0),unlink=rows.filter(function(x){return !x.linked;}).length;
+ var metrics=[['Atividades',rows.length,'Fichas com evidências'],['Fotos',f,'Inventário documental'],['Listas',l,'Presenças identificadas'],['Outros',others,'Docs, relatórios, certificados']];
+ var overview=$('ceg-overview');if(overview)overview.innerHTML=metrics.map(function(m){return '<div class="ceg-ov"><span>'+esc(m[0])+'</span><strong>'+m[1]+'</strong><small>'+esc(m[2])+'</small></div>';}).join('');
  $('ceg-periodo-alerta').style.display=r?'block':'none';var reportLink=$('ceg-report-link');if(reportLink){reportLink.style.display=r&&r.link?'inline-block':'none';if(r&&r.link)reportLink.href=r.link;}
  $('ceg-atividades').innerHTML=rows.length?'':'<div class="ceg-empty">Nenhuma evidência identificada neste recorte. Isso não significa que a atividade não ocorreu.</div>';
  if(!rows.length)return;
@@ -1878,7 +1930,12 @@ function currentGroup(){return G.selected;}
 function renderModal(){var g=currentGroup();if(!g)return;
  $('ceg-modal-title').textContent=g.course+' · '+g.group;
  $('ceg-modal-sub').textContent=g.territory+' · '+(g.data||g.competencia||'Competência a conferir')+' · Ficha da atividade';
- $('ceg-ficha-info').innerHTML='<div class="ceg-ficha"><div><small>Território</small><strong>'+esc(g.territory)+'</strong></div><div><small>Curso</small><strong>'+esc(g.course)+'</strong></div><div><small>Turma</small><strong>'+esc(g.group)+'</strong></div><div><small>Competência / data</small><strong>'+esc(g.competencia||'Não informada')+' · '+esc(g.data||'Não informada')+'</strong></div><div><small>Inventário</small><strong>'+g.photos+' fotos · '+g.lists+' listas</strong></div><div><small>Vínculo</small><strong>'+ (g.linked?'Registrado':'Conferência necessária')+'</strong></div></div>';
+ $('ceg-ficha-info').innerHTML='<div class="ceg-ficha"><div><small>Território</small><strong>'+esc(g.territory)+'</strong></div><div><small>Curso</small><strong>'+esc(g.course)+'</strong></div><div><small>Turma</small><strong>'+esc(g.group)+'</strong></div><div><small>Competência / data</small><strong>'+esc(g.competencia||'Não informada')+' · '+esc(g.data||'Não informada')+'</strong></div><div><small>Inventário</small><strong>'+g.photos+' fotos · '+g.lists+' listas</strong></div><div><small>Vínculo</small><strong>'+ (g.linked?'Registrado':'Conferência necessária')+'</strong></div></div>'
+  +'<div class="ceg-ficha-title">Comprovação por categoria — padrão PULSA SP</div>'
+  +'<div class="ceg-check-grid">'
+  +[['Fotos',g.photos],['Listas de presença',g.lists],['Documentos',g.documents],['Relatórios',g.reports],['Certificados',g.certificates]].map(function(item){return '<div class="ceg-check"><span>'+esc(item[0])+'</span><strong>'+item[1]+'</strong></div>';}).join('')
+  +'</div><div class="ceg-ficha-note">Arquivos e contagens identificados na planilha, não documentos aprovados. As miniaturas abaixo incluem fotos e listas, enquanto as demais categorias podem ser consultadas nas pastas originais do Drive.</div>'
+  +'<div class="ceg-ficha-title">Miniaturas de fotografias e listas de presença</div>';
  $('ceg-modal-drive').style.display=g.links.length?'inline-block':'none';if(g.links.length)$('ceg-modal-drive').href=g.links[0];
  $('ceg-folder-extras').innerHTML=g.links.length>1?g.links.slice(1).map(function(u,i){return '<a href="'+esc(u)+'" target="_blank" rel="noopener noreferrer">Pasta adicional '+(i+2)+'</a>';}).join(' · '):'';
  tab(G.tab);
@@ -1917,7 +1974,7 @@ function embeddedFrame(group){
  var q=new URLSearchParams({view:'galeria_ce',territorio:group.territory,curso:group.course,turma:group.group,competencia:group.competencia,data:group.data});
  var src=base+(base.indexOf('?')>=0?'&':'?')+q.toString();
  var parent=$('ceg-modal-files');parent.innerHTML='';
- var note=document.createElement('p');note.className='ceg-note';note.textContent='Galeria autenticada do Apps Script: fotos e listas são carregadas dentro da ficha. Se o Google bloquear a exibição incorporada, abra a galeria em uma aba própria.';parent.appendChild(note);
+ var note=document.createElement('p');note.className='ceg-note';note.textContent='Miniaturas de fotos e listas nesta ficha, com ampliação e navegação. Se o Google pedir login ou bloquear a incorporação, clique em Abrir galeria autenticada em nova aba.';parent.appendChild(note);
  var link=document.createElement('a');link.className='ceg-btn secondary';link.href=src;link.target='_blank';link.rel='noopener noreferrer';link.textContent='Abrir galeria autenticada em nova aba';parent.appendChild(link);
  var frame=document.createElement('iframe');frame.id='ceg-embedded-gallery';frame.title='Galeria de miniaturas autenticada da atividade';frame.src=src;frame.setAttribute('allowfullscreen','');frame.setAttribute('loading','eager');parent.appendChild(frame);
  return true;
